@@ -1,0 +1,34 @@
+
+.title{
+    text-align: center;
+  }
+  #image{
+    width: 150px;
+    height: 150px;
+    margin: auto;
+
+  }
+  #imageButton{
+    width: 180px;
+    height: 155px;
+  }
+  #imageCol{
+    text-align: center;
+  }
+  .fileInput {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  .fileInput   label {
+    color: #717171;
+    background-color: white;
+    display: inline-block;
+    cursor: pointer;
+    padding: .5em 1em;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }

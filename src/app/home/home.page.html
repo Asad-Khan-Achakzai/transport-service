@@ -1,0 +1,64 @@
+<ion-content>
+  <div class = "mainDiv" >
+      <ion-grid>
+        <ion-row>
+          
+          <ion-col size-md ="6" offset-md = "3">
+              <div [formGroup]="Form">
+            <ion-card>
+              <ion-card-header color="primary">
+                <div class ="title">
+              <ion-card-title style="margin-left:40px">Welcome</ion-card-title>
+            </div>
+              </ion-card-header>
+            </ion-card>
+            <ion-card-content>
+              
+              <ion-item>
+                <ion-label position = "floating">
+                  User Name
+                </ion-label>
+                <ion-input type ="text"  formControlName="email" >
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label position = "floating">
+                    Password
+                  </ion-label>
+                  <ion-input type ="password" formControlName="password">
+                  </ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label>User Type</ion-label>
+                  <ion-select formControlName="slectedGender" (ionChange)="optionsFn()" >
+                  <ion-select-option value="customer">Customer</ion-select-option>
+                  <ion-select-option value="serviceProvider">Service Provider</ion-select-option>
+                  <ion-select-option value="admin">Admin</ion-select-option>
+                  </ion-select>
+                  </ion-item>
+               <ion-row >
+                 <ion-col size ="7">
+                    <ion-button class = "round" (click) = "loginButton()" [disabled]="!Form.valid">
+            
+                        Login
+                      </ion-button >
+                      <ion-chip color="primary" (click) = "signUp()">
+                        <ion-label>signUp</ion-label>
+                      </ion-chip> 
+                    </ion-col>
+                    <ion-col  size ="5">
+                      <ion-row>
+                <a href="#/forgot-password" id = "pass" >Forgot-password</a>
+              
+                <!-- <ion-button (click) = "signUp()" >signup</ion-button > -->
+              </ion-row>
+              </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </div>
+          </ion-col>
+      
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-content>

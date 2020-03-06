@@ -1,0 +1,7 @@
+{
+  "name": "transport_service",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

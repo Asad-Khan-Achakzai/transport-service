@@ -1,0 +1,90 @@
+<ion-content>
+  <form [formGroup]="Form">
+    <ion-card>
+      <ion-card-header>
+        <div class="title">
+          <ion-card-title size="large" text-center>Routes</ion-card-title>
+        </div>
+      </ion-card-header>
+    </ion-card>
+    
+              <ion-card>
+            <ion-item>
+              <ion-label position="floating">
+                From
+              </ion-label>
+              <ion-input type="text"  [(ngModel)] = "departureValue"  [ngModelOptions]="{standalone: true}">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">
+                Destination
+              </ion-label>
+              <ion-input type="text"  [(ngModel)] = "destinationValue" [ngModelOptions]="{standalone: true}">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">
+                Timing
+              </ion-label>
+              <ion-input type="text"   [(ngModel)] = "timingValue" [ngModelOptions]="{standalone: true}">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">
+                Total Seats
+              </ion-label>
+              <ion-input type="number" (ionInput)="test($event)"  [(ngModel)] = "seatValue" [ngModelOptions]="{standalone: true}">
+              </ion-input>
+            </ion-item>
+            <ion-item lines="none" float-right>
+              <ion-button [disabled]="buttonDisabled" (click)="enterToTheList()">
+                Submit</ion-button>
+            </ion-item>
+          
+        </ion-card>
+          <!-- list of Routes Added -->
+    
+        <ion-card id="list" >
+          <ion-content
+    scrollEvents={true}>
+          <ion-card-content>
+            <div class="thumnails">
+              <ion-list>
+                <ion-menu-toggle auto-hide="false" *ngFor="let item of routesCopy; let i = index">
+                  <ion-item-sliding (ionSwipe)="delete(i)">
+                    <ion-item>From {{item?.Departure}} To {{item?.Destination}}</ion-item>
+                    <ion-item-options>
+                      <button ion-button expandable (click)="delete(i)">
+                        <ion-icon name="trash"></ion-icon>
+                        Delete
+                      </button>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                  
+                  <!-- <ion-item>
+                    <ion-label id="listLabels">
+                      From {{item?.Departure}} To {{item?.Destination}}
+
+                      <ion-icon name="trash" slot="end" (click)="delet(item)"></ion-icon>
+
+                    </ion-label>
+                  </ion-item> -->
+                </ion-menu-toggle>
+              </ion-list>
+            </div>
+          </ion-card-content>
+        </ion-content>
+        </ion-card>
+    
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <ion-button (click)="nextButton()">
+          Done
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

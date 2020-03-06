@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>routes-tab</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-menu-toggle auto-hide="false" *ngFor="let item of routes; let i = index">
+      <ion-item-sliding (ionSwipe)="delete(i)">
+        <ion-item>From {{item?.Departure}} To {{item?.Destination}}</ion-item>
+        <ion-item-options>
+          <button ion-button expandable (click)="delete(i)">
+            <ion-icon name="trash"></ion-icon>
+            Delete
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-menu-toggle>
+  </ion-list>
+</ion-content>
