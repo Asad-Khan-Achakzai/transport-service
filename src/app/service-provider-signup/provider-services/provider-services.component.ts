@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 //import {CustomerService} from '../../sdk/custom/customer.service';
 import {ServiceProvidersService} from '../../sdk/custom/service-providers.service';
-//import {Routes} from '../../sdk/custom/service-providers.service';
-
+import {Routes} from '../../sdk/custom/service-providers.service';
+import { PopoverController } from '@ionic/angular';
 @Component({
   selector: 'app-provider-services',
   templateUrl: './provider-services.component.html',
@@ -25,38 +25,39 @@ loading = false;
   routesCopy:[];
   from:string;
   buttonDisabled = true;
-  // routes: Routes;
-  // routesArray: Routes[];
+  //routes: Routes;
+  routesArray: Routes[];
 cities = ['quetta','peshawer'];
-  constructor(private formBuilder: FormBuilder,private router :Router,private modalCtrl: ModalController,private serviceProviderServices: ServiceProvidersService) {
+  constructor(private popoverCtrl: PopoverController, private formBuilder: FormBuilder,private router :Router,private modalCtrl: ModalController,private serviceProviderServices: ServiceProvidersService) {
     this.Form = this.formBuilder.group({
       routes : [[
       ]],
       to:[null,[Validators.required]],
       from:[null,[Validators.required]]
     });
+    //this.routes = new Routes();
+    this.routesArray = [new Routes] ;
+    
   }
   ngOnInit() {
+    
   }
   nextButton(){
-//    console.log(this.routesArray);
-    this.serviceProviderServices.sendServices(this.routesCopy);
+   // console.log(this.routesArray);
+    this.serviceProviderServices.sendServices(this.routesArray);
       this.modalCtrl.dismiss({
         dismissed: true
       });
       }
-  // get departureValue(): string {
-  //   return this.Form.value['departure'];
-  // }
-  // get destinationValue(): string {
-  //   return this.Form.value['destination'];
-  // }
+
+  //entering to the list
+
   enterToTheList(){
-    // this.routes.timing = this.timingValue;
-    // this.routes.totalSeats = this.seatValue;
-    // this.routes.departure = this.departureValue;
-    // this.routes.destination = this.destinationValue;
-    // this.routesArray.push(this.routes);
+    //console.log(this.timingValue);
+  //  pushing routes to the array
+    this.routesArray.push({timing: this.timingValue,totalSeats: this.seatValue,availableSeats:this.seatValue,departure: this.departureValue,destination:this.destinationValue});
+    this.routesArray.splice(0,1);
+    console.log(this.routesArray);
     this.Form.value['routes'].push({Departure: this.departureValue , Destination : this.destinationValue});
     this.routesCopy = this.Form.controls['routes'].value;
     this.departureValue = '';

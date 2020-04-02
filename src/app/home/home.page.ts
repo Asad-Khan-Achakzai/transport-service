@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomersService } from '../sdk/custom/customers.service';
 import { ServiceProvidersService } from '../sdk/custom/service-providers.service';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../sdk/core/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,7 @@ import { AlertController } from '@ionic/angular';
 export class HomePage {
 
   Form: FormGroup;
-  constructor(private router: Router, private formBuilder: FormBuilder, public alertController: AlertController, private customerService: CustomersService,private serviceProvidersService: ServiceProvidersService) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, public alertController: AlertController, private customerService: CustomersService,private serviceProvidersService: ServiceProvidersService) { }
   ngOnInit() {
     this.formInitializer();
   }
@@ -49,6 +50,7 @@ export class HomePage {
       this.customerService.customerLogin(loginData).subscribe(
         data => {
           console.log('got response from server', data);
+          this.authService.saveTokenToStorage(data.token);
           this.router.navigateByUrl('/customer-profile');
         },
         async error => {

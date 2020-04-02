@@ -1,8 +1,29 @@
 import { Platform } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup,FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CustomersService} from '../sdk/custom/customers.service';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
+function base64toBlob(base64Data, contentType) {
+  contentType = contentType || '';
+  const sliceSize = 1024;
+  const byteCharacters = window.atob(base64Data);
+  const bytesLength = byteCharacters.length;
+  const slicesCount = Math.ceil(bytesLength / sliceSize);
+  const byteArrays = new Array(slicesCount);
+
+  for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+    const begin = sliceIndex * sliceSize;
+    const end = Math.min(begin + sliceSize, bytesLength);
+
+    const bytes = new Array(end - begin);
+    for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
+      bytes[i] = byteCharacters[offset].charCodeAt(0);
+    }
+    byteArrays[sliceIndex] = new Uint8Array(bytes);
+  }
+  return new Blob(byteArrays, { type: contentType });
+}
 @Component({
   selector: 'app-customer-sign-up',
   templateUrl: './customer-sign-up.page.html',
@@ -16,6 +37,24 @@ export class CustomerSignUpPage implements OnInit {
 
   ngOnInit() {
     this.formInitializer();}
+    
+  onImagePicked(imageData: string | File) {
+    let imageFile;
+    if (typeof imageData === 'string') {
+      try {
+        imageFile = base64toBlob(
+          imageData.replace('data:image/jpeg;base64,', ''),
+          'image/jpeg'
+        );
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    } else {
+      imageFile = imageData;
+    }
+    this.Form.patchValue({ image: imageFile });
+  }
     formInitializer() {
       this.Form = this.formBuilder.group({
         username: [null, [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
@@ -23,6 +62,7 @@ export class CustomerSignUpPage implements OnInit {
         email: [null, [Validators.required,Validators.email]],
         password: [null, [Validators.required]],
         phone: [null, [Validators.required,Validators.minLength(12)]],
+        image: new FormControl(null)
         //confirmPassword: [null, [Validators.required]],
       });
   }

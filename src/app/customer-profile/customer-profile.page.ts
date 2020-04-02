@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CustomersService} from '../sdk/custom/customers.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../sdk/core/auth.service';
 @Component({
   selector: 'app-customer-profile',
   templateUrl: './customer-profile.page.html',
@@ -12,10 +13,17 @@ email:string;
 userName: string;
 phone: string;
 cnic:string;
-  constructor(private router :Router,private customerService: CustomersService) { }
+  constructor(private authService: AuthService,private router :Router,private customerService: CustomersService) { }
 
   ngOnInit() {
      this.getCustomer();
+this.diplayToken();  }
+  public async diplayToken(): Promise<any> {
+      const token = await this.authService.getTokenFromStorage();    
+      console.log('token :',token);
+  }
+  goToDashboard(){
+    this.router.navigateByUrl('/customer-dashboard');
   }
   back(){
     this.router.navigateByUrl('/home');

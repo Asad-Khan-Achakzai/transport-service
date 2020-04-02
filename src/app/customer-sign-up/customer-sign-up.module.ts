@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CustomerSignUpPageRoutingModule } from './customer-sign-up-routing.module';
-
+import { SharedModule } from '../shared/shared.module';
 import { CustomerSignUpPage } from './customer-sign-up.page';
 import {MasksModule} from '../masks/masks.module';
 @NgModule({
@@ -14,6 +14,7 @@ import {MasksModule} from '../masks/masks.module';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
+    SharedModule,
     MasksModule,
     CustomerSignUpPageRoutingModule
   ],

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Path} from '../server.config';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../core/auth.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +11,7 @@ export class CustomersService {
   observable: any;
   customerInfo:any;
   serviceProviderInfo:any;
-  constructor(private http: HttpClient) { }
+  constructor(private authService: AuthService,private http: HttpClient) { }
   
   public userRegister(credentials: object): Observable<any> {
     const url = Path.getPath() + '/users/register';
@@ -28,6 +29,13 @@ export class CustomersService {
       });
     return  this.http.post(url, credentials);
 
+  }
+  public async getCustomer(): Promise<any> {
+    const url = Path.getPath() + '/users/getCustomer';
+    const token = await this.authService.getTokenFromStorage();
+    return this.http.post(url, this.customerInfo,{
+      headers: new HttpHeaders().set('Authorization', token)
+    });
   }
 //   public serviceProviderLogin(credentials: object): Observable<any> {
 
@@ -53,10 +61,7 @@ export class CustomersService {
 //      this.serviceProvider = credentials;
 //      console.log(this.serviceProvider);
 //    }
-   public async getCustomer(): Promise<any> {
-    const url = Path.getPath() + '/users/getCustomer';
-    return this.http.post(url, this.customerInfo);
-  }
+   
 //   public async getServiceProvider(): Promise<any> {
 //     const url = customerRegistration.getPath() + '/providers/getServiceProvider';
 //     return this.http.post(url, this.serviceProviderInfo);

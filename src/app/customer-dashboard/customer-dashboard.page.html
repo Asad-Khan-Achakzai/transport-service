@@ -1,0 +1,36 @@
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      
+      <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionChange)="setFilteredItems()"
+    ></ion-searchbar>
+    </ion-card-content>
+  </ion-card>
+  <ion-list>
+    <ion-list-header>
+      Recent Conversations
+      {{item?.email}}
+    </ion-list-header>
+
+    <ion-card *ngFor="let tag of serviceProviderInfo" [routerLink]= "['./',tag._id]">
+      <ion-item>
+        <!-- <ion-avatar slot="start">
+        <img src="./avatar-finn.png">
+      </ion-avatar> -->
+
+        <ion-label>
+          <h6>{{tag?.companyName}}</h6>
+          <h2>{{tag?.username}}</h2>
+          <h2>{{tag?.email}}</h2>
+          <h2>{{tag?.phone}}</h2>
+          <h2>{{tag?.officeLocation}}</h2>
+          <p>Listen, I've had a pretty messed up day...</p>
+        </ion-label>
+
+      </ion-item>
+
+    </ion-card>
+  </ion-list>
+</ion-content>

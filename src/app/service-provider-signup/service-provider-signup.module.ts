@@ -9,7 +9,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {ProviderServicesComponent} from './provider-services/provider-services.component';
 import { ServiceProviderSignupPage } from './service-provider-signup.page';
 import {MasksModule} from '../masks/masks.module';
-
 @NgModule({
   imports: [
     CommonModule,

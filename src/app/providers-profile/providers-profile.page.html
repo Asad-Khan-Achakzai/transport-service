@@ -1,0 +1,37 @@
+<ion-header translucent no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="light">
+        <ion-icon slot="start" name="ios-arrow-back"></ion-icon>
+        Back
+      </ion-button>
+    </ion-buttons>
+    <ion-title>&nbsp;</ion-title>
+   
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" slot="fixed" >
+    <div class="card">
+      <div class="header">
+        <div class="avatar">
+          <img src="../../assets/player104.png" alt="">
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="user-meta ion-text-center">
+          <h3 class="playername">{{userName}}</h3>
+          <h5 class="country">Switzerland</h5>
+          <h6 class="ranking">Current ranking: <ion-chip>
+              <ion-label>2</ion-label>
+            </ion-chip>
+          </h6>
+        </div>
+
+        <ion-button expand="full" color="primary">{{email}}</ion-button>
+        <ion-button expand="full" color="secondary">{{phone}}</ion-button>
+        <ion-button expand="full" color="secondary">{{cnic}}</ion-button>
+
+      </div>
+    </div>
+</ion-content>
