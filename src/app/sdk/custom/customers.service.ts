@@ -11,6 +11,7 @@ export class CustomersService {
   observable: any;
   customerInfo:any;
   serviceProviderInfo:any;
+  customerName:string;
   constructor(private authService: AuthService,private http: HttpClient) { }
   
   public userRegister(credentials: object): Observable<any> {
@@ -37,6 +38,7 @@ export class CustomersService {
       headers: new HttpHeaders().set('Authorization', token)
     });
   }
+  
 //   public serviceProviderLogin(credentials: object): Observable<any> {
 
 //     // this url will be http://localhost:3000/providers/login

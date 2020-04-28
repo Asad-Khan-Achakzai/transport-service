@@ -69,19 +69,17 @@ ion-chip {
     }
 }
 
-#tab{
-    width: 900px;
-    height: 300px;
-    position: relative;
-   // padding-left: 200px;
-   margin-left: 10%;
-}
-
 .ranking{
     font-weight: 600;
     color: #303940;
     width: 50%;
     margin-left: 60%;
 }
+.slide{
+    height: 200px;
+}
 
-
+ion-slides{
+    overflow-y: scroll;
+  }
+ 

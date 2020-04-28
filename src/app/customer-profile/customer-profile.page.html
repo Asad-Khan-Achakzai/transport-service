@@ -1,16 +1,16 @@
 <ion-header translucent no-border>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="light">
-        <ion-icon slot="start" name="ios-arrow-back"></ion-icon>
-        Back
-      </ion-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>&nbsp;</ion-title>
     <ion-buttons slot="end">
       <ion-button color="light" (click) = "goToDashboard()">
         <ion-icon  name="ios-arrow-back"></ion-icon>
         Dashboard
+       </ion-button>
+       <ion-button color="light" (click) = "logout()">
+        Logout
        </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -25,7 +25,11 @@
       </div>
       <div class="card-body">
         <div class="user-meta ion-text-center">
-          <h3 class="playername">{{userName}}</h3>
+          <h3 class="playername">{{userName}}
+            <ion-chip (click)="openChatRoom()">
+              Message
+            </ion-chip>
+          </h3>
           <h5 class="country">Switzerland</h5>
           <h6 class="ranking">Current ranking: <ion-chip>
               <ion-label>2</ion-label>

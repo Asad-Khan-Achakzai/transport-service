@@ -1,8 +1,11 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 //import { CustomerService } from 'src/sdk/custom/customer.service';
-import { ServiceProvidersService } from '../sdk/custom/service-providers.service';
+import { ServiceProvidersService, Routes } from '../sdk/custom/service-providers.service';
 import {serviceProvider} from '../customer-dashboard/service-provider.model';
+import { IonSlides, NavController } from '@ionic/angular';
+import { SocketIo } from 'ng-io';
+import { ChatServiceService } from '../chat-room/chat-service.service';
 @Component({
   selector: 'app-service-provider-profile',
   templateUrl: './service-provider-profile.page.html',
@@ -14,15 +17,31 @@ export class ServiceProviderProfilePage implements OnInit {
   userName: string;
   phone: string;
   cnic:string;
+  companyName: string;
+  officeLocation: string;
+  section: string = 'two';
+  somethings: any = new Array(20);
   cities = [];
   routes = [];
-  
-  constructor(private router :Router,private serviceProvidersService: ServiceProvidersService) { }
+  routesArr: Routes[];
+  @ViewChild('slides', { static: true }) slider: IonSlides;  
+  segment = 0;  
+  constructor(private chatService:ChatServiceService,private socket: SocketIo,public navCtrl: NavController,private router :Router,private serviceProvidersService: ServiceProvidersService) {
+    this.routesArr = [new Routes];
+   }
 
   ngOnInit() {
+    this.chatService.serviceProviderLogedIn();
    // this.serviceProvidersService.getSingleServiceProvider();
     this.getServiceProvider();
+    //send username to inbox
   }
+  async segmentChanged(ev: any) {  
+    await this.slider.slideTo(this.segment);  
+  }  
+  async slideChanged() {  
+    this.segment = await this.slider.getActiveIndex();  
+  }  
   back(){
     this.router.navigateByUrl('/home');
   }
@@ -42,13 +61,15 @@ export class ServiceProviderProfilePage implements OnInit {
         this.serviceProviderInfo = data.data;
         this.email = this.serviceProviderInfo.email;
         this.userName = this.serviceProviderInfo.username;
+        this.serviceProvidersService.serviceProviderNameForInbox(this.userName );
         this.phone = this.serviceProviderInfo.phone;
         this.cnic = this.serviceProviderInfo.cnic;
         this.cities = this.serviceProviderInfo.citiesArray;
         this.routes = this.serviceProviderInfo.servicesArray;
-        console.log('tags array',this.cities);
-        
-        console.log('routes', this.routes);
+        this.companyName = this.serviceProviderInfo.companyName;
+        this.officeLocation = this.serviceProviderInfo.officeLocation;
+        this.routesArr = this.serviceProviderInfo.servicesArray;
+        console.log(this.cities);
       },
       err => {
         console.log('err', err);
@@ -56,9 +77,21 @@ export class ServiceProviderProfilePage implements OnInit {
     );
   }
   delete(id: number): void{
-    this.routes.splice(id, 1);  }
- 
+    this.routes.splice(id, 1);  
+  }
+  remove(i){
+    console.log('delet',i)
+  }
+  openChatRoom(){
+    this.socket.connect();
+    this.socket.emit('set-nickname',this.userName);
+    //this.socket.emit('set-reciever', this.userName);
+    
+    this.socket.emit('set-type','serviceProvider');
+    this.router.navigateByUrl('service-provider-profile/inbox');
+  } 
 }
+
 // interface serviceProvider {
 //   username: string;
 //   email: string;

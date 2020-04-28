@@ -9,18 +9,18 @@ export class AuthService {
   constructor(private storage: Storage, private router: Router) {}
 
   public saveTokenToStorage(token: string) {
+    //save token to storage
     this.storage.set('token', token);
-    console.log('token saved in the storage');
+    
   }
 
   public async getTokenFromStorage() {
      
     const token = await this.storage.get('token');
-    console.log('token found = ',token);
     return token;
   }
   public async logout() {
     this.storage.clear();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/home');
   }
 }

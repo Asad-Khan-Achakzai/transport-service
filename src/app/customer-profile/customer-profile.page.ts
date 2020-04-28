@@ -1,34 +1,49 @@
 import { Component, OnInit } from '@angular/core';
-import {CustomersService} from '../sdk/custom/customers.service';
+import { CustomersService } from '../sdk/custom/customers.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../sdk/core/auth.service';
+import { ChatServiceService } from '../chat-room/chat-service.service';
+import { SocketIo } from 'ng-io';
 @Component({
   selector: 'app-customer-profile',
   templateUrl: './customer-profile.page.html',
   styleUrls: ['./customer-profile.page.scss'],
 })
 export class CustomerProfilePage implements OnInit {
-costomerInfo:customer;
-email:string;
-userName: string;
-phone: string;
-cnic:string;
-  constructor(private authService: AuthService,private router :Router,private customerService: CustomersService) { }
+  costomerInfo: customer;
+  email: string;
+  userName: string;
+  phone: string;
+  cnic: string;
+  constructor(private socket: SocketIo,private chatService:ChatServiceService,private authService: AuthService, private router: Router, private customerService: CustomersService) { }
 
   ngOnInit() {
-     this.getCustomer();
-this.diplayToken();  }
-  public async diplayToken(): Promise<any> {
-      const token = await this.authService.getTokenFromStorage();    
-      console.log('token :',token);
+    this.chatService.customerLogedIn();
+    this.getCustomer();
+    this.diplayToken();
   }
-  goToDashboard(){
+  public async diplayToken(): Promise<any> {
+    const token = await this.authService.getTokenFromStorage();
+    console.log('token :', token);
+  }
+  goToDashboard() {
     this.router.navigateByUrl('/customer-dashboard');
   }
-  back(){
+  back() {
     this.router.navigateByUrl('/home');
-   }
-  async  getCustomer(){
+  }
+  logout() {
+    this.authService.logout();
+  }
+  openChatRoom(){
+    this.socket.connect();
+    //this.socket.emit('set-nickname',this.userName);
+    //this.socket.emit('set-reciever', this.userName);
+    
+    //this.socket.emit('set-type','serviceProvider');
+    this.router.navigateByUrl('customer-profile/inbox');
+  }
+  async  getCustomer() {
     const observable = await this.customerService.getCustomer();
     observable.subscribe(
       data => {
@@ -37,7 +52,7 @@ this.diplayToken();  }
         this.userName = this.costomerInfo.username;
         this.phone = this.costomerInfo.phone;
         this.cnic = this.costomerInfo.cnic;
-    console.log(this.costomerInfo.email);
+        this.customerService.customerName = this.costomerInfo.username;
         console.log('data', data.data);
       },
       err => {

@@ -14,6 +14,8 @@ import { ServiceProvidersService } from '../sdk/custom/service-providers.service
 export class ServiceProviderSignupPage implements OnInit {
   Form: FormGroup;
   loading = false;
+  val;
+  val1;
   constructor(private formBuilder: FormBuilder, private router: Router, private modalController: ModalController, private serviceProviderServices: ServiceProvidersService) { }
   // cities = ['quetta','peshawer'];
   public skillInput: string = '';

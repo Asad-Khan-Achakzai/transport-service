@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button [text]="'back'" (click)="back()"></ion-back-button>
+      <ion-back-button [text]="'back'" defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>service-provider-signup</ion-title>
   </ion-toolbar>
@@ -11,23 +11,20 @@
   <div class="mainDiv">
     <ion-grid>
       <ion-row>
-
         <ion-col size-md="8" offset-md="2">
           <div [formGroup]="Form">
             <ion-card>
               <ion-card-header>
                 <div class="title">
-                  <ion-card-title size="large" text-center>Welcome</ion-card-title>
+                  <ion-card-title size="large" text-center
+                    >Welcome</ion-card-title
+                  >
                 </div>
-
-
               </ion-card-header>
             </ion-card>
             <ion-card-content>
               <ion-row>
-
                 <ion-col size="6">
-
                   <ion-item>
                     <ion-label position="floating">
                       User Name
@@ -39,8 +36,14 @@
                     <ion-label position="floating">
                       Cnic Number
                     </ion-label>
-                    <ion-input type="tel" formControlName="cnic" appCnicMask [(ngModel)]="val1" maxlength="15"
-                      placeholder="Cnic number">
+                    <ion-input
+                      type="tel"
+                      formControlName="cnic"
+                      appCnicMask
+                      [(ngModel)]="val1"
+                      maxlength="15"
+                      placeholder="Cnic number"
+                    >
                     </ion-input>
                   </ion-item>
                 </ion-col>
@@ -65,17 +68,26 @@
                 <ion-label position="floating">
                   Phone#
                 </ion-label>
-                <ion-input type="tel" formControlName="phone" appPhoneMask [(ngModel)]="val" maxlength="12"
-                  placeholder="Phone Number">
+                <ion-input
+                  type="tel"
+                  formControlName="phone"
+                  appPhoneMask
+                  [(ngModel)]="val"
+                  maxlength="12"
+                  placeholder="Phone Number"
+                >
                 </ion-input>
               </ion-item>
-
 
               <ion-item>
                 <ion-label position="floating">
                   Email Address
                 </ion-label>
-                <ion-input type="text" formControlName="email" id="emailaddress">
+                <ion-input
+                  type="text"
+                  formControlName="email"
+                  id="emailaddress"
+                >
                 </ion-input>
               </ion-item>
 
@@ -89,7 +101,7 @@
               <div>
                 <div>
                   <ion-card>
-<!-- 
+                    <!-- 
                     <ion-card-content>
 
                       <ion-item>
@@ -109,25 +121,33 @@
 
                     </ion-card-content>
  -->
- 
-    <ion-item>
-      <ion-label>Cities</ion-label>
-      <ion-input (keyup.enter)="onEnter()"  formControlName="skillInput" clearInput="true"></ion-input>
-    <button ion-button item-right (click)="upload()" >
-      <ion-icon name="checkmark"></ion-icon>
-    </button>
-    </ion-item>
- 
-  
-  <ion-chip outline color="primary" #chip *ngFor="let tag of cities; let i = index">
-    <ion-label>{{tag}}</ion-label>
-    <ion-icon name="close-circle" (click)="remove(i)"></ion-icon>
-</ion-chip>
+
+                    <ion-item>
+                      <ion-label>Cities</ion-label>
+                      <ion-input
+                        (keyup.enter)="onEnter()"
+                        formControlName="skillInput"
+                        clearInput="true"
+                      ></ion-input>
+                      <button ion-button item-right (click)="upload()">
+                        <ion-icon name="checkmark"></ion-icon>
+                      </button>
+                    </ion-item>
+                    <ion-chip
+                      outline
+                      color="primary"
+                      #chip
+                      *ngFor="let tag of cities; let i = index"
+                    >
+                      <ion-label>{{tag}}</ion-label>
+                      <ion-icon
+                        name="close-circle"
+                        (click)="remove(i)"
+                      ></ion-icon>
+                    </ion-chip>
                   </ion-card>
                 </div>
               </div>
-
-
               <ion-item>
                 <ion-label position="floating">
                   Password
@@ -144,7 +164,6 @@
               </ion-item> -->
               <ion-row justify-content: end>
                 <ion-col class="ion-text-center">
-
                   <ion-button (click)="nextButton()">
                     Services
                   </ion-button>
@@ -159,5 +178,4 @@
       </ion-row>
     </ion-grid>
   </div>
-
 </ion-content>

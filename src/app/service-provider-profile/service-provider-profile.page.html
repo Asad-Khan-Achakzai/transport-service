@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true" slot="fixed" >
+<ion-content fullscreen="true" slot="fixed"   scrollEvents={true}>
     <div class="card">
       <div class="header">
         <div class="avatar">
@@ -24,7 +24,11 @@
       </div>
       <div class="card-body">
         <div class="user-meta ion-text-center">
-          <h3 class="playername">{{userName}}</h3>
+          <h3 class="playername">{{companyName}}
+            <ion-chip (click)="openChatRoom()">
+              Message
+            </ion-chip>
+          </h3>
           <!-- <h5 class="country">Switzerland</h5> -->
           <h6 class="ranking">Current ranking: <ion-chip>
               <ion-label>2</ion-label>
@@ -32,89 +36,67 @@
           </h6>
         </div>
 
-        <!-- <ion-button expand="full" color="primary">{{email}}</ion-button>
-        <ion-button expand="full" color="secondary">{{phone}}</ion-button>
-        <ion-button expand="full" color="secondary">{{cnic}}</ion-button> -->
+        <ion-toolbar> 
+          <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="segment" color="success"> 
+          <ion-segment-button value="0"> 
+          <ion-label>About</ion-label> 
+          <ion-icon name="information-circle"></ion-icon>
+        </ion-segment-button> 
+          <ion-segment-button value="1"> 
+          <ion-label>Routes</ion-label> 
+          <ion-icon name = "car"></ion-icon>
 
-        <ion-tabs id = "tab">
-          <ion-tab-bar slot="bottom">
-            <ion-tab-button tab="info-tab" >
-              <ion-icon name="flash"></ion-icon>
-              <ion-label>Information</ion-label>
-            </ion-tab-button>
-            <ion-tab-button tab="routes-tab">
-              <ion-icon name="apps"></ion-icon>
-              <ion-label>routes</ion-label>
-            </ion-tab-button>
-            <ion-tab-button tab="cities-tab">
-              <ion-icon name="apps"></ion-icon>
-              <ion-label>Cites</ion-label>
-            </ion-tab-button>
-          </ion-tab-bar>
-        </ion-tabs>
+          </ion-segment-button> 
+          <ion-segment-button value="2"> 
+          <ion-label>Cities</ion-label> 
+          <ion-icon name="home"></ion-icon>
+        </ion-segment-button> 
+          </ion-segment> 
+          </ion-toolbar> 
+          <ion-slides #slides (ionSlideDidChange)="slideChanged()"   class = "slide"> 
+          <ion-slide class = "slide">
+            <ion-grid>
+              <ion-row>
+                <ion-col size-md ="12" size-lg= "2" size-sm= "12" size-xs = "12" >
+                  <ion-button expand="full" color="primary">{{userName}}</ion-button>
+                </ion-col>
+                <ion-col size-md ="12" size-lg= "2" size-sm= "12"size-xs = "12">      
+                    <ion-button expand="full" color="secondary">{{phone}}</ion-button>
+                </ion-col>
+                <ion-col size-md ="12" size-lg= "2" size-sm= "12"size-xs = "12">
+                  <ion-button expand="full" color="secondary">{{cnic}}</ion-button>
+                </ion-col>
+                <ion-col size-md ="12" size-lg= "2" size-sm= "12"size-xs = "12">
+                  <ion-button expand="full" color="secondary">{{email}}</ion-button>
+                </ion-col>
+                <ion-col size-md ="12" size-lg= "2" size-sm= "12"size-xs = "12">
+                  <ion-button expand="full" color="secondary">{{officeLocation}}</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-slide> 
+          <ion-slide>
+            <ion-list>
+            <ion-menu-toggle auto-hide="false" *ngFor="let item of routesArr; let i = index">
+              <ion-item-sliding (ionSwipe)="delete(i)">
+                <ion-item>From {{item?.departure}} To {{item?.destination}} Timing {{item?.timing}} Total seats {{item?.totalSeats}}</ion-item>
+                <ion-item-options>
+                  <button ion-button expandable (click)="delete(i)">
+                    <ion-icon name="trash"></ion-icon>
+                    Delete
+                  </button>
+                </ion-item-options>
+              </ion-item-sliding>
+            </ion-menu-toggle>
+          </ion-list></ion-slide> 
+          <ion-slide>
+            <ion-chip outline color="primary" #chip *ngFor="let tag of cities; let i = index">
+              <ion-label>{{tag}}</ion-label>
+              <ion-icon name="close-circle" (click)="remove(i)"></ion-icon>
+          </ion-chip>
+          </ion-slide> 
+      
+          </ion-slides>
       </div>
     </div>
 </ion-content>
-<!-- <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button [text]="'back'" (click)="back()"></ion-back-button>
-    </ion-buttons>
-    <ion-title>{{userName}}'s profile</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-thumbnail>
-  
-</ion-thumbnail>
-<ion-card>
-  <ion-card-content>
-    <ion-item>
-      <ion-label>{{userName}}</ion-label>
-      <ion-icon name="create" slot="end"></ion-icon>
-    </ion-item>
-    <ion-item>
-      <ion-label>{{email}}</ion-label>
-      <ion-icon name="create" slot="end"></ion-icon>
-    </ion-item>
-    <ion-item>
-      <ion-label>{{phone}}</ion-label>
-      <ion-icon name="create" slot="end"></ion-icon>
-    </ion-item>
-    <ion-item>
-      <ion-label>{{cnic}}</ion-label>
-      <ion-icon name="create" slot="end"></ion-icon>
-    </ion-item>
-    <ion-item color="primary">
-      <ion-label>
-        services in Cities
-      </ion-label>
-    </ion-item>
-    <ion-list>
-      <ion-item *ngFor="let item of cities">
-        <ion-label>{{item}}</ion-label>
-      </ion-item>
-    </ion-list>
-      <ion-button>Enter</ion-button>
-      <ion-item color="primary">
-        <ion-label>
-          Routes
-        </ion-label>
-      </ion-item>
-  </ion-card-content>
-  <ion-list>
-    <ion-menu-toggle auto-hide="false" *ngFor="let item of routes; let i = index">
-      <ion-item-sliding (ionSwipe)="delete(i)">
-        <ion-item>From {{item?.Departure}} To {{item?.Destination}}</ion-item>
-        <ion-item-options>
-          <button ion-button expandable (click)="delete(i)">
-            <ion-icon name="trash"></ion-icon>
-            Delete
-          </button>
-        </ion-item-options>
-      </ion-item-sliding>
-    </ion-menu-toggle>
-  </ion-list>
-</ion-card>
-</ion-content> -->

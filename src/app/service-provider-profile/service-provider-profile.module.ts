@@ -8,7 +8,6 @@ import { ServiceProviderProfilePageRoutingModule } from './service-provider-prof
 
 import { ServiceProviderProfilePage } from './service-provider-profile.page';
 import { Routes, RouterModule } from '@angular/router';
-
 @NgModule({
   imports: [
     CommonModule,

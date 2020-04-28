@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: CustomerProfilePage
+  },
+  {
+    path: 'inbox',
+    loadChildren: () => import('./inbox/inbox.module').then( m => m.InboxPageModule)
   }
 ];
 

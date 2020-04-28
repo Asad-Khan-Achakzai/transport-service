@@ -17,6 +17,7 @@ export class Routes {
 })
 
 export class ServiceProvidersService {
+  serviceProviderNameInbox:string;
   services: Routes[];
   observable: any;
   serviceProviderInfo: any;
@@ -106,4 +107,13 @@ this.oldServiceProviderInfo = info;
       })
     };
   }
+  //name for the Service provider Inbox
+  serviceProviderNameForInbox(name){
+    this.serviceProviderNameInbox = name;
+    console.log('serviceProviderNameForInbox',this.serviceProviderNameInbox);
+      }
+      getServiceProviderName(){
+        console.log('getServiceProviderName',this.serviceProviderNameInbox);
+        return this.serviceProviderNameInbox;
+          }
 }

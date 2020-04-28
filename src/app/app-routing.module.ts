@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { IsLoginGuard } from './sdk/custom/guards/islogin.guard';
 import { RedirectLoginGuard } from './sdk/custom/guards/redirectlogin.guard';
+import { ProviderRedirectLoginGuard } from './sdk/custom/guards/providerRredirectlogin.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'service-provider-signup',
+    canActivate: [ProviderRedirectLoginGuard],
     loadChildren: () => import('./service-provider-signup/service-provider-signup.module').then(m => m.ServiceProviderSignupPageModule)
   },
   {
@@ -22,6 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'service-provider-profile',
+    canActivate: [IsLoginGuard],
     loadChildren: () => import('./service-provider-profile/service-provider-profile.module').then(m => m.ServiceProviderProfilePageModule)
   },
 
@@ -38,6 +41,10 @@ const routes: Routes = [
           .then(m => m.ProvidersProfilePageModule)
       }
     ]
+  },
+  {
+    path: 'chat-room',
+    loadChildren: () => import('./chat-room/chat-room.module').then( m => m.ChatRoomPageModule)
   }
 ];
 

@@ -1,13 +1,18 @@
 <ion-content>
-  <ion-card>
-    <ion-card-content>
-      
-      <ion-searchbar
-      [(ngModel)]="searchTerm"
-      (ionChange)="setFilteredItems()"
-    ></ion-searchbar>
-    </ion-card-content>
-  </ion-card>
+  <ion-header translucent no-border>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/customer-profile"></ion-back-button>
+      </ion-buttons>
+      <ion-title>
+          <ion-searchbar
+          [(ngModel)]="searchTerm"
+          (ionChange)="setFilteredItems()"
+        ></ion-searchbar>
+    </ion-title>
+    </ion-toolbar>
+  </ion-header>  
+  
   <ion-list>
     <ion-list-header>
       Recent Conversations

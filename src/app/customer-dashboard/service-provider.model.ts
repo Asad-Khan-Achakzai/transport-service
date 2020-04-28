@@ -1,3 +1,5 @@
+import { Routes } from '../sdk/custom/service-providers.service';
+
 export interface serviceProvider {
     _id: string;
     username: string;
@@ -7,7 +9,7 @@ export interface serviceProvider {
     phone: string;
     cnic: string;
     citiesArray: string[];
-    servicesArray: string[];
+    servicesArray: Routes[];
     companyName: string;
     officeLocation: string;
   }

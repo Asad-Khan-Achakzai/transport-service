@@ -72,6 +72,7 @@ export class HomePage {
       this.serviceProvidersService.serviceProviderLogin(loginData).subscribe(
         data => {
           console.log('got response from server', data);
+          this.authService.saveTokenToStorage(data.token);
           this.router.navigateByUrl('/service-provider-profile');
         },
         async error => {

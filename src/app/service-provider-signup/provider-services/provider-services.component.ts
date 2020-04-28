@@ -25,6 +25,7 @@ loading = false;
   routesCopy:[];
   from:string;
   buttonDisabled = true;
+  firstIndexOfArrayDeleted = false;
   //routes: Routes;
   routesArray: Routes[];
 cities = ['quetta','peshawer'];
@@ -53,16 +54,24 @@ cities = ['quetta','peshawer'];
   //entering to the list
 
   enterToTheList(){
-    //console.log(this.timingValue);
+    //deleting first index
+    if(!this.firstIndexOfArrayDeleted){
+      this.routesArray.splice(0,1);
+      this.firstIndexOfArrayDeleted = true;
+    }
   //  pushing routes to the array
     this.routesArray.push({timing: this.timingValue,totalSeats: this.seatValue,availableSeats:this.seatValue,departure: this.departureValue,destination:this.destinationValue});
-    this.routesArray.splice(0,1);
+    
+      
     console.log(this.routesArray);
     this.Form.value['routes'].push({Departure: this.departureValue , Destination : this.destinationValue});
     this.routesCopy = this.Form.controls['routes'].value;
+
     this.departureValue = '';
     this.destinationValue = '';
     this.buttonDisabled = true;
+    console.log('RoutesCopy  = ',this.routesCopy);
+
   }
   delete(id: number): void{
     this.routesCopy.splice(id, 1);  }

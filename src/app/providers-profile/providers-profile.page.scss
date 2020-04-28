@@ -50,19 +50,30 @@ ion-chip {
     overflow: hidden;
 
     .user-meta {
-        padding-top: 40px;
+        padding-top: 10px;
 
         .playername {
+            position: absolute;
             font-size: 24px;
             font-weight: 600;
             color: #303940;
-        }
+            width: 50%;
+                   }
 
-        .country {
-            font-size: 90%;
-            color: #949ea6;
-            text-transform: uppercase;
-            margin: 0 auto;
-        }
     }
 }
+
+.ranking{
+    font-weight: 600;
+    color: #303940;
+    width: 50%;
+    margin-left: 60%;
+}
+.slide{
+    height: 200px;
+}
+
+ion-slides{
+    overflow-y: scroll;
+  }
+ 
