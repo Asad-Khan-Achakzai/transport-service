@@ -12,6 +12,10 @@ export class CustomersService {
   customerInfo:any;
   serviceProviderInfo:any;
   customerName:string;
+  logedInCustomerId:string;
+  prividerIdOfRoute:string;
+  routeIdOfRoute:string;
+  routeTiming:string;
   constructor(private authService: AuthService,private http: HttpClient) { }
   
   public userRegister(credentials: object): Observable<any> {
@@ -38,7 +42,15 @@ export class CustomersService {
       headers: new HttpHeaders().set('Authorization', token)
     });
   }
-  
+  putprividerIdOfRoute(id){
+    this.prividerIdOfRoute = id;
+  }
+  putrouteIdOfRoute(id){
+    this.routeIdOfRoute = id;
+  }
+  putrouteTiming(time){
+    this.routeTiming = time;
+  }
 //   public serviceProviderLogin(credentials: object): Observable<any> {
 
 //     // this url will be http://localhost:3000/providers/login

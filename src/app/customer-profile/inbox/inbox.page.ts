@@ -15,7 +15,17 @@ export class InboxPage implements OnInit {
   chatData;
   chats;
   chatt:chat[];
-  constructor(private chatService: ChatServiceService,private router :Router,private socket: SocketIo, private customerService: CustomersService) { }
+  unreadMessages:chat[];
+  countArr:chatCount[];
+  constructor(private chatService: ChatServiceService,private router :Router,private socket: SocketIo, private customerService: CustomersService) { 
+    this.getNewMessage().subscribe(message => {
+      if (this.customerService.logedInCustomerId === message['recieverId'] || this.customerService.logedInCustomerId === message['senderId']) {
+        this.chats.push(message);
+        this.filterArray(this.chats);
+      }
+
+    });
+  }
 
   ngOnInit() {
     this.getMessages().subscribe(message => {
@@ -27,20 +37,40 @@ export class InboxPage implements OnInit {
   //filtering array to have each sender only once;
 filterArray(chats){
   this.chatt = chats.slice();
-  for(let i =0;i<this.chatt.length;i++ ){
-    let sender = this.chatt[i].name;
-    for(let j = i;j<this.chatt.length;j++){
-      if(sender === this.chatt[j].name){
-        this.chatt.splice(j,1);
-      }
-    }
-  }
-  this.chatData = this.chatt;
+  this.unreadMessages = this.chatt.filter(item => item.status == 'unread');
+ const result = [...this.unreadMessages.reduce( (mp, o) => {
+  if (!mp.has(o.name)) mp.set(o.name, { ...o, count: 0 });
+  mp.get(o.name).count++;
+  return mp;
+}, new Map).values()];
+this.countArr = result.slice();;
+for(let i =0;i<this.countArr.length;i++){
+  console.log('result =',this.countArr[i].count);  
+}
+console.log('countArr = ',this.countArr);
+  const uniqByProp = prop => arr =>
+  Object.values(
+    arr.reduce(
+      (acc, item) => (
+        item && item[prop] && (acc[item[prop]] = item), acc
+      ), // using object mutation (faster)
+      {}
+    )
+  );
+
+// usage (same as above):
+
+const uniqueById = uniqByProp("senderId");
+
+const unifiedArray = uniqueById(chats);
+  this.chatData = unifiedArray;
   console.log('filtered array',this.chatData);
  }
  
  getMessages() {
-  this.socket.emit('set-recieverForCustomerInbox',this.customerService.customerName);
+  // this.socket.emit('set-recieverForCustomerInbox',this.customerService.customerName);
+  this.socket.emit('set-recieverForCustomerInbox',this.customerService.logedInCustomerId);
+
   // Handle Output
  let observable = new Observable(observer => {
   this.socket.on('customerInboxData', (data) => {
@@ -49,11 +79,22 @@ filterArray(chats){
  })
  return observable;
  }
+ 
+ getNewMessage() {
+  let observable = new Observable(observer => {
+    this.socket.on('message', (data) => {
+      console.log('messages recieved = ',data);
+      observer.next(data);
+    });
+  })
+  return observable;
+}
+
 
  goforChat(chat){
   console.log('in goFOrChat');
-  this.chatService.setSenderOfCustomer(chat.name);
-
+  this.chatService.setSenderOfCustomer(chat.senderId);
+this.chatService.senderOfCustomer = chat.name;
 this.chatService.setCustomerFrom('fromProfile');
 this.router.navigateByUrl('/chat-room');  
 }
@@ -67,9 +108,24 @@ ionViewDidEnter() {
    });  }
 }
 interface chat{
+  msgId:string,
+  senderId:String,
   name: String,
-  msg: String,
+  recieverId:String,
   reciever: String,
+  msg: String,
   status: String,
   created:Time
   }
+  interface chatCount{
+    
+    count:number,
+    msgId:string,
+    senderId:String,
+    name: String,
+    recieverId:String,
+    reciever: String,
+    msg: String,
+    status: String,
+    created:Time
+    }

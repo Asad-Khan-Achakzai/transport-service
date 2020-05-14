@@ -18,11 +18,13 @@ export class Routes {
 
 export class ServiceProvidersService {
   serviceProviderNameInbox:string;
+  serviceProviderIdInbox:string;
   services: Routes[];
   observable: any;
   serviceProviderInfo: any;
   logedInServiceProvider:serviceProvider;
   routes: Routes[];
+
   oldServiceProviderInfo: serviceProvider[];
   constructor(private http: HttpClient) {
     this.routes = [new Routes()];
@@ -112,6 +114,11 @@ this.oldServiceProviderInfo = info;
     this.serviceProviderNameInbox = name;
     console.log('serviceProviderNameForInbox',this.serviceProviderNameInbox);
       }
+      setServiceProviderIdForInbox(id){
+        this.serviceProviderIdInbox = id;
+          }
+
+
       getServiceProviderName(){
         console.log('getServiceProviderName',this.serviceProviderNameInbox);
         return this.serviceProviderNameInbox;

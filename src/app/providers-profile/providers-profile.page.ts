@@ -26,6 +26,7 @@ export class ProvidersProfilePage implements OnInit {
   routes = [];
   routesArr: Routes[];
   segment = 0;  
+  providerID;
 @ViewChild('slides', { static: true }) slider: IonSlides;  
   constructor(private chatService: ChatServiceService,private socket: SocketIo,private customerService:CustomersService,private activatedRoute: ActivatedRoute, private router: Router,private serviceProvidersService: ServiceProvidersService) {
     this.routesArr = [new Routes];
@@ -36,9 +37,11 @@ export class ProvidersProfilePage implements OnInit {
       if(!paramMap.has('providerID')){
         return;
       }
-      const providerID =  paramMap.get('providerID');
-      this.serviceProviderInfo = this.serviceProvidersService.getSingleProvider(providerID);
+      
+      this.providerID =  paramMap.get('providerID');
+      this.serviceProviderInfo = this.serviceProvidersService.getSingleProvider(this.providerID);
       //console.log("from profile",this.provider);
+      console.log('object = ',this.serviceProviderInfo)
       this.email = this.serviceProviderInfo.email;
       this.userName = this.serviceProviderInfo.username;
       this.phone = this.serviceProviderInfo.phone;
@@ -68,12 +71,19 @@ export class ProvidersProfilePage implements OnInit {
   }
   openChatRoom(){
     //this.socket.connect();
-    this.chatService.setproviderName(this.userName);
+    this.chatService.setproviderName(this.userName,this.serviceProviderInfo._id);
     this.chatService.setCustomerFrom('fromProvidersProfile');
     // this.socket.emit('set-nickname',this.customerService.customerName);
     // this.socket.emit('set-reciever', this.userName);
     // console.log(this.userName);
     // this.socket.emit('set-type','customer');
     this.router.navigateByUrl('/chat-room');
+  }
+  goToBooking(route){
+    console.log('route id = ',route.id);
+    this.customerService.putrouteIdOfRoute(route.id);
+    this.customerService.putprividerIdOfRoute(this.providerID);
+    this.customerService.putrouteTiming(route.timing);
+    this.router.navigateByUrl('providers-profile/seat-booking');
   }
 }

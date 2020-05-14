@@ -53,7 +53,16 @@
     color: var(--background);
     margin-left: 8px;
   }
-  
+  ion-chip {
+    --background: #9dc912;
+    --color: #fff;
+}
+.count{
+  right: auto;
+}
+.bold{
+  font-weight: bold;
+}
   .timeEnd {
     display: flex;
     justify-content: flex-end;

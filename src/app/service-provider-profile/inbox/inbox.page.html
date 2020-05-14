@@ -10,7 +10,7 @@
 <ion-content>
   <ion-list class="ion-no-padding">
 
-    <ion-item *ngFor="let chat of chatData" (click)="goforChat(chat)">
+    <ion-item *ngFor="let chat of chatData; let i=index"   (click)="goforChat(chat)">
       <ion-avatar slot="start">
         <ion-img class="user-img" src="../../assets/player104.png"></ion-img>
         <!-- <div class="online" *ngIf="chat.status == 'online'">
@@ -18,22 +18,31 @@
         <div class="ofline" *ngIf="chat.status == 'ofline'">
         </div> -->
         <div class="online">
+
         </div>
       </ion-avatar>
       <ion-label>
         <div class="withcount">
           <div class="nameAvatar">
-            <h2>{{chat.name}}
+            <h2>{{chat.name}} 
             </h2>
-            <ion-avatar class="chatCount" *ngIf="2">4</ion-avatar>
-
+            <!-- <ion-avatar class="chatCount" ></ion-avatar> -->
+         
           </div>
 
           <div class="timeEnd">
-            <ion-text slot="end">{{chat.time}}</ion-text>
+            <ion-text slot="end">{{chat.created | date:'dd.MM hh:MM'}}</ion-text>
           </div>
         </div>
-        <p class="widthHalf">{{chat.msg}}</p>
+        <p class="widthHalf" [ngClass]="{'bold': chat.status=='unread'}">{{chat.msg}}
+          
+        </p>
+        
+        <div *ngFor= "let item of countArr" >
+            <ion-chip slot="end" *ngIf=" chat.senderId === item.senderId ">
+            <ion-label>{{item.count}}</ion-label>
+          </ion-chip>
+        </div>
       </ion-label>
     </ion-item>
   </ion-list>

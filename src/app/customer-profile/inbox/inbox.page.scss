@@ -63,6 +63,9 @@
     width: 70%;
     font-size: 12px;
   }
+  .bold{
+    font-weight: bold;
+  }
   .nameAvatar {
     display: flex;
     /* justify-content: center; */
@@ -104,7 +107,10 @@
     height: 10px;
     border-radius: 50%;
   }
-  
+  ion-chip {
+    --background: #9dc912;
+    --color: #fff;
+}
   .user-img {
     //position: absolute;
     object-fit: cover;

@@ -22,6 +22,11 @@ const routes: Routes = [
     canActivate: [IsLoginGuard],
     loadChildren: () => import('./customer-profile/customer-profile.module').then(m => m.CustomerProfilePageModule)
   },
+  // providers profile is added here becouse without this in the providers profile it will not navigate to seat-booking
+  {
+    path: 'providers-profile',
+    loadChildren: () => import('./providers-profile/providers-profile.module').then(m => m.ProvidersProfilePageModule)
+  },
   {
     path: 'service-provider-profile',
     canActivate: [IsLoginGuard],
@@ -36,9 +41,22 @@ const routes: Routes = [
         loadChildren: () => import('./customer-dashboard/customer-dashboard.module').then(m => m.CustomerDashboardPageModule)
       },
       {
-        path: ':providerID',
-        loadChildren: () => import('./providers-profile/providers-profile.module')
-          .then(m => m.ProvidersProfilePageModule)
+        path: 'search-route',
+        children: [{
+          path: '',
+          loadChildren: () => import('./customer-dashboard/search-route/search-route.module').then(m => m.SearchRoutePageModule)
+        },
+        {
+          path: ':providerID',
+          loadChildren: () => import('./providers-profile/providers-profile.module')
+            .then(m => m.ProvidersProfilePageModule)
+        }
+      ]
+
+      },
+      {
+        path: 'search-company',
+        loadChildren: () => import('./customer-dashboard/search-company/search-company.module').then(m => m.SearchCompanyPageModule)
       }
     ]
   },

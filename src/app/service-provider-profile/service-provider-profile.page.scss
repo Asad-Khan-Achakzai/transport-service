@@ -79,7 +79,37 @@ ion-chip {
     height: 200px;
 }
 
+
 ion-slides{
     overflow-y: scroll;
   }
- 
+  .user-img {
+    //position: absolute;
+    object-fit: cover;
+    border-radius: 45px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.36);
+  }
+//   .nameAvatar {
+//     display: flex;
+//     /* justify-content: center; */
+//     align-items: center;
+//     width: 50%;
+//     h2 {
+//       font-size: 0.94em;
+//       font-weight: bold;
+//     }
+//   }
+  .online {
+    position: absolute;
+    // right: 6px;
+    
+    left: 48px;
+    top: 58%;
+    width: 10px;
+    //background: #92ff92;
+    color: rgb(228, 10, 10);
+    height: 10px;
+    border-radius: 50%;
+  }
+  

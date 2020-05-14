@@ -100,7 +100,7 @@
               auto-hide="false"
               *ngFor="let item of routesArr; let i = index"
             >
-              <ion-item-sliding (ionSwipe)="delete(i)">
+              <ion-item-sliding (ionSwipe)="delete(i)" (click)="goToBooking(routesArr[i])">
                 <ion-item
                   >From {{item?.departure}} To {{item?.destination}} Timing
                   {{item?.timing}} Total seats {{item?.totalSeats}}</ion-item

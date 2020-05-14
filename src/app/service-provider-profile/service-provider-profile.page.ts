@@ -6,6 +6,8 @@ import {serviceProvider} from '../customer-dashboard/service-provider.model';
 import { IonSlides, NavController } from '@ionic/angular';
 import { SocketIo } from 'ng-io';
 import { ChatServiceService } from '../chat-room/chat-service.service';
+import { Time } from '@angular/common';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-service-provider-profile',
   templateUrl: './service-provider-profile.page.html',
@@ -14,6 +16,7 @@ import { ChatServiceService } from '../chat-room/chat-service.service';
 export class ServiceProviderProfilePage implements OnInit {
   serviceProviderInfo:serviceProvider;
   email:string;
+  id: string;
   userName: string;
   phone: string;
   cnic:string;
@@ -24,18 +27,64 @@ export class ServiceProviderProfilePage implements OnInit {
   cities = [];
   routes = [];
   routesArr: Routes[];
+  chatData;
+chats;
+chatt:chat[];
+unreadMessages:chat[];
+countArr;
+observableCompleted = false;
+msgs:number;
   @ViewChild('slides', { static: true }) slider: IonSlides;  
   segment = 0;  
   constructor(private chatService:ChatServiceService,private socket: SocketIo,public navCtrl: NavController,private router :Router,private serviceProvidersService: ServiceProvidersService) {
     this.routesArr = [new Routes];
-   }
+    this.getNewMessage().subscribe(message => {
+      if (this.serviceProvidersService.serviceProviderIdInbox === message['recieverId'] || this.serviceProvidersService.serviceProviderIdInbox === message['senderId']) {
+        this.chats.push(message);
+        this.filterArray(this.chats);
+      }
 
+    });
+   }
+   getNewMessage() {
+    let observable = new Observable(observer => {
+      this.socket.on('message', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+  }
   ngOnInit() {
     this.chatService.serviceProviderLogedIn();
    // this.serviceProvidersService.getSingleServiceProvider();
     this.getServiceProvider();
     //send username to inbox
+    if(this.observableCompleted){
+    this.getMessages().subscribe(message => {
+      this.chats = message;
+      console.log('inbox data = ',message)
+      this.filterArray(this.chats);
+     });}
   }
+  getMessages() {
+    this.socket.emit('set-recieverForInbox', this.id);
+    // Handle Output
+   let observable = new Observable(observer => {
+    this.socket.on('inboxData', (data) => {
+      observer.next(data);
+    });
+   })
+   
+   return observable;
+   }
+   //filtering array to have each sender only once;
+filterArray(chats){
+  this.chatt = chats.slice();
+ 
+  this.unreadMessages = this.chatt.filter(item => item.status == 'unread');
+  this.msgs = this.unreadMessages.length;
+  console.log('unread messages = ',this.unreadMessages.length);
+ }
   async segmentChanged(ev: any) {  
     await this.slider.slideTo(this.segment);  
   }  
@@ -61,6 +110,8 @@ export class ServiceProviderProfilePage implements OnInit {
         this.serviceProviderInfo = data.data;
         this.email = this.serviceProviderInfo.email;
         this.userName = this.serviceProviderInfo.username;
+        this.id = this.serviceProviderInfo._id;
+        this.serviceProvidersService.setServiceProviderIdForInbox(this.serviceProviderInfo._id);
         this.serviceProvidersService.serviceProviderNameForInbox(this.userName );
         this.phone = this.serviceProviderInfo.phone;
         this.cnic = this.serviceProviderInfo.cnic;
@@ -73,7 +124,16 @@ export class ServiceProviderProfilePage implements OnInit {
       },
       err => {
         console.log('err', err);
-      }
+      },
+      () => {console.log('#1 Complete')
+      this.getMessages().subscribe(message => {
+        this.chats = message;
+        console.log('inbox data = ',message)
+        this.filterArray(this.chats);
+       });
+    this.observableCompleted = true;
+    }
+
     );
   }
   delete(id: number): void{
@@ -91,7 +151,16 @@ export class ServiceProviderProfilePage implements OnInit {
     this.router.navigateByUrl('service-provider-profile/inbox');
   } 
 }
-
+interface chat{
+  msgId:string,
+  senderId:String,
+  name: String,
+  recieverId:String,
+  reciever: String,
+  msg: String,
+  status: String,
+  created:Time
+  }
 // interface serviceProvider {
 //   username: string;
 //   email: string;

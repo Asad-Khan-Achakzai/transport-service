@@ -66,3 +66,15 @@ ion-chip {
         }
     }
 }
+.online {
+    position: absolute;
+    // right: 6px;
+    
+    left: 48px;
+    top: 58%;
+    width: 10px;
+    //background: #92ff92;
+    color: rgb(228, 10, 10);
+    height: 10px;
+    border-radius: 50%;
+  }

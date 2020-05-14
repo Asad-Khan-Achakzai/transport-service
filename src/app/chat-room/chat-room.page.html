@@ -15,11 +15,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content #IonContent fullscreen="true">
+<ion-content #IonContent fullscreen="true"(click)="scrollTo()">
   <ion-list>
     <div *ngFor="let chat of messages; let i = index; ">
-      <ion-row *ngIf="chat.name === reciever">
+      <div *ngIf="(chat.status ==='unread' && chat.name === sender)?markStatus(chat):false ">
         
+      </div>  
+      <ion-row *ngIf="chat.name === reciever" >
+        <!-- <div *ngIf="chat.status ==='unread'">
+        {{markStatus(chat)}}</div>         -->
         <!-- <ion-col class="right" class="ion-no-padding" [ngClass]="{'clubbed':((msgList[i+1] && msgList[i+1].userId != chat.userId)|| !msgList[i+1])}">
            -->
            <ion-col class="right" class="ion-no-padding" class="clubbed">
@@ -53,6 +57,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="chat.name !== reciever">
+
         <!-- <ion-col class="left" class="ion-no-padding" [ngClass]="{'clubbed':((msgList[i+1] && msgList[i+1].userId != chat.userId)|| !msgList[i+1])}"> -->
           <ion-col class="left" class="ion-no-padding" class="clubbed" >
           <div class="imageAvatarLeft">

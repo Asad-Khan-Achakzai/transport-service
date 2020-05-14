@@ -10,12 +10,14 @@ import { Observable } from 'rxjs';
 export class ChatServiceService {
 user:string;
 senderOfServiceProvider:string;
+senderIdOfServiceProvider:string
 senderOfCustomer:string;
 customerFrom:string;
 //chatData: Array<String>;
 chat;
 //name of the provider that customers sends message to
 providerName:string;
+providerId:string;
   constructor(private serviceProvidersService: ServiceProvidersService, private socket: SocketIo) { }
   //these two functions tell which user is in the chatroom
   customerLogedIn(){
@@ -24,11 +26,13 @@ providerName:string;
   serviceProviderLogedIn(){
     this.user = 'serviceProvider';
   }
-  setSenderOfServiceProvider(sender){
+  setSenderOfServiceProvider(id,sender){
     this.senderOfServiceProvider = sender;
+    this.senderIdOfServiceProvider = id;
   }
   setSenderOfCustomer(sender){
-    this.senderOfCustomer = sender;
+   // this.senderOfCustomer = sender;
+   this.providerId = sender;
   }
   //sets whether custoemr is coming from own profile or provider's profile
   setCustomerFrom(from){
@@ -36,13 +40,14 @@ providerName:string;
   }
   emitEvent(chatData){
     console.log('event emite function called');
-    this.socket.ioSocket.emit('set-getChat',chatData);
+    this.socket.emit('set-getChat',chatData);
   
   }
 fillChatArray(arr){
   this.chat = arr;
 }
-  setproviderName(name){
+  setproviderName(name,id){
+    this.providerId = id;
 this.providerName = name;
   }
   
@@ -69,10 +74,14 @@ this.providerName = name;
     //     return observable;
       }
 }
-interface chat{
+interface chat {
+  msgId:string,
+  _id:string,
+  senderId: String,
   name: String,
-  msg: String,
+  recieverId: String,
   reciever: String,
+  msg: String,
   status: String,
-  created:Time
-  }
+  created: Time
+}
