@@ -3,7 +3,9 @@
     <ion-button slot="end" fill="clear">
       <ion-icon name="search" expand="icon-only"> </ion-icon>
     </ion-button>
-    <ion-title>Message</ion-title>
+    <div class ="title">
+    <ion-title>Inbox</ion-title>
+  </div>
   </ion-toolbar>
 </ion-header>
 
@@ -12,7 +14,7 @@
 
     <ion-item *ngFor="let chat of chatData; let i=index"   (click)="goforChat(chat)">
       <ion-avatar slot="start">
-        <ion-img class="user-img" src="../../assets/player104.png"></ion-img>
+        <ion-img class="user-img" [src]="chat.senderImage_url"></ion-img>
         <!-- <div class="online" *ngIf="chat.status == 'online'">
         </div>
         <div class="ofline" *ngIf="chat.status == 'ofline'">
@@ -32,17 +34,25 @@
 
           <div class="timeEnd">
             <ion-text slot="end">{{chat.created | date:'dd.MM hh:MM'}}</ion-text>
+
+            
           </div>
-        </div>
-        <p class="widthHalf" [ngClass]="{'bold': chat.status=='unread'}">{{chat.msg}}
           
-        </p>
-        
-        <div *ngFor= "let item of countArr" >
-            <ion-chip slot="end" *ngIf=" chat.senderId === item.senderId ">
-            <ion-label>{{item.count}}</ion-label>
-          </ion-chip>
+          
         </div>
+        <div>
+          <div class="withcount">
+           
+        <p class="widthHalf" [ngClass]="{'bold': chat.status=='unread'}">{{chat.msg}}</p>
+      
+        <div *ngFor= "let item of countArr"  id="chatCounter" class="timeEnd">
+          <ion-chip slot="end" *ngIf=" chat.senderId === item.senderId ">
+          <ion-label>{{item.count}}</ion-label>
+        </ion-chip>
+      </div> 
+      </div>
+              
+    </div>
       </ion-label>
     </ion-item>
   </ion-list>

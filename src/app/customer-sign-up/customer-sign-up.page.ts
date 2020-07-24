@@ -1,9 +1,13 @@
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup,FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CustomersService} from '../sdk/custom/customers.service';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { MixedService } from '../sdk/custom/mixed.service';
+import { ToastController } from '@ionic/angular';
+
+//import { SMS } from '@ionic-native/sms/ngx';
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
   const sliceSize = 1024;
@@ -33,12 +37,13 @@ export class CustomerSignUpPage implements OnInit {
   Form: FormGroup;
   loading = false;
   img1: any;
-  constructor( private router :Router,private formBuilder: FormBuilder,private customerService: CustomersService,private platform: Platform) { }
+  constructor(public toastController: ToastController, private router :Router,private formBuilder: FormBuilder,private customerService: CustomersService,private platform: Platform,private mixedService: MixedService, public alertController: AlertController) { }
 
   ngOnInit() {
     this.formInitializer();}
     
   onImagePicked(imageData: string | File) {
+    //console.log('imageData = ',imageData);
     let imageFile;
     if (typeof imageData === 'string') {
       try {
@@ -53,7 +58,9 @@ export class CustomerSignUpPage implements OnInit {
     } else {
       imageFile = imageData;
     }
+    console.log('image path = ',imageFile);
     this.Form.patchValue({ image: imageFile });
+    
   }
     formInitializer() {
       this.Form = this.formBuilder.group({
@@ -62,13 +69,15 @@ export class CustomerSignUpPage implements OnInit {
         email: [null, [Validators.required,Validators.email]],
         password: [null, [Validators.required]],
         phone: [null, [Validators.required,Validators.minLength(12)]],
-        image: new FormControl(null)
+        image: new FormControl(null),
+        imageUrl:[]
         //confirmPassword: [null, [Validators.required]],
       });
   }
   back(){
     this.router.navigateByUrl('/home');
   }
+ 
   fileChange(event){
     this.platform.is('pwa')
     {
@@ -82,27 +91,61 @@ export class CustomerSignUpPage implements OnInit {
     }
       let fileList: FileList = event.target.files;  
       let file: File = fileList[0];
-      console.log(file);
+      //console.log(file);
     }
     this.platform.is('hybrid')
     {
       
     }
   }
-  signUpButton(){
-    //this.loading = true;
+  async signUpButton(){
+    this.loading = true;
+    if(this.mixedService.imageURL)
+    {
+      this.Form.controls['imageUrl'].setValue(this.mixedService.imageURL);
+      //clear imageUrl otherwise it will cause problem in cutomerEdit
+      this.mixedService.imageURL=null;
+      console.log('form value = ',this.Form);
+      this.customerService.userRegister(this.Form.value).subscribe(
+        async data => {
+          
+          console.log('got response from server', data);
 
-    this.customerService.userRegister(this.Form.value).subscribe(
-      data => {
-        console.log('got response from server', data);
-        this.loading = false;
-       // this.router.navigateByUrl('/home');
-      },
-      error => {
-        this.loading = false;
-        console.log('error', error);
-      }
-    );
+          const toast = await this.toastController.create({
+            message: data.message,
+           // message: `${name} has been saved successfully.`,
+            duration: 3500
+          });
+          toast.present();
+          if(data.message === 'Signup successful'){
+            this.router.navigateByUrl('/home');
+          }
+
+          this.loading = false;
+         // this.router.navigateByUrl('/home');
+        },
+        async error => {
+          this.loading = false;
+          const alert = await this.alertController.create({
+            header: 'Alert',
+            //subHeader: 'Subtitle',
+            message: error.error.message,
+            buttons: ['OK']
+          });
+          alert.present();
+        }
+      );
+     }
+    else{
+      const alert = await this.alertController.create({
+        header: 'Alert',
+        //subHeader: 'Subtitle',
+        message: 'please select picture ',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+    
   }
 search(){
   console.log("button clicker");

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ServiceProviderProfilePage } from './service-provider-profile.page';
+import { ProviderRedirectLoginGuard } from '../sdk/custom/guards/providerRredirectlogin.guard';
 const routes: Routes = [
   {
     path: '',
@@ -10,6 +11,15 @@ const routes: Routes = [
   {
     path: 'inbox',
     loadChildren: () => import('./inbox/inbox.module').then( m => m.InboxPageModule)
+  },
+  {
+    path: 'serviceprovider-dashboard',
+    loadChildren: () => import('./serviceprovider-dashboard/serviceprovider-dashboard.module').then( m => m.ServiceproviderDashboardPageModule)
+  },
+  {
+    path: 'service-provider-edit',
+    
+    loadChildren: () => import('./service-provider-edit/service-provider-edit.module').then( m => m.ServiceProviderEditPageModule)
   }
 ];
 // const routes: Routes = [

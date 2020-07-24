@@ -1,0 +1,91 @@
+<!-- 
+<ion-header translucent no-border>
+  <ion-toolbar>
+   
+    <ion-title>&nbsp;</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-toggle   >
+      <ion-menu-button   color="light" autoHide="false"></ion-menu-button>
+    </ion-menu-toggle>
+    </ion-buttons>
+   
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content fullscreen="true" slot="fixed" >
+    <div class="card">
+      <div class="header">
+        <div class="avatar">
+          <img *ngIf="image && image!='null'" [src]="image">
+          
+          <img *ngIf="!image||  image=='null' " src="../../assets/player104.png" alt="">
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="user-meta ion-text-center">
+          <h3 class="playername">{{userName}}
+          
+            <!-- <ion-chip (click)="openBookingCart()">
+              Booking
+            </ion-chip> -->
+          </h3>
+          <!-- <ion-button class="badge-button" (click)="openChatRoom()">
+            <ion-icon size="large" name="notifications-circle-outline">
+            </ion-icon>
+            <ion-badge [class.badge-one]="msgs < 10" [class.badge-two]="msgs >= 10" color="danger">{{ msgs }}</ion-badge>
+          </ion-button> -->
+  
+        </div>
+
+        <ion-button  expand="full"  shape="round" >
+          <ion-icon name="mail-outline" id ="icon"></ion-icon>{{email}}</ion-button>
+        <ion-button expand="full" shape="round" >
+          <ion-icon name="call-outline" id ="icon"  ></ion-icon>{{phone}}</ion-button>
+        <ion-button expand="full" shape="round" >
+          <!-- <ion-icon name="browsers-outline" id ="icon"></ion-icon> -->
+          <ion-icon name="reader-outline" id ="icon"></ion-icon>{{cnic}}</ion-button>
+
+      </div>
+    </div>
+</ion-content>
+
+
+
+
+
+
+
+
+
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/service-provider-profile/serviceprovider-dashboard/route-bookings"></ion-back-button>
+    </ion-buttons>
+    <ion-title>booking-details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-label>Name: {{customer?.username}}</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-label>Email: {{customer?.email}}</ion-label>
+
+    </ion-row>
+    <ion-row>
+<ion-label>Phone#: {{customer?.phone}}</ion-label>
+      
+    </ion-row>
+    <ion-label >Booked seats</ion-label>
+    <ion-row>
+      
+      <div *ngFor="let seat of bookedSeats" style="margin-right: 10px;">
+        <ion-col > <h6>{{seat}}</h6></ion-col>
+      </div>
+    </ion-row>
+  </ion-grid>
+
+</ion-content> -->

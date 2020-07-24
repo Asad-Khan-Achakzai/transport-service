@@ -6,7 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomersService } from '../sdk/custom/customers.service';
 import { ServiceProvidersService } from '../sdk/custom/service-providers.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController, MenuController } from '@ionic/angular';
 import { AuthService } from '../sdk/core/auth.service';
 
 @Component({
@@ -15,9 +15,13 @@ import { AuthService } from '../sdk/core/auth.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
+  loading = false;
   Form: FormGroup;
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, public alertController: AlertController, private customerService: CustomersService,private serviceProvidersService: ServiceProvidersService) { }
+  constructor(private menu: MenuController,public toastController: ToastController,private authService: AuthService, private router: Router, private formBuilder: FormBuilder, public alertController: AlertController, private customerService: CustomersService,private serviceProvidersService: ServiceProvidersService) {
+    this.menu.enable(false, 'first');
+    this.menu.enable(false, 'custom');
+    this.menu.enable(false, 'end');
+   }
   ngOnInit() {
     this.formInitializer();
   }
@@ -28,8 +32,28 @@ export class HomePage {
       slectedGender: [null, [Validators.required]]
     });
   }
+  // ionViewDidEnter() {
+  //   this.Form.controls['email'].setValue('');
+  //   this.Form.controls['password'].setValue('');
+  //   this.Form.controls['slectedGender'].setValue('');
+  
 
-  signUp() {
+  // }
+  ionViewWillEnter(){
+    this.menu.enable(false, 'first');
+    this.menu.enable(false, 'custom');
+    this.menu.enable(false, 'end');
+  }
+  async signUp() {
+    if(this.Form.value['slectedGender'] === null){
+      const alert = await this.alertController.create({
+        header: 'Alert',
+        //subHeader: 'Subtitle',
+        message: 'please select user type',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
     if (this.Form.value['slectedGender'] === "customer") {
       this.router.navigateByUrl('/customer-sign-up');
     }
@@ -45,23 +69,32 @@ export class HomePage {
     // if (this.Form.value['slectedGender'] === "customer") {
     //   this.router.navigateByUrl('/customer-profile');
     // }
+    this.loading = true;
     const loginData = this.Form.value;
     if (this.Form.value['slectedGender'] === "customer") {
       this.customerService.customerLogin(loginData).subscribe(
-        data => {
+        async data => {
+          this.customerService.saveCustomerId(data.id);
           console.log('got response from server', data);
           this.authService.saveTokenToStorage(data.token);
+         this.loading = false;
+         const toast = await this.toastController.create({
+          message: data.message,
+         // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+        toast.present();
           this.router.navigateByUrl('/customer-profile');
         },
         async error => {
           // this.loading = false;
-          const alert = await this.alertController.create({
-            header: 'Alert',
-            //subHeader: 'Subtitle',
+          const toast = await this.toastController.create({
             message: error.error.message,
-            buttons: ['OK']
+           // message: `${name} has been saved successfully.`,
+            duration: 3500
           });
-          alert.present();
+          toast.present();
+          this.loading = false;
           //this.books.addBook(this.nameText, this.authorText);
 
           console.log('error', error.error.message);
@@ -70,21 +103,35 @@ export class HomePage {
     else {
       console.log('loginData', loginData);
       this.serviceProvidersService.serviceProviderLogin(loginData).subscribe(
-        data => {
+        async data => {
+          this.serviceProvidersService.saveServiceProviderId(data.id);
           console.log('got response from server', data);
           this.authService.saveTokenToStorage(data.token);
+          this.loading = false;
+         const toast = await this.toastController.create({
+          message: data.message,
+         // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+        toast.present();
           this.router.navigateByUrl('/service-provider-profile');
         },
         async error => {
           // this.loading = false;
-
-          const alert = await this.alertController.create({
-            header: 'Alert',
-            //subHeader: 'Subtitle',
+          const toast = await this.toastController.create({
             message: error.error.message,
-            buttons: ['OK']
+           // message: `${name} has been saved successfully.`,
+            duration: 3500
           });
-          alert.present();
+          toast.present();
+          this.loading = false;
+          // const alert = await this.alertController.create({
+          //   header: 'Alert',
+          //   //subHeader: 'Subtitle',
+          //   message: error.error.message,
+          //   buttons: ['OK']
+          // });
+          // alert.present();
 
 
 

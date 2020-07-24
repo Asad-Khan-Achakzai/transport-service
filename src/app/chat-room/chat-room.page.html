@@ -4,7 +4,7 @@
      <ion-back-button></ion-back-button>
    </ion-buttons>
     <ion-thumbnail slot="start">
-      <img src="../../assets/player104.png" >
+      <img [src]="senderImage_url" >
     </ion-thumbnail>
     <!-- <ion-title color="light">
       {{paramData.name}}
@@ -35,7 +35,7 @@
                 <div class="imageAvatarBottomIcon">
                   <ion-icon name="add" expand="icon-only" color="light"> </ion-icon>
                 </div>
-                <ion-img class="user-img" src="../../assets/player104.png"></ion-img>
+                <ion-img class="user-img" src="{{chat.senderImage_url}}"></ion-img>
               </ion-avatar>
             </div>
             <ion-label color="light">
@@ -80,7 +80,7 @@
                 <div class="imageAvatarBottomIcon">
                   <ion-icon name="add" expand="icon-only" color="light"> </ion-icon>
                 </div>
-                <ion-img class="user-img" src="../../assets/player104.png"></ion-img>
+                <ion-img class="user-img" src="{{chat.senderImage_url}}"></ion-img>
               </ion-avatar>
             </div>
           </div>
@@ -96,7 +96,7 @@
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)=" sendMessage()">
+    <ion-fab-button (click)=" sendMessage()" [disabled]="message=== '' ">
       <ion-icon name="send" expand="icon-only"></ion-icon>
     </ion-fab-button>
   </ion-fab>

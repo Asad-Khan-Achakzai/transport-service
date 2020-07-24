@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceProvidersService } from 'src/app/sdk/custom/service-providers.service';
 import { serviceProvider } from '../service-provider.model';
+import { MenuController, ToastController } from '@ionic/angular';
+import { CustomersService } from 'src/app/sdk/custom/customers.service';
 
 @Component({
   selector: 'app-search-route',
@@ -17,9 +19,18 @@ export class SearchRoutePage implements OnInit {
   public searchTerm: string = "";
   public items: any;
   item: any;
+  loading = false;
+  skeletonlist = [1, 2, 3, 4, 5];
 
-  constructor(private serviceProvidersService: ServiceProvidersService) { }
 
+  constructor(public toastController: ToastController,private customerService:CustomersService,private menu: MenuController,private serviceProvidersService: ServiceProvidersService) { }
+
+  ionViewDidEnter() {
+   
+    this.menu.enable(true, 'first');
+    this.menu.enable(false, 'custom');
+    this.menu.enable(false, 'end');
+  }
   ngOnInit() {
     this.fillArray();
     // console.log('providers form dashboard = ',this.oldServiceProviderInfo);
@@ -30,20 +41,29 @@ export class SearchRoutePage implements OnInit {
   }
 
  
-
+  saveIdToStroage(id){
+    this.customerService.saveProviderIdForProviderProfile(id);
+  }
 
 
   fillArray() {
+    this.loading = true;
     this.serviceProvidersService.getAllServiceProvider().subscribe(
       data => {
-        //  console.log('got response from server', data);
+          console.log('got response from server', data);
+          this.loading = false;
         this.oldServiceProviderInfo = data.data.docs;
         this.serviceProviderInfo = this.oldServiceProviderInfo;
         this.serviceProvidersService.filloldServiceProviderInfo(this.serviceProviderInfo);
       },
       async error => {
-        // this.loading = false;
-        console.log('error');
+         this.loading = false;
+        const toast = await this.toastController.create({
+          message: error.error.message,
+         // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+        toast.present();
       });
     //   this.oldServiceProviderInfo = await this.serviceProvidersService.getAllProviders();
     // console.log('executed');

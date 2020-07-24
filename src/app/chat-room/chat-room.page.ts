@@ -24,24 +24,47 @@ export class ChatRoomPage implements OnInit {
   nickname = '';
   message = '';
   sender;
+  senderImage_url:string;
   reciever;
+  logedInUser;
+  serviceProviderId;
+  senderIdOfServiceProvider;
+  serviceProviderName;
+  serviceProviderImageURL;
+  //customer data
+  customerFrom;
+  customerId;
+  providerId;
+  senderOfCustomer;
+  providerimg;
+  customerImg;
   private navParams = new NavParams
   constructor(private cdRef : ChangeDetectorRef,private chatService: ChatServiceService, private serviceProvidersService: ServiceProvidersService, private customerService: CustomersService, private navCtrl: NavController, private socket: SocketIo, private toastCtrl: ToastController) {
     //this function will always listen for the latest message 
     console.log('constructor called');
+    
 
-    if (this.chatService.user === 'customer') {
+  this.newMsgs();
+    
+
+
+
+  }
+  async newMsgs(){
+    await this.setUser();
+    if (this.logedInUser === 'customer') {
       this.getNewMessage().subscribe(message => {
         //to have the chat between them any of them can be either sender or reciever
-        if ((this.customerService.logedInCustomerId === message['recieverId'] || this.customerService.logedInCustomerId === message['senderId']) &&(this.chatService.providerId=== message['senderId']||this.chatService.providerId=== message['recieverId'])) {
+        if ((this.customerId === message['recieverId'] || this.customerId === message['senderId']) &&(this.providerId=== message['senderId']||this.providerId=== message['recieverId'])) {
           this.messages.push(message);
         }
 
       });
     }
-    else if (this.chatService.user === 'serviceProvider') {
+    else if (this.logedInUser === 'serviceProvider') {
+      console.log('here');
       this.getNewMessage().subscribe(message => {
-        if ((this.serviceProvidersService.serviceProviderIdInbox === message['recieverId'] || this.serviceProvidersService.serviceProviderIdInbox === message['senderId'])&& (this.chatService.senderIdOfServiceProvider===message['senderId']|| this.chatService.senderIdOfServiceProvider=== message['recieverId'])) {
+        if ((this.serviceProviderId === message['recieverId'] || this.serviceProviderId === message['senderId'])&& (this.senderIdOfServiceProvider ===message['senderId']|| this.senderIdOfServiceProvider=== message['recieverId'])) {
          console.log('message recieved = ',message);
          
           this.messages.push(message);
@@ -51,7 +74,7 @@ export class ChatRoomPage implements OnInit {
       });
     }
     else
-      console.log('no user loggedin in chat room');
+      console.log('no user ');
 
 
     this.getUsers().subscribe(data => {
@@ -62,6 +85,11 @@ export class ChatRoomPage implements OnInit {
         this.showToast('User joined: ' + user);
       }
     });
+  }
+  async setUser()
+  {
+    this.logedInUser = await this.chatService.getLogedInUser();
+    console.log('user =',this.logedInUser);
   }
   scrollToBottom(): void {
     this.IonContent.scrollToBottom(300);
@@ -74,26 +102,53 @@ export class ChatRoomPage implements OnInit {
   scrollToBottomOnInit() {
    // this.content.scrollToBottom(300);
   }
-  ngOnInit() {
+  async ngOnInit() {
+
+    this.logedInUser = await this.chatService.getLogedInUser();
+
+    console.log('logedin user in chatroom = ',await this.chatService.getLogedInUser());
     this.scrollToBottom();
     
-    if (this.chatService.user === 'customer') {
+    if (this.logedInUser === 'customer') {
+
+      this.customerFrom = await this.chatService.getCustomerFrom();
+      this.customerId = await this.customerService.getCustomerId();
+      this.customerImg =await this.customerService.getCustomerImg();
+      this.senderOfCustomer = await this.chatService.getsenderOfCustomer();
+      this.providerId = await this.chatService.getproviderId();
+      this.providerimg = await this.chatService.getproviderImage();
+      this.reciever = await this.customerService.getCustomerName();
+      console.log('customer From =',this.customerFrom);
+      console.log('customerId=',this.customerId);
+      console.log('customerImg =',this.customerImg);
+      console.log('senderOfCustomer =',this.senderOfCustomer);
+      console.log('providerId=',this.providerId);
+      console.log('providerimg =',this.providerimg);
+      console.log('reciever =',this.reciever);
+      this.nickname = this.reciever;
       console.log('customer in chat room');
-      if (this.chatService.customerFrom === 'fromProfile') {
+      if (this.customerFrom  === 'fromProfile') {
         //        this.chatData = [this.customerService.customerName,this.chatService.senderOfCustomer];
-        this.chatData = [this.customerService.logedInCustomerId, this.chatService.providerId];
-        console.log('this.ChatData = ', this.chatData);
+       // this.chatData = [this.customerService.logedInCustomerId, this.chatService.providerId];
+       this.chatData = [this.customerId, this.providerId]; 
+       console.log('this.ChatData = ', this.chatData);
 
       }
       else {
         // this.chatData = [this.customerService.customerName,this.chatService.providerName];
-        this.chatData = [this.customerService.logedInCustomerId, this.chatService.providerId];
+        // this.chatData = [this.customerService.logedInCustomerId, this.chatService.providerId];
+        this.chatData = [this.customerId, this.providerId];
         console.log('this.ChatData = ', this.chatData);
       }
-      this.reciever = this.customerService.customerName;
-      this.sender = this.chatService.senderOfCustomer;
+      
+      //console.log('reciver = ',this.customerService.customerName);
+    //  this.sender = this.chatService.senderOfCustomer;
+    this.sender = this.senderOfCustomer;  
+   // console.log('sender image = ',this.chatService.providerImage);
+     // this.senderImage_url  = this.chatService.providerImage;
+     this.senderImage_url = this.providerimg;
       this.chatService.emitEvent(this.chatData);
-      this.nickname = this.customerService.customerName;
+     // this.nickname = await this.customerService.getCustomerName();
       this.chatService.getMessages().subscribe(message => {
         this.chat = message;
         console.log('chatData = ', this.chat);
@@ -102,14 +157,22 @@ export class ChatRoomPage implements OnInit {
         console.log('messages = ', this.messages);
       });
     }
-    else if (this.chatService.user === 'serviceProvider') {
+    else if (this.logedInUser === 'serviceProvider') {
       console.log('service provder in chat room');
-      //      this.chatData = [this.serviceProvidersService.getServiceProviderName(),this.chatService.senderOfServiceProvider];
-      this.chatData = [this.serviceProvidersService.serviceProviderIdInbox, this.chatService.senderIdOfServiceProvider];
-      this.reciever = this.serviceProvidersService.getServiceProviderName();
-      this.sender = this.chatService.senderOfServiceProvider;
+      this.serviceProviderId = await this.serviceProvidersService.getServiceProviderId();
+this.senderIdOfServiceProvider = await this.chatService.getsenderIdOfServiceProvider();
+this.serviceProviderName= await this.serviceProvidersService.getServiceProviderName();
+this.serviceProviderImageURL = await this.serviceProvidersService.getServiceProviderImg();
+//      this.chatData = [this.serviceProvidersService.serviceProviderIdInbox, this.chatService.senderIdOfServiceProvider];
+this.chatData = [this.serviceProviderId, this.senderIdOfServiceProvider];
+      this.reciever = await this.serviceProvidersService.getServiceProviderName();
+
+      // this.sender = this.chatService.senderOfServiceProvider;
+      // this.senderImage_url = this.chatService.senderImage_urlOfServiceProvider;
+      this.sender = await this.chatService.getsenderOfServiceProvider();
+      this.senderImage_url = await this.chatService.getsenderImage_urlOfServiceProvider();
       this.chatService.emitEvent(this.chatData);
-      this.nickname = this.serviceProvidersService.getServiceProviderName();
+      this.nickname = await this.serviceProvidersService.getServiceProviderName();
 
       this.chatService.getMessages().subscribe(message => {
         console.log('data returned by the observable');
@@ -130,8 +193,8 @@ export class ChatRoomPage implements OnInit {
   //this is used when the status is updated and system should detect the changes otherwise it will cause error
   //of change detected
   ngAfterViewChecked() {
-    this.cdRef.detectChanges();
-    this.scrollToBottom();
+    // this.cdRef.detectChanges();
+    // this.scrollToBottom();
   }
 //to mark the status of messages as read 
 markStatus(msg:chat){
@@ -145,18 +208,22 @@ markStatus(msg:chat){
 
 
   sendMessage() {
-    if (this.chatService.user === 'customer') {
+    if (this.logedInUser === 'customer') {
       console.log('customer in chat room');
-      this.socket.emit('add-message', { text: this.message, sender: this.customerService.customerName, senderId: this.customerService.logedInCustomerId, reciever: this.chatService.providerName, recieverId: this.chatService.providerId, status: 'unread' });
+      
+      // this.socket.emit('add-message', { text: this.message, sender: this.customerService.customerName, senderId: this.customerService.logedInCustomerId, reciever: this.chatService.providerName, recieverId: this.chatService.providerId, status: 'unread',reciverImage_url: this.chatService.providerImage,senderImage_url: this.customerService.logedInCustomerImage_url });
+      this.socket.emit('add-message', { text: this.message, sender: this.reciever, senderId: this.customerId, reciever: this.senderOfCustomer, recieverId: this.providerId, status: 'unread',reciverImage_url: this.providerimg,senderImage_url: this.customerImg});
       this.message = '';
     }
-    else if (this.chatService.user === 'serviceProvider') {
-      this.socket.emit('add-message', { text: this.message, sender: this.serviceProvidersService.getServiceProviderName(),senderId:this.serviceProvidersService.serviceProviderIdInbox, reciever: this.chatService.senderOfServiceProvider, recieverId: this.chatService.senderIdOfServiceProvider, status: 'unread' });
+    else if (this.logedInUser === 'serviceProvider') {
+      console.log('senderImage_url',this.serviceProviderImageURL);
+      // this.socket.emit('add-message', { text: this.message, sender: this.serviceProvidersService.getServiceProviderName(),senderId:this.serviceProvidersService.serviceProviderIdInbox, reciever: this.chatService.senderOfServiceProvider, recieverId: this.chatService.senderIdOfServiceProvider, status: 'unread',reciverImage_url:this.chatService.senderImage_urlOfServiceProvider,senderImage_url: this.serviceProvidersService.serviceProviderImage_url });
+      this.socket.emit('add-message', { text: this.message, sender: this.serviceProviderName,senderId:this.serviceProviderId, reciever: this.sender, recieverId: this.senderIdOfServiceProvider, status: 'unread',reciverImage_url:this.senderImage_url,senderImage_url: this.serviceProviderImageURL });
       this.message = '';
     }
     else
       console.log('no user loggedin in chat room');
-
+this.scrollToBottom();
   }
 
   getNewMessage() {
@@ -192,21 +259,31 @@ markStatus(msg:chat){
   back() {
     // this.socket.disconnect();
   }
-  ionViewDidEnter() {
-    console.log('ioniviewDIdENter function called')
-    if (this.chatService.user === 'customer') {
+  async ionViewDidEnter() {
+    this.scrollToBottom();
+    this.logedInUser = await this.chatService.getLogedInUser();
+
+    if (this.logedInUser === 'customer') {
+      
+      this.customerFrom = await this.chatService.getCustomerFrom();
+      this.customerId = await this.customerService.getCustomerId();
+      this.customerImg =await this.customerService.getCustomerImg();
+      this.senderOfCustomer = await this.chatService.getsenderOfCustomer();
+      this.providerId = await this.chatService.getproviderId();
+      this.providerimg = await this.chatService.getproviderImage();
+      this.reciever = await this.customerService.getCustomerName();
       console.log('customer in chat room');
-      if (this.chatService.customerFrom === 'fromProfile') {
+      if (this.customerFrom === 'fromProfile') {
         //this.chatData = [this.customerService.customerName,this.chatService.senderOfCustomer];
-        this.chatData = [this.customerService.logedInCustomerId, this.chatService.providerId];
+        this.chatData = [this.customerId, this.providerId];
       }
       else {
         //          this.chatData = [this.customerService.customerName,this.chatService.providerName];
-        this.chatData = [this.customerService.logedInCustomerId, this.chatService.providerId];
+        this.chatData = [this.customerId, this.providerId];
 
       }
-      this.reciever = this.customerService.customerName;
-      this.sender = this.chatService.senderOfCustomer;
+      this.reciever = await this.customerService.getCustomerName();
+      this.sender = this.senderOfCustomer;
      // this.nickname = this.customerService.customerName;
       this.chatService.emitEvent(this.chatData);
       this.chatService.getMessages().subscribe(message => {
@@ -218,10 +295,16 @@ markStatus(msg:chat){
         console.log('messages = ', this.messages);
       });
     }
-    else if (this.chatService.user === 'serviceProvider') {
-      //this.messages = this.chatService.chat;
-      this.chatData = [this.serviceProvidersService.serviceProviderIdInbox, this.chatService.senderIdOfServiceProvider]; this.chatService.emitEvent(this.chatData);
-      this.nickname = this.serviceProvidersService.getServiceProviderName();
+    else if (this.logedInUser === 'serviceProvider') {
+
+       //this.chatData = [this.serviceProvidersService.serviceProviderIdInbox, this.chatService.senderIdOfServiceProvider]; 
+       this.serviceProviderId = await this.serviceProvidersService.getServiceProviderId();
+    this.senderIdOfServiceProvider = await this.chatService.getsenderIdOfServiceProvider();
+    this.serviceProviderName= await this.serviceProvidersService.getServiceProviderName();
+this.serviceProviderImageURL = await this.serviceProvidersService.getServiceProviderImg();
+       this.chatData = [this.serviceProviderId, this.senderIdOfServiceProvider];
+      this.chatService.emitEvent(this.chatData);
+      this.nickname = await this.serviceProvidersService.getServiceProviderName();
 
       this.chatService.getMessages().subscribe(message => {
         console.log('data returned by the observable');
@@ -245,5 +328,7 @@ interface chat {
   reciever: String,
   msg: String,
   status: String,
-  created: Time
+  created: Time,
+   reciverImage_url: String,
+  senderImage_url:String
 }

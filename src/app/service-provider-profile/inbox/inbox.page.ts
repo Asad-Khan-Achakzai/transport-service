@@ -28,9 +28,10 @@ countArr:chatCount[];
 
     });
   }
-
-  ngOnInit() {
-    this.serviceProviderName = this.serviceProvidersService.getServiceProviderName();
+ 
+  async ngOnInit() {
+    this.serviceProvidersService.serviceProviderIdInbox = await this.serviceProvidersService.getServiceProviderId(); 
+       //this.serviceProviderName = this.serviceProvidersService.getServiceProviderName();
 //this.getMessages();
 this.getMessages().subscribe(message => {
   this.chats = message;
@@ -136,15 +137,15 @@ getNewMessage() {
   return observable;
 }
 goforChat(chat){
-  console.log('in goFOrChat');
-  this.chatService.setSenderOfServiceProvider(chat.senderId,chat.name);
+  this.chatService.setSenderOfServiceProvider(chat.senderId,chat.name,chat.senderImage_url);
 
 
 this.router.navigateByUrl('/chat-room');  
 }
-ionViewDidEnter() {
-  this.serviceProviderName = this.serviceProvidersService.getServiceProviderName();;
+  async ionViewDidEnter() {
+  //this.serviceProviderName = this.serviceProvidersService.getServiceProviderName();;
   //this.getMessages();
+  this.serviceProvidersService.serviceProviderIdInbox = await this.serviceProvidersService.getServiceProviderId(); 
   this.getMessages().subscribe(message => {
     this.chats = message;
     console.log('ionViewDidEnter Data = ',message)
@@ -159,7 +160,9 @@ interface chat{
   reciever: String,
   msg: String,
   status: String,
-  created:Time
+  created:Time,
+  reciverImage_url: String,
+  senderImage_url:String
   }
   interface chatCount{
     count:number,
@@ -170,5 +173,7 @@ interface chat{
     reciever: String,
     msg: String,
     status: String,
-    created:Time
+    created:Time,
+    reciverImage_url: String,
+  senderImage_url:String
     }

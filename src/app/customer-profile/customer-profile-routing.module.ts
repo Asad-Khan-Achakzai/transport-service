@@ -11,6 +11,18 @@ const routes: Routes = [
   {
     path: 'inbox',
     loadChildren: () => import('./inbox/inbox.module').then( m => m.InboxPageModule)
+  },
+  {
+    path: 'booking-cart',
+    loadChildren: () => import('./booking-cart/booking-cart.module').then( m => m.BookingCartPageModule)
+  },
+  {
+    path: 'customer-edit',
+    loadChildren: () => import('./customer-edit/customer-edit.module').then( m => m.CustomerEditPageModule)
+  },
+  {
+    path: 'booking-edit',
+    loadChildren: () => import('./booking-edit/booking-edit.module').then( m => m.BookingEditPageModule)
   }
 ];
 

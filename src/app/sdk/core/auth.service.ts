@@ -7,7 +7,13 @@ import { Storage } from '@ionic/storage';
 })
 export class AuthService {
   constructor(private storage: Storage, private router: Router) {}
-
+public saveServiceProviderId(id:string){
+  this.storage.set('serviceProviderId',id);
+}
+public async getServiceProviderId(){
+  const id = await this.storage.get('serviceProviderId');
+  return id;
+}
   public saveTokenToStorage(token: string) {
     //save token to storage
     this.storage.set('token', token);

@@ -17,6 +17,7 @@ export class InboxPage implements OnInit {
   chatt:chat[];
   unreadMessages:chat[];
   countArr:chatCount[];
+  customerId;
   constructor(private chatService: ChatServiceService,private router :Router,private socket: SocketIo, private customerService: CustomersService) { 
     this.getNewMessage().subscribe(message => {
       if (this.customerService.logedInCustomerId === message['recieverId'] || this.customerService.logedInCustomerId === message['senderId']) {
@@ -27,17 +28,26 @@ export class InboxPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.getMessages().subscribe(message => {
+  async ngOnInit() {
+    
+    (await this.getMessages()).subscribe(message => {
       this.chats = message;
       console.log('inbox data = ',message)
       this.filterArray(this.chats);
      });
+       //after reload the image in side menu is lost so here i send again the picture
+    let img  = await this.customerService.getCustomerImg();
+    this.customerService.publishSomeData({
+      customerImg: img
+    })
   }
   //filtering array to have each sender only once;
 filterArray(chats){
+  //transfrer the copy of chats
   this.chatt = chats.slice();
+  //find unread messages
   this.unreadMessages = this.chatt.filter(item => item.status == 'unread');
+
  const result = [...this.unreadMessages.reduce( (mp, o) => {
   if (!mp.has(o.name)) mp.set(o.name, { ...o, count: 0 });
   mp.get(o.name).count++;
@@ -67,13 +77,14 @@ const unifiedArray = uniqueById(chats);
   console.log('filtered array',this.chatData);
  }
  
- getMessages() {
+ async getMessages() {
+this.customerId = await this.customerService.getCustomerId();
   // this.socket.emit('set-recieverForCustomerInbox',this.customerService.customerName);
-  this.socket.emit('set-recieverForCustomerInbox',this.customerService.logedInCustomerId);
+  this.socket.emit('set-recieverForInbox',this.customerId);
 
   // Handle Output
  let observable = new Observable(observer => {
-  this.socket.on('customerInboxData', (data) => {
+  this.socket.on('inboxData', (data) => {
     observer.next(data);
   });
  })
@@ -92,16 +103,19 @@ const unifiedArray = uniqueById(chats);
 
 
  goforChat(chat){
-  console.log('in goFOrChat');
-  this.chatService.setSenderOfCustomer(chat.senderId);
-this.chatService.senderOfCustomer = chat.name;
-this.chatService.setCustomerFrom('fromProfile');
+ 
+  this.chatService.setSenderOfCustomer(chat.name,chat.senderId,chat.senderImage_url,'fromProfile');
+// this.chatService.senderOfCustomer = chat.name;
+// this.chatService.providerImage = chat.senderImage_url;
+// this.chatService.setCustomerFrom('fromProfile');
 this.router.navigateByUrl('/chat-room');  
 }
-ionViewDidEnter() {
+  async ionViewDidEnter() {
 
   //this.getMessages();
-  this.getMessages().subscribe(message => {
+  (
+    //this.getMessages();
+    await this.getMessages()).subscribe(message => {
     this.chats = message;
     console.log('ionViewDidEnter Data = ',message)
     this.filterArray(this.chats);
@@ -115,7 +129,9 @@ interface chat{
   reciever: String,
   msg: String,
   status: String,
-  created:Time
+  created:Time,
+   reciverImage_url: String,
+  senderImage_url:String
   }
   interface chatCount{
     
@@ -127,5 +143,7 @@ interface chat{
     reciever: String,
     msg: String,
     status: String,
-    created:Time
+    created:Time,
+   reciverImage_url: String,
+  senderImage_url:String
     }

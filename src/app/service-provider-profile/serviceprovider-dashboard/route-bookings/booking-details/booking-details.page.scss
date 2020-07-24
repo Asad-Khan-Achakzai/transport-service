@@ -1,0 +1,104 @@
+ion-content {
+    --background: linear-gradient(45deg, #2ecc71, #2980b9, #8e44ad);
+
+   // --background: url(../../assets/bryan-goff-rjEoFD8l1vo-unsplash.jpg) no-repeat top center/cover fixed, #fff;
+  // --ion-background-color:#39393d;
+
+
+   color: slategray;
+   position: relative;
+   height: 100%;
+   width: 100%;
+
+   ion-button {
+       margin-top: 1em;
+       margin-bottom: 1em
+   }
+}
+
+#icon{
+   margin-right: 40%;
+}
+ion-toolbar {
+   --background: transparent;
+}
+
+ion-chip {
+   --background: #ffffff;
+   --color: rgb(0, 0, 0);
+}
+ion-button{
+   
+   --background: #ffffff;  
+   --color: rgb(0, 0, 0);
+   
+}
+
+.card {
+   margin: 0 auto;
+
+   .header {
+       height: 200px; // 20vh;
+
+       .avatar {
+           width: 160px; //40vw    
+           height: 160px;
+           position: relative;
+           margin: 0 auto;
+
+           img {
+               display: block;
+               border-radius: 50%;
+               position: absolute;
+               bottom: calc(-1*(80px + 4px)); // -42px;
+               border: 8px solid #000000;
+               background-color: #fff;
+           }
+       }
+   }
+}
+
+.card-body {
+      // background-image: url('../../assets/daniel-mayovskiy-m-nqyYbeI8Q-unsplash.jpg');
+  //background-color: #8f8888;
+   padding: 30px;
+   height: calc(100vh - (200px + 56px));
+   overflow: hidden;
+
+   .user-meta {
+       padding-top: 40px;
+
+       .playername {
+           font-size: 24px;
+           font-weight: 600;
+           color: #fcfcfc;
+       }
+
+       .country {
+           font-size: 90%;
+           color: #949ea6;
+           text-transform: uppercase;
+           margin: 0 auto;
+       }
+   }
+}
+.online {
+   position: absolute;
+   // right: 6px;
+   
+   left: 48px;
+   top: 58%;
+   width: 10px;
+   //background: #92ff92;
+   color: rgb(228, 10, 10);
+   height: 10px;
+   border-radius: 50%;
+ }
+ .badge-two {
+   position: absolute;
+   top: 0px;
+   right: -5px;
+   font-size: 0.6em;
+   --padding-start: 3px;
+   --padding-end: 3px;
+ }

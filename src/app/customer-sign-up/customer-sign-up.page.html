@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button [text]="'back'" (click)="back()"></ion-back-button>
+      <ion-back-button  (click)="back()" defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>customer Signup</ion-title>
+    <div class ="title">
+      <ion-title>Registration</ion-title>
+    </div>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -71,7 +73,8 @@
             <ion-input type ="tel"  formControlName="phone" appPhoneMask
             
             maxlength="12">
-            </ion-input>       
+            </ion-input>    
+             
           </ion-item>
 
           
@@ -100,8 +103,8 @@
               <ion-row justify-content: end>
                 <ion-col class="ion-text-center">
                   
-              <ion-button (click) = "signUpButton()" [disabled]="!Form.valid">
-                Sign Up
+              <ion-button (click) = "signUpButton()" [disabled]="!Form.valid ">
+                Sign Up &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
               </ion-button >
             </ion-col>
           </ion-row>

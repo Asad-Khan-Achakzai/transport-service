@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 //import { CustomerService } from 'src/sdk/custom/customer.service';
 import { ServiceProvidersService, Routes } from '../sdk/custom/service-providers.service';
 import {serviceProvider} from '../customer-dashboard/service-provider.model';
-import { IonSlides, NavController } from '@ionic/angular';
+import { IonSlides, NavController, MenuController } from '@ionic/angular';
 import { SocketIo } from 'ng-io';
 import { ChatServiceService } from '../chat-room/chat-service.service';
 import { Time } from '@angular/common';
 import { Observable } from 'rxjs';
+import { AuthService } from '../sdk/core/auth.service';
 @Component({
   selector: 'app-service-provider-profile',
   templateUrl: './service-provider-profile.page.html',
@@ -28,24 +29,38 @@ export class ServiceProviderProfilePage implements OnInit {
   routes = [];
   routesArr: Routes[];
   chatData;
+  image:string;
 chats;
 chatt:chat[];
 unreadMessages:chat[];
 countArr;
 observableCompleted = false;
 msgs:number;
+completed = false;
   @ViewChild('slides', { static: true }) slider: IonSlides;  
   segment = 0;  
-  constructor(private chatService:ChatServiceService,private socket: SocketIo,public navCtrl: NavController,private router :Router,private serviceProvidersService: ServiceProvidersService) {
+  constructor(private menu: MenuController,private chatService:ChatServiceService,private socket: SocketIo,public navCtrl: NavController,private router :Router,private serviceProvidersService: ServiceProvidersService,private authService: AuthService) {
     this.routesArr = [new Routes];
     this.getNewMessage().subscribe(message => {
-      if (this.serviceProvidersService.serviceProviderIdInbox === message['recieverId'] || this.serviceProvidersService.serviceProviderIdInbox === message['senderId']) {
+      if (this.serviceProvidersService.serviceProviderIdInbox === message['recieverId'] ) {
         this.chats.push(message);
         this.filterArray(this.chats);
       }
 
     });
    }
+   async getUsersList(event) { 
+    console.log('Pull Event Triggered!');  
+    let id = await this.serviceProvidersService.getServiceProviderId();
+    this.getServiceProvider(id);
+    if(this.completed){
+      event.target.complete();
+    }
+    // setTimeout(() => {
+    //   console.log('Async operation has ended');
+    //   event.target.complete();
+    // }, 2000);
+   } 
    getNewMessage() {
     let observable = new Observable(observer => {
       this.socket.on('message', (data) => {
@@ -54,10 +69,11 @@ msgs:number;
     })
     return observable;
   }
-  ngOnInit() {
+  async ngOnInit() {
     this.chatService.serviceProviderLogedIn();
    // this.serviceProvidersService.getSingleServiceProvider();
-    this.getServiceProvider();
+   let id = await this.serviceProvidersService.getServiceProviderId();
+    this.getServiceProvider(id);
     //send username to inbox
     if(this.observableCompleted){
     this.getMessages().subscribe(message => {
@@ -65,6 +81,17 @@ msgs:number;
       console.log('inbox data = ',message)
       this.filterArray(this.chats);
      });}
+     
+
+  }
+  async ionViewDidEnter() {
+    this.chatService.serviceProviderLogedIn();
+    this.menu.enable(false, 'first');
+    this.menu.enable(true, 'custom');
+    this.menu.enable(false, 'end');
+    let id = await this.serviceProvidersService.getServiceProviderId();
+    this.getServiceProvider(id);
+    
   }
   getMessages() {
     this.socket.emit('set-recieverForInbox', this.id);
@@ -80,7 +107,7 @@ msgs:number;
    //filtering array to have each sender only once;
 filterArray(chats){
   this.chatt = chats.slice();
- 
+ console.log('this.chatt =',this.chatt);
   this.unreadMessages = this.chatt.filter(item => item.status == 'unread');
   this.msgs = this.unreadMessages.length;
   console.log('unread messages = ',this.unreadMessages.length);
@@ -91,6 +118,13 @@ filterArray(chats){
   async slideChanged() {  
     this.segment = await this.slider.getActiveIndex();  
   }  
+  goToDashboard() {
+    this.router.navigateByUrl('service-provider-profile/serviceprovider-dashboard');
+  }
+  logout() {
+    this.authService.logout();
+    
+  }
   back(){
     this.router.navigateByUrl('/home');
   }
@@ -103,16 +137,23 @@ filterArray(chats){
   //       this.cities = this.serviceProviderInfo.citiesArray;
   //       this.routes = this.serviceProviderInfo.servicesArray;
   // }
-  async  getServiceProvider(){
-    const observable = await this.serviceProvidersService.getServiceProvider();
+  async  getServiceProvider(id){
+    const observable = await this.serviceProvidersService.getServiceProvider(id);
     observable.subscribe(
       data => {
+        this.completed = true;
+        console.log('data too =',data);
+        this.serviceProvidersService.serviceProviderPass= data.pass;
         this.serviceProviderInfo = data.data;
         this.email = this.serviceProviderInfo.email;
         this.userName = this.serviceProviderInfo.username;
-        this.id = this.serviceProviderInfo._id;
-        this.serviceProvidersService.setServiceProviderIdForInbox(this.serviceProviderInfo._id);
-        this.serviceProvidersService.serviceProviderNameForInbox(this.userName );
+        console.log('userName = ',this.userName);
+         this.id = this.serviceProviderInfo._id;
+         this.serviceProvidersService.saveServiceProviderImg(this.serviceProviderInfo.imageUrl);
+        // this.serviceProvidersService.setServiceProviderIdForInbox(this.serviceProviderInfo._id);
+        this.serviceProvidersService.saveServiceProviderName(this.userName);
+       // this.serviceProvidersService.serviceProviderNameForInbox(this.userName );
+        this.serviceProvidersService.serviceProviderImage_url = this.serviceProviderInfo.imageUrl;
         this.phone = this.serviceProviderInfo.phone;
         this.cnic = this.serviceProviderInfo.cnic;
         this.cities = this.serviceProviderInfo.citiesArray;
@@ -120,12 +161,17 @@ filterArray(chats){
         this.companyName = this.serviceProviderInfo.companyName;
         this.officeLocation = this.serviceProviderInfo.officeLocation;
         this.routesArr = this.serviceProviderInfo.servicesArray;
-        console.log(this.cities);
+        this.image = this.serviceProviderInfo.imageUrl;
+        this.serviceProvidersService.publishSomeData({
+          serviceProviderImage: this.image
+        })
       },
       err => {
         console.log('err', err);
       },
-      () => {console.log('#1 Complete')
+      async () => {console.log('#1 Complete')
+      console.log('image =',await this.serviceProvidersService.getServiceProviderImg())
+      this.serviceProvidersService.putServiceProviderDat(this.serviceProviderInfo);
       this.getMessages().subscribe(message => {
         this.chats = message;
         console.log('inbox data = ',message)
@@ -143,13 +189,14 @@ filterArray(chats){
     console.log('delet',i)
   }
   openChatRoom(){
+    console.log('button clicked');
     this.socket.connect();
     this.socket.emit('set-nickname',this.userName);
     //this.socket.emit('set-reciever', this.userName);
     
     this.socket.emit('set-type','serviceProvider');
     this.router.navigateByUrl('service-provider-profile/inbox');
-  } 
+  }   
 }
 interface chat{
   msgId:string,

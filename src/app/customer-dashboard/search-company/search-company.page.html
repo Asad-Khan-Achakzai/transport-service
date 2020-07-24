@@ -1,24 +1,62 @@
-
-
-<ion-content >
-  <div [formGroup]="Form">
-  <ion-select formControlName="departureValue" (ionChange)="optionsFn()" interface="popover" placeholder="Departure">
-    <ion-select-option value="quetta">quetta</ion-select-option>
-    <ion-select-option value="lahore">lahore</ion-select-option>
-    <ion-select-option value="islamabad">islamabad</ion-select-option>
-    <ion-select-option value="karachi">karachi</ion-select-option>
-    </ion-select>
-    <ion-select formControlName="destinationValue" (ionChange)="optionsFn()" interface="popover" placeholder="Destination">
-      <ion-select-option value="quetta">quetta</ion-select-option>
-      <ion-select-option value="lahore">lahore</ion-select-option>
-      <ion-select-option value="islamabad">islamabad</ion-select-option>
-      <ion-select-option value="karachi">karachi</ion-select-option>
-      </ion-select>
-      <ion-button expand ="block" (click)= "searchButton()">Search</ion-button>
+<ion-header translucent no-border>
+  <ion-toolbar>
+    <ion-title>&nbsp;</ion-title>
+    <div class ="title">
+      <ion-title>Search</ion-title>
     </div>
-    <ion-list>
+    <!-- <ion-buttons slot="start">
+      <ion-menu-toggle   >
+        
+      <ion-menu-button  autoHide="false"></ion-menu-button>
+    </ion-menu-toggle>
+    
+    </ion-buttons> -->
+    <div  [formGroup]="Form" >
+      <ion-select  formControlName="departureValue" (ionChange)="optionsFn()" interface="popover" placeholder="Departure">
+        <ion-select-option value="quetta">quetta</ion-select-option>
+        <ion-select-option value="lahore">lahore</ion-select-option>
+        <ion-select-option value="islamabad">islamabad</ion-select-option>
+        <ion-select-option value="karachi">karachi</ion-select-option>
+        </ion-select>
+        <ion-select   formControlName="destinationValue" (ionChange)="optionsFn()" interface="popover" placeholder="Destination">
+          <ion-select-option value="quetta">quetta</ion-select-option>
+          <ion-select-option value="lahore">lahore</ion-select-option>
+          <ion-select-option value="islamabad">islamabad</ion-select-option>
+          <ion-select-option value="karachi">karachi</ion-select-option>
+          <ion-button slot ="end">cancel</ion-button>
+          </ion-select>
+          <ion-button expand ="block" color="danger" (click)= "clear()" *ngIf="Form.value['departureValue']&&Form.value['destinationValue']">clear</ion-button>
+          <ion-button expand ="block" (click)= "searchButton()">Search</ion-button>
+        </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content   [scrollEvents]="true">
+  <div *ngIf="!loading">
+    <ion-list >
       
       <ion-card *ngFor="let tag of serviceProviderInfo" [routerLink]= "['./',tag._id]">
+        <div *ngFor ="let item of tag.servicesArray">
+        <ion-item  text-wrap>
+          <ion-label>From :</ion-label>
+          <ion-label>{{ item?.departure }} </ion-label>
+          <ion-label>To :</ion-label>
+          <ion-label>{{ item?.destination }}</ion-label>
+        </ion-item>
+        <ion-item id="item">
+          <ion-label>Timing :</ion-label>
+          <ion-label>{{ item?.timing }}</ion-label>
+          <ion-label>Seats :</ion-label>
+          <ion-label>{{ item?.totalSeats }}</ion-label>
+        </ion-item>
+      </div>
+      </ion-card>
+      <!-- <ion-card *ngFor="let tag of serviceProviderInfo" [routerLink]= "['./',tag._id]">
+        <ion-thumbnail slot="start">
+          <ion-img *ngIf="tag?.imageUrl && tag?.imageUrl!='null'" [src]="tag?.imageUrl"></ion-img>
+          
+          <ion-img *ngIf="!tag?.imageUrl||  tag?.imageUrl=='null' " src="../../assets/player104.png" alt=""></ion-img>
+        </ion-thumbnail>
         <h6>{{tag?.companyName}}</h6>
   <div *ngFor ="let item of tag.servicesArray">
     <ion-item>
@@ -27,16 +65,30 @@
     {{item?.timing}} Total seats {{item?.totalSeats}}
   </ion-item>
   </div>
-          <!-- <ion-label>
-            <h6>{{tag?.companyName}}</h6>
-            <h2>{{tag?.username}}</h2>
-            <h2>{{tag?.email}}</h2>
-            <h2>{{tag?.phone}}</h2>
-            <h2>{{tag?.officeLocation}}</h2>
-            <p>Listen, I've had a pretty messed up day...</p>
-          </ion-label> -->
   
   
-      </ion-card>
+      </ion-card> -->
     </ion-list>
+  </div>
+    <div *ngIf="loading">
+      <ion-card>
+        
+        <ion-item *ngFor="let item of skeletonlist">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text animated>one</ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-card>
+    </div>
 </ion-content>

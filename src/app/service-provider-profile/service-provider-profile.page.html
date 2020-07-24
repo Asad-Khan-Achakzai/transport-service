@@ -1,93 +1,194 @@
 <ion-header translucent no-border>
   <ion-toolbar>
+   
+    <ion-title>&nbsp;</ion-title>
     <ion-buttons slot="start">
-      <ion-button color="light">
-        <ion-icon slot="start" name="ios-arrow-back"></ion-icon>
-        Back
+      <ion-menu-toggle>
+      <ion-menu-button   color="light" autoHide="false"></ion-menu-button>
+    </ion-menu-toggle>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="goToDashboard()">
+        <ion-icon name="ios-arrow-back"></ion-icon>
+        Dashboard
+      </ion-button>
+      <ion-button color="light" (click)="logout()">
+        Logout
       </ion-button>
     </ion-buttons>
-    <ion-title>&nbsp;</ion-title>
-    <ion-buttons slot="end">
+    <!-- <ion-buttons slot="end">
       <ion-button>
         <ion-icon slot="icon-only" src="../../assets/checkmark-filled.svg"></ion-icon>
        </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true" slot="fixed"   scrollEvents={true}>
-    <div class="card">
-      <div class="header">
-        <div class="avatar">
-          <img src="../../assets/player104.png" alt="">
-        </div>
+<ion-content
+
+  fullscreen="true"
+  slot="fixed"
+  scrollEvents="{true}"
+  id="mainContent"
+>
+<ion-refresher slot="fixed" (ionRefresh)="getUsersList($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
+  <div class="card">
+    <div class="header">
+      <div class="avatar">
+        <img *ngIf="image && image!='null'" [src]="image" />
+
+        <img
+          *ngIf="!image||  image=='null' "
+          src="../../assets/player104.png"
+          alt=""
+        />
       </div>
-      <div class="card-body">
-        <div class="user-meta ion-text-center">
-          <h3 class="playername">{{companyName}}
-            <ion-chip (click)="openChatRoom()">
-              Message
-              <div class="online">
-                {{msgs}}
-              </div>
-            </ion-chip>
-            <!-- <ion-avatar >
+    </div>
+    <div class="card-body">
+      <div class="user-meta ion-text-center">
+        <h3 class="playername">
+          <div id="name">{{companyName}}</div>
+          <div>
+            <ion-button class="badge-button" (click)="openChatRoom()">
+              <ion-icon size="large" name="notifications-circle-outline">
+              </ion-icon>
+              <ion-badge [class.badge-one]="msgs < 10" [class.badge-two]="msgs >= 10" color="danger">{{ msgs }}</ion-badge>
+            </ion-button>
+        </div>
+          <!-- <ion-chip (click)="openChatRoom()">
+            Message
+            <div class="online">
+              {{msgs}}
+            </div>
+          </ion-chip> -->
+          <!-- <ion-avatar >
               <ion-img class="user-img" src="../../assets/messenger-bw-512.png"></ion-img>
             
               <div class="online">
                 {{msgs}}
               </div>
             </ion-avatar> -->
-          </h3>
-          <!-- <h5 class="country">Switzerland</h5> -->
-          <h6 class="ranking">Current ranking: <ion-chip>
-              <ion-label>2</ion-label>
-            </ion-chip>
-          </h6>
-        </div>
+        </h3>
+        <!-- <h5 class="country">Switzerland</h5> -->
+        <h6 class="ranking">
+          Current ranking:
+          <ion-chip>
+            <ion-label>2</ion-label>
+          </ion-chip>
+        </h6>
+      </div>
 
-        <ion-toolbar> 
-          <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="segment" color="success"> 
-          <ion-segment-button value="0"> 
-          <ion-label>About</ion-label> 
-          <ion-icon name="information-circle"></ion-icon>
-        </ion-segment-button> 
-          <ion-segment-button value="1"> 
-          <ion-label>Routes</ion-label> 
-          <ion-icon name = "car"></ion-icon>
-
-          </ion-segment-button> 
-          <ion-segment-button value="2"> 
-          <ion-label>Cities</ion-label> 
-          <ion-icon name="home"></ion-icon>
-        </ion-segment-button> 
-          </ion-segment> 
-          </ion-toolbar> 
-          <ion-slides #slides (ionSlideDidChange)="slideChanged()"   class = "slide"> 
-          <ion-slide class = "slide">
+      <ion-toolbar>
+        <ion-segment
+          (ionChange)="segmentChanged($event)"
+          [(ngModel)]="segment"
+          color="success"
+        >
+          <ion-segment-button value="0">
+            <ion-label color="light">About</ion-label>
+            <ion-icon name="information-circle" color="light"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="1">
+            <ion-label color="light">Routes</ion-label>
+            <ion-icon name="car" color="light"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="2">
+            <ion-label color="light">Cities</ion-label>
+            <ion-icon name="home" color="light"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-toolbar>
+      <ion-content id="slidesContent">
+        <ion-slides #slides (ionSlideDidChange)="slideChanged()">
+          <ion-slide>
             <ion-grid>
               <ion-row>
-                <ion-col size-md ="12" size-lg= "2" size-sm= "12" size-xs = "12" >
-                  <ion-button expand="full" color="primary">{{userName}}</ion-button>
+                <ion-col size-md="12" size-lg="12" size-sm="12" size-xs="12">
+                  <ion-button expand="full" shape="round">
+                    <ion-icon name="home-outline" id="icon"></ion-icon>
+                    {{officeLocation}}</ion-button
+                  >
                 </ion-col>
-                <ion-col size-md ="12" size-lg= "2" size-sm= "12"size-xs = "12">      
-                    <ion-button expand="full" color="secondary">{{phone}}</ion-button>
+              </ion-row>
+              <ion-row>
+                <ion-col size-md="12" size-lg="12" size-sm="12" size-xs="12">
+                  <ion-button expand="full" shape="round">
+                    <ion-icon name="person-circle-outline" id="icon"></ion-icon>
+                    {{userName}}</ion-button
+                  >
                 </ion-col>
-                <ion-col size-md ="12" size-lg= "2" size-sm= "12"size-xs = "12">
-                  <ion-button expand="full" color="secondary">{{cnic}}</ion-button>
+              </ion-row>
+              <ion-row>
+                <ion-col size-md="12" size-lg="12" size-sm="12" size-xs="12">
+                  <ion-button expand="full" shape="round">
+                    <ion-icon name="call-outline" id="icon"></ion-icon>
+                    {{phone}}</ion-button
+                  >
                 </ion-col>
-                <ion-col size-md ="12" size-lg= "2" size-sm= "12"size-xs = "12">
-                  <ion-button expand="full" color="secondary">{{email}}</ion-button>
+              </ion-row>
+              <ion-row>
+                <ion-col size-md="12" size-lg="12" size-sm="12" size-xs="12">
+                  <ion-button expand="full" shape="round">
+                    <ion-icon name="reader-outline" id="icon"></ion-icon>
+                    {{cnic}}</ion-button
+                  >
                 </ion-col>
-                <ion-col size-md ="12" size-lg= "2" size-sm= "12"size-xs = "12">
-                  <ion-button expand="full" color="secondary">{{officeLocation}}</ion-button>
+              </ion-row>
+              <ion-row>
+                <ion-col size-md="12" size-lg="12" size-sm="12" size-xs="12">
+                  <ion-button expand="full" shape="round">
+                    <ion-icon name="mail-outline" id="icon"></ion-icon>
+                    {{email}}</ion-button
+                  >
                 </ion-col>
               </ion-row>
             </ion-grid>
-          </ion-slide> 
+          </ion-slide>
           <ion-slide>
-            <ion-list>
-            <ion-menu-toggle auto-hide="false" *ngFor="let item of routesArr; let i = index">
+            <ion-list id="list">
+              <!-- <ion-card>
+
+                <ion-item id ='item' text-wrap>
+                
+                  
+                                 <ion-label>From :</ion-label>
+                    <ion-label >unknown</ion-label>
+  
+                    <ion-label>To :</ion-label>
+                    <ion-label >unknown</ion-label>
+                  </ion-item>
+                  <ion-item>
+  
+                    <ion-label>Timing :</ion-label>
+                    <ion-label>unknown</ion-label>
+                    <ion-label>Seats :</ion-label>
+                    <ion-label>unknown</ion-label>
+                  </ion-item>
+  
+                
+              </ion-card> -->
+              <ion-menu-toggle
+                auto-hide="false"
+                *ngFor="let item  of routesArr"
+              >
+                <ion-card>
+                  <ion-item id="item" text-wrap>
+                    <ion-label>From :</ion-label>
+                    <ion-label>{{ item?.departure }} </ion-label>
+                    <ion-label>To :</ion-label>
+                    <ion-label>{{ item?.destination }}</ion-label>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Timing :</ion-label>
+                    <ion-label>{{ item?.timing }}</ion-label>
+                    <ion-label>Seats :</ion-label>
+                    <ion-label>{{ item?.totalSeats }}</ion-label>
+                  </ion-item>
+                </ion-card>
+              </ion-menu-toggle>
+              <!-- <ion-menu-toggle auto-hide="false" *ngFor="let item of routesArr; let i = index">
               <ion-item-sliding (ionSwipe)="delete(i)">
                 <ion-item>From {{item?.departure}} To {{item?.destination}} Timing {{item?.timing}} Total seats {{item?.totalSeats}}</ion-item>
                 <ion-item-options>
@@ -97,16 +198,28 @@
                   </button>
                 </ion-item-options>
               </ion-item-sliding>
-            </ion-menu-toggle>
-          </ion-list></ion-slide> 
+            </ion-menu-toggle> -->
+            </ion-list></ion-slide
+          >
           <ion-slide>
-            <ion-chip outline color="primary" #chip *ngFor="let tag of cities; let i = index">
+            <ion-grid>
+              <ion-row >
+         
+                <ion-col text-center size ="6" *ngFor="let tag of cities">
+                  <ion-item text-center>
+                    <ion-label id="cityLabel">{{tag}}</ion-label>                
+                  </ion-item>
+                </ion-col>
+          
+          </ion-row>
+          </ion-grid>
+            <!-- <ion-chip *ngFor="let tag of cities">
               <ion-label>{{tag}}</ion-label>
-              <ion-icon name="close-circle" (click)="remove(i)"></ion-icon>
-          </ion-chip>
-          </ion-slide> 
-      
-          </ion-slides>
-      </div>
+            </ion-chip> -->
+          </ion-slide>
+        </ion-slides>
+        <ion-toolbar class="large-title-fix"></ion-toolbar>
+      </ion-content>
     </div>
+  </div>
 </ion-content>

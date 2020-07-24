@@ -1,0 +1,186 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button  defaultHref="/service-provider-profile"></ion-back-button>
+    </ion-buttons>
+    <div class ="title">
+    <ion-title>Edit</ion-title>
+  </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="mainDiv">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-md="8" offset-md="2">
+          <div [formGroup]="Form">
+            <ion-card>
+              <ion-card-header>
+                <div class="title">
+                  <ion-card-title size="large" text-center
+                    >Welcome</ion-card-title
+                  >
+                </div>
+              </ion-card-header>
+            </ion-card>
+            <ion-card-content>
+              <ion-row>
+                <ion-col size="6">
+                  <ion-item>
+                    <ion-label position="floating">
+                      User Name
+                    </ion-label>
+                    <ion-input type="text" formControlName="username">
+                    </ion-input>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label position="floating">
+                      Cnic Number
+                    </ion-label>
+                    <ion-input
+                      type="tel"
+                      formControlName="cnic"
+                      appCnicMask
+                     
+                      maxlength="15"
+                      placeholder="Cnic number"
+                    >
+                    </ion-input>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size="6" text-center id ="imageCol">
+                  <app-image-picker (imagePick)="onImagePicked($event)"></app-image-picker>
+                  <!-- <ion-card-content>
+                    <ion-button color="medium" size="large">
+                      <ion-icon slot="icon-only" name="camera"></ion-icon>
+                    </ion-button>
+                  </ion-card-content> -->
+                </ion-col>
+              </ion-row>
+
+              <ion-item>
+                <ion-label position="floating">
+                  Company Name
+                </ion-label>
+                <ion-input type="text" formControlName="companyName">
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">
+                  Phone#
+                </ion-label>
+                <ion-input
+                  type="tel"
+                  formControlName="phone"
+                  appPhoneMask
+                
+                  maxlength="12"
+                  placeholder="Phone Number"
+                >
+                </ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">
+                  Email Address
+                </ion-label>
+                <ion-input
+                  type="text"
+                  formControlName="email"
+                  id="emailaddress"
+                >
+                </ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">
+                  Main Office location
+                </ion-label>
+                <ion-input type="text" formControlName="officeLocation">
+                </ion-input>
+              </ion-item>
+              <div>
+                <div>
+                  <ion-card>
+                    <!-- 
+                    <ion-card-content>
+
+                      <ion-item>
+                        <ion-label id="cities-label">Services in Cities</ion-label>
+                      </ion-item>
+                      <ion-item>
+                        <tag-input formControlName="tags" [separatorKeyCodes]="[32]">
+                          <tag-input-dropdown [focusFirstElement]="true" [showDropdownIfEmpty]="true"
+                            [autocompleteItems]="cities"></tag-input-dropdown>
+                        </tag-input>
+                      </ion-item>
+                      <ion-item lines="none" float-right>
+                        <ion-button (click)="upload(Form.value)">
+                          Submit</ion-button>
+                      </ion-item>
+
+
+                    </ion-card-content>
+ -->
+
+                    <ion-item>
+                      <ion-label>Services in cities</ion-label>
+                      <ion-input
+                        (keyup.enter)="onEnter()"
+                        formControlName="skillInput"
+                        clearInput="true"
+                        
+                        
+                      ></ion-input>
+                      <!-- <button ion-button item-right (click)="upload()">
+                        <ion-icon name="checkmark"></ion-icon>
+                      </button> -->
+                    </ion-item>
+                    <ion-chip
+                      outline
+                      color="primary"
+                      #chip
+                      *ngFor="let tag of cities; let i = index"
+                    >
+                      <ion-label>{{tag}}</ion-label>
+                      <ion-icon
+                        name="close-circle"
+                        (click)="remove(i)"
+                      ></ion-icon>
+                    </ion-chip>
+                  </ion-card>
+                </div>
+              </div>
+              <ion-item>
+                <ion-label position="floating">
+                  Password
+                </ion-label>
+                <ion-input type="password" formControlName="password">
+                </ion-input>
+              </ion-item>
+              <!-- <ion-item>
+                <ion-label position="floating">
+                  Confirm Password
+                </ion-label>
+                <ion-input type="password" formControlName="confirmPassword">
+                </ion-input>
+              </ion-item> -->
+              <ion-row justify-content: end>
+                <ion-col class="ion-text-center">
+                  <ion-button (click)="nextButton()">
+                    Services
+                  </ion-button>
+                  <ion-button (click)="display()" [disabled]="!Form.valid ">
+                    Done &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

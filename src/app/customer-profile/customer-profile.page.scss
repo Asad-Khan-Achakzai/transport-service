@@ -1,5 +1,8 @@
 ion-content {
-    --background: url(../../assets/background_full.jpg) no-repeat top center/cover fixed, #fff;
+     //--background: url(../../assets/bryan-goff-rjEoFD8l1vo-unsplash.jpg) no-repeat top center/cover fixed, #fff;
+   // --ion-background-color:#39393d;
+   --background: linear-gradient(197deg, rgb(247, 242, 0) 0%, rgb(199, 10, 10) 13.5%, rgb(73, 9, 9) 33.33%, rgba(0,0,0,1) 100%) !important;
+    color: slategray;
     position: relative;
     height: 100%;
     width: 100%;
@@ -7,16 +10,36 @@ ion-content {
     ion-button {
         margin-top: 1em;
         margin-bottom: 1em
+        
     }
 }
+.btn-grad {--background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    color: white;
+}
+.btn-grad:hover {animation-name: background-color; 
+    animation-duration: 500ms; }
+        @keyframes background-color { 
+        100% { 
 
+            background-color: #4065F3; 
+        } 
+    } 
+#icon{
+    margin-right: 40%;
+}
 ion-toolbar {
     --background: transparent;
 }
 
 ion-chip {
-    --background: #9dc912;
-    --color: #fff;
+    --background: #ffffff;
+    --color: rgb(0, 0, 0);
+}
+ion-button{
+    
+    --background: #ffffff;  
+    --color: rgb(0, 0, 0);
+    
 }
 
 .card {
@@ -26,7 +49,7 @@ ion-chip {
         height: 200px; // 20vh;
 
         .avatar {
-            width: 160px; //40vw
+            width: 160px; //40vw    
             height: 160px;
             position: relative;
             margin: 0 auto;
@@ -36,7 +59,7 @@ ion-chip {
                 border-radius: 50%;
                 position: absolute;
                 bottom: calc(-1*(80px + 4px)); // -42px;
-                border: 8px solid #9Dc912;
+                border: 8px solid #000000;
                 background-color: #fff;
             }
         }
@@ -44,7 +67,9 @@ ion-chip {
 }
 
 .card-body {
-    background-color: #ffffff;
+     //   background-image: url('../../assets/daniel-mayovskiy-m-nqyYbeI8Q-unsplash.jpg');
+     background: linear-gradient(197deg, rgba(100,100,100,1) 0%, rgba(63,63,63,1) 13.5%, rgba(29,29,29,1) 33.33%, rgba(0,0,0,1) 100%) !important;
+   // background-color: #8f8888;
     padding: 30px;
     height: calc(100vh - (200px + 56px));
     overflow: hidden;
@@ -55,7 +80,7 @@ ion-chip {
         .playername {
             font-size: 24px;
             font-weight: 600;
-            color: #303940;
+            color: #fcfcfc;
         }
 
         .country {
@@ -77,4 +102,12 @@ ion-chip {
     color: rgb(228, 10, 10);
     height: 10px;
     border-radius: 50%;
+  }
+  .badge-two {
+    position: absolute;
+    top: 0px;
+    right: -5px;
+    font-size: 0.6em;
+    --padding-start: 3px;
+    --padding-end: 3px;
   }

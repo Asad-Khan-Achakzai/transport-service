@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomersService } from 'src/app/sdk/custom/customers.service';
+//import { CustomersService } from 'src/app/sdk/custom/customers.service';
 import { BookingsService } from 'src/app/sdk/custom/bookings.service';
+import { ServiceProvidersService } from 'src/app/sdk/custom/service-providers.service';
+import { Router } from '@angular/router';
+import { CustomersService } from '../../sdk/custom/customers.service';
+import { AlertController, MenuController, ToastController } from '@ionic/angular';
+import { error } from 'util';
+import { DatePipe, PlatformLocation } from '@angular/common';
 
 @Component({
   selector: 'app-seat-booking',
@@ -57,60 +63,185 @@ export class SeatBookingPage implements OnInit {
   isChecked10b;
   isChecked10c;
   isChecked10d;
-  isChecked10e;
-  isChecked10f;
-  isChecked10g;
 
-  bookedSeats:string[]= [];;
+  isChecked11a;
+  isChecked11b;
+  isChecked11c;
+  isChecked11d;
+
+
+
+  bookedSeats: string[] = [];;
   price = 0;
-  routeId:string;
-  providerId:string;
-  routeTiming:string;
-  customerId:string;
-  constructor(private customerService:CustomersService,private bookingsService:BookingsService) { }
+  routeId: string;
+  providerId: string;
+  routeTiming: string;
+  customerId: string;
+  route;
+  alreadBookedSeats = ['0A', '0b'];
+  totalSeats;
+  pricePerSeat: number;
+  timingValue;
+  constructor(private location:PlatformLocation,public datepipe: DatePipe,private menu: MenuController,public toastController: ToastController,public alertController: AlertController, private customerService: CustomersService, private bookingsService: BookingsService, private serviceProviderServices: ServiceProvidersService, private router: Router) { 
+    
+   
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loadIds();
-  }
-  loadIds(){
-    this.routeId = this.customerService.routeIdOfRoute;
-    this.providerId = this.customerService.prividerIdOfRoute;
-    this.routeTiming = this.customerService.routeTiming;
-    this.customerId = this.customerService.logedInCustomerId;
-    console.log('routeId  =',this.routeId);
-    console.log('providerId =',this.providerId);
-    console.log('customerID = ',this.customerId)
-    console.log('timing =',this.routeTiming);
-  }
-  checkValue(condition,value){
 
-    console.log('value = ',value,'condition = ',condition)
-    if(condition===true)
-    {this.price = this.price+300;
-      console.log('price = ',this.price)
+  }
+  ionViewWillEnter(){
+
+    this.menu.enable(true, 'first');
+    this.menu.enable(false, 'custom');
+    this.menu.enable(false, 'end');
+  }
+  ionViewDidEnter() {
+    this.loadIds();
+  
+    
+  }
+  async loadIds() {
+    // let routes = await this.customerService.getProviderRoute();
+    // console.log('route = ',routes);
+    this.routeId = await this.customerService.getroute_id();
+    this.providerId = await this.customerService.getproviderID();
+    this.routeTiming = await this.customerService.getrouteTiming();
+    this.customerId = await this.customerService.getCustomerId();
+    this.alreadBookedSeats = await this.customerService.getbookedSeats();
+    this.totalSeats = await this.customerService.getTotalSeats();
+    this.pricePerSeat = await this.customerService.getRoutePrice();
+
+   
+    console.log('price =', this.pricePerSeat);
+    console.log('booked  = ', this.totalSeats);
+    console.log('booked already = ', this.alreadBookedSeats);
+    console.log('routeId  =', this.routeId);
+    console.log('providerId =', this.providerId);
+    console.log('customerID = ', this.customerId)
+    console.log('timing =', this.routeTiming);
+    //console.log('route =',this.route);
+  }
+  checkValue(condition, value) {
+
+    console.log('value = ', value, 'condition = ', condition)
+    if (condition === true) {
+      this.price = Number.parseInt(this.price.toString());
+      this.pricePerSeat = Number.parseInt(this.pricePerSeat.toString());
+      //this.price = Number.parseInt(this.price.toString())+this.pricePerSeat;
+      this.price = this.price + this.pricePerSeat;
+      console.log('price = ', this.price)
       this.bookedSeats.push(value);
-      
+
     }
-    if(condition===false)
-    { 
+    if (condition === false) {
       let index = this.bookedSeats.indexOf(value);
       console.log(index);
-      this.bookedSeats.splice(index,1);
-      this.price =this.price-300;
+      this.bookedSeats.splice(index, 1);
+      this.price = this.price - this.pricePerSeat;
+      console.log('price = ', this.price)
     }
-    console.log('array = ',this.bookedSeats);
+    console.log('array = ', this.bookedSeats);
   }
-  saveData(){
-    this.bookingsService.bookingRegister({price:this.price,seats:this.bookedSeats,routId:this.routeId,customerId:this.customerId,providerId:this.providerId,timing:this.routeTiming}).subscribe(
-      data => {
-        console.log('got response from server', data);
-   
-       // this.router.navigateByUrl('/home');
-      },
-      error => {
+
+  checkArray() {
+    console.log('called');
+    return true;
+  }
+  async saveData() {
+    //this.router.navigateByUrl('providers-profile/seat-booking/invoice');
+
+        if(this.timingValue ){
+          this.timingValue = new Date(this.timingValue);
+          this.timingValue = this.datepipe.transform(this.timingValue, 'mediumDate');
+              console.log('time= ',this.timingValue);
+          const alert = await this.alertController.create({
+            cssClass: 'my-custom-class',
+            header: 'Confirm!',
+            message: 'Are you sure to select these <strong>seats</strong>!!!',
+            buttons: [
+              {
+                text: 'Cancel',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: (blah) => {
+                  console.log('Confirm Cancel: blah');
+                }
+              }, {
+                text: 'Okay',
+                handler: async () => {
+                   
+                  //this.bookingsService.putInvoiceData({ id: 'no Id', price: this.price, seats: this.bookedSeats, routId: this.routeId, customerId: this.customerId, providerId: this.providerId, timing: this.routeTiming });
+                  // console.log('functionc called');
+                   const observable = await this.serviceProviderServices.updateServiceProvider({ id: this.routeId, bookedSeats: this.bookedSeats });
+                  observable.subscribe(
+                    data => {
+                      console.log('got response of update from server', data);
       
-        console.log('error', error);
-      }
-    );
-   }
+                    },
+                     async error => {
+                    const toast = await this.toastController.create({
+                      message: error.error.message,
+                     // message: `${name} has been saved successfully.`,
+                      duration: 3500
+                    });
+                    toast.present();
+                    }
+                  );
+      
+                  this.bookingsService.bookingRegister({ id: 'no Id', price: this.price, seats: this.bookedSeats, routId: this.routeId, customerId: this.customerId, providerId: this.providerId, timing: this.routeTiming,date:this.timingValue, expire: false }).subscribe(
+                    async data => {
+                      console.log('got response from server', data);
+                      this.bookingsService.saveBookingId(data.id);
+                      const toast = await this.toastController.create({
+                        message: data.message,
+                       // message: `${name} has been saved successfully.`,
+                        duration: 3500
+                      });
+                      toast.present();
+                      this.router.navigateByUrl('providers-profile/seat-booking/invoice');
+                      // this.router.navigateByUrl('/home');
+                    },
+                    async error => {
+      
+                      const toast = await this.toastController.create({
+                        message: error.error.message,
+                       // message: `${name} has been saved successfully.`,
+                        duration: 3500
+                      });
+                      toast.present();
+                  
+                    }
+                  );
+                }
+              }
+            ]
+          });
+      
+          await alert.present();
+      
+      
+        }else{
+          const alert = await this.alertController.create({
+            header: 'Alert',
+            //subHeader: 'Subtitle',
+            message: 'please select journey date',
+            buttons: ['OK']
+          });
+          alert.present();
+        }
+
+         
+  }
 }
+// interface route{
+//   id:string,
+//   timing:string,
+//   totalSeats:string,
+//   availableSeats:string,
+//   departure:string,
+//   destination:string,
+//   bookedSeats:Array<string>
+
+// }

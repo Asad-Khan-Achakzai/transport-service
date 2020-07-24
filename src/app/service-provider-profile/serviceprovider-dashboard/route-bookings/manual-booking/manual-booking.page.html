@@ -1,0 +1,834 @@
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row >
+
+    <ion-col id ="planeCol" size-lg = "6" size-xs="12" >
+      <ion-header>
+        <ion-toolbar >
+          <div class ="title">
+            <ion-title color="light" >
+              <h1>select seat</h1> 
+              
+            </ion-title>
+          </div>
+        </ion-toolbar>
+      </ion-header>
+
+  <div class="plane">
+    <div class="cockpit">
+      <h1>Please select a seat</h1>
+    </div>
+  
+  
+  
+    <!-- <div class="exit exit--front fuselage">
+  
+    </div> -->
+    <div *ngIf="totalSeats == '44'">
+    <ion-grid class="cabin fuselage">
+      <ion-row class="row row--1">
+        <ion-col class="seat">
+          <input type="checkbox" id="1A" [(ngModel)]="isChecked" (change)="checkValue(isChecked,'1A')"[disabled]="alreadBookedSeats.includes('1A')" />
+          <!-- <input type="checkbox" id="1A" [(ngModel)]="isChecked" (change)="checkValue(isChecked,'1A')"ng-class="{'disabled': alreadBookedSeats.includes('1A')}" /> -->
+          <label for="1A">1A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="1B" [(ngModel)]="isChecked1b" (change)="checkValue(isChecked1b,'1B')" [disabled]="alreadBookedSeats.includes('1B')" />
+          <label for="1B">1B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="1C" [(ngModel)]="isChecked1c" (change)="checkValue(isChecked1c,'1C')"[disabled]="alreadBookedSeats.includes('1C')"/>
+          <label for="1C">1C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="1D" [(ngModel)]="isChecked1d" (change)="checkValue(isChecked1d,'1D')"[disabled]="alreadBookedSeats.includes('1D')"/>
+            <label for="1D">1D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--2">
+        <ion-col class="seat">
+          <input type="checkbox" id="2A" [(ngModel)]="isChecked2a" (change)="checkValue(isChecked2a,'2A')"[disabled]="alreadBookedSeats.includes('2A')"/>
+            <label for="2A">2A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="2B" [(ngModel)]="isChecked2b" (change)="checkValue(isChecked2b,'2B')"[disabled]="alreadBookedSeats.includes('2B')"/>
+          <label for="2B">2B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="2C" [(ngModel)]="isChecked2c" (change)="checkValue(isChecked2c,'2C')"[disabled]="alreadBookedSeats.includes('2C')"/>
+          <label for="2C">2C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="2D" [(ngModel)]="isChecked2d" (change)="checkValue(isChecked2d,'2D')"[disabled]="alreadBookedSeats.includes('2D')"/>
+            <label for="2D">2D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--3">
+        <ion-col class="seat">
+          <input type="checkbox" id="3A" [(ngModel)]="isChecked3a" (change)="checkValue(isChecked3a,'3A')"[disabled]="alreadBookedSeats.includes('3A')"/>
+            <label for="3A">3A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="3B" [(ngModel)]="isChecked3b" (change)="checkValue(isChecked3b,'3B')"[disabled]="alreadBookedSeats.includes('3B')"/>
+          <label for="3B">3B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="3C" [(ngModel)]="isChecked3c" (change)="checkValue(isChecked3c,'3C')"[disabled]="alreadBookedSeats.includes('3C')"/>
+          <label for="3C">3C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="3D" [(ngModel)]="isChecked3d" (change)="checkValue(isChecked3d,'3D')"[disabled]="alreadBookedSeats.includes('3D')"/>
+            <label for="3D">3D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--4">
+        <ion-col class="seat">
+          <input type="checkbox" id="4A"[(ngModel)]="isChecked4a" (change)="checkValue(isChecked4a,'4A')" [disabled]="alreadBookedSeats.includes('4A')"/>
+            <label for="4A">4A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="4B" [(ngModel)]="isChecked4b" (change)="checkValue(isChecked4b,'4B')"[disabled]="alreadBookedSeats.includes('4B')"/>
+          <label for="4B">4B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="4C" [(ngModel)]="isChecked4c" (change)="checkValue(isChecked4c,'4C')"[disabled]="alreadBookedSeats.includes('4C')"/>
+          <label for="4C">4C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="4D" [(ngModel)]="isChecked4d" (change)="checkValue(isChecked4d,'4D')"[disabled]="alreadBookedSeats.includes('4D')"/>
+            <label for="4D">4D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--5">
+        <ion-col class="seat">
+          <input type="checkbox" id="5A" [(ngModel)]="isChecked5a" (change)="checkValue(isChecked5a,'5A')"[disabled]="alreadBookedSeats.includes('5A')"/>
+            <label for="5A">5A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="5B" [(ngModel)]="isChecked5b" (change)="checkValue(isChecked5b,'5B')"[disabled]="alreadBookedSeats.includes('5B')"/>
+          <label for="5B">5B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="5C" [(ngModel)]="isChecked5c" (change)="checkValue(isChecked5c,'5C')"[disabled]="alreadBookedSeats.includes('5C')"/>
+          <label for="5C">5C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="5D" [(ngModel)]="isChecked5d" (change)="checkValue(isChecked5d,'5D')"[disabled]="alreadBookedSeats.includes('5D')"/>
+            <label for="5D">5D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--6">
+        <ion-col class="seat">
+          <input type="checkbox" id="6A" [(ngModel)]="isChecked6a" (change)="checkValue(isChecked6a,'6A')"[disabled]="alreadBookedSeats.includes('6A')"/>
+            <label for="6A">6A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="6B" [(ngModel)]="isChecked6b" (change)="checkValue(isChecked6b,'6B')"[disabled]="alreadBookedSeats.includes('6B')"/>
+          <label for="6B">6B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="6C" [(ngModel)]="isChecked6c" (change)="checkValue(isChecked6c,'6C')"[disabled]="alreadBookedSeats.includes('6C')"/>
+          <label for="6C">6C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="6D" [(ngModel)]="isChecked6d" (change)="checkValue(isChecked6d,'6D')"[disabled]="alreadBookedSeats.includes('6D')"/>
+            <label for="6D">6D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--7">
+        <ion-col class="seat">
+          <input type="checkbox" id="7A" [(ngModel)]="isChecked7a" (change)="checkValue(isChecked7a,'7A')"[disabled]="alreadBookedSeats.includes('7A')"/>
+            <label for="7A">7A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="7B"[(ngModel)]="isChecked7b" (change)="checkValue(isChecked7b,'7B')" [disabled]="alreadBookedSeats.includes('7B')"/>
+          <label for="7B">7B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="7C" [(ngModel)]="isChecked7c" (change)="checkValue(isChecked7c,'7C')"[disabled]="alreadBookedSeats.includes('7C')"/>
+          <label for="7C">7C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="7D" [(ngModel)]="isChecked7d" (change)="checkValue(isChecked7d,'7D')"[disabled]="alreadBookedSeats.includes('7D')"/>
+            <label for="7D">7D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--8">
+        <ion-col class="seat">
+          <input type="checkbox" id="8A" [(ngModel)]="isChecked8a" (change)="checkValue(isChecked8a,'8A')"[disabled]="alreadBookedSeats.includes('8A')"/>
+            <label for="8A">8A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="8B" [(ngModel)]="isChecked8b" (change)="checkValue(isChecked8b,'8B')"[disabled]="alreadBookedSeats.includes('8B')"/>
+          <label for="8B">8B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="8C"[(ngModel)]="isChecked8c" (change)="checkValue(isChecked8c,'8C')" [disabled]="alreadBookedSeats.includes('8C')"/>
+          <label for="8C">8C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="8D" [(ngModel)]="isChecked8d" (change)="checkValue(isChecked8d,'8D')"[disabled]="alreadBookedSeats.includes('8D')"/>
+            <label for="8D">8D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--9">
+        <ion-col class="seat">
+          <input type="checkbox" id="9A"[(ngModel)]="isChecked9a" (change)="checkValue(isChecked9a,'9A')"[disabled]="alreadBookedSeats.includes('9A')"/>
+            <label for="9A">9A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="9B"[(ngModel)]="isChecked9b" (change)="checkValue(isChecked9b,'9B')" [disabled]="alreadBookedSeats.includes('9B')"/>
+          <label for="9B">9B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="9C"[(ngModel)]="isChecked9c" (change)="checkValue(isChecked9c,'9C')" [disabled]="alreadBookedSeats.includes('9C')"/>
+          <label for="9C">9C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="9D" [(ngModel)]="isChecked9d" (change)="checkValue(isChecked9d,'9D')"[disabled]="alreadBookedSeats.includes('9D')"/>
+            <label for="9D">9D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--10">
+        <ion-col class="seat">
+          <input type="checkbox" id="10A"[(ngModel)]="isChecked10a" (change)="checkValue(isChecked10a,'10A')"[disabled]="alreadBookedSeats.includes('10A')"/>
+            <label for="10A">10A</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="10B"[(ngModel)]="isChecked10b" (change)="checkValue(isChecked10b,'10B')" [disabled]="alreadBookedSeats.includes('10B')"/>
+          <label for="10B">10B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="10C"[(ngModel)]="isChecked10c" (change)="checkValue(isChecked10c,'10C')" [disabled]="alreadBookedSeats.includes('10C')"/>
+          <label for="10C">10C</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox"  id="10D" [(ngModel)]="isChecked10d" (change)="checkValue(isChecked10d,'10D')"[disabled]="alreadBookedSeats.includes('10D')"/>
+            <label for="10D">10D</label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row row--11">
+        <ion-col class="lastseat">
+          <input type="checkbox" id="11A" [(ngModel)]="isChecked11a" (change)="checkValue(isChecked11a,'11A')"[disabled]="alreadBookedSeats.includes('11A')"/>
+            <label for="11A">11A</label>
+        </ion-col>
+        <ion-col class="lastseat">
+          <input type="checkbox" id="11B" [(ngModel)]="isChecked11b" (change)="checkValue(isChecked11b,'11B')"[disabled]="alreadBookedSeats.includes('11B')"/>
+          <label for="11B">11B</label>
+        </ion-col>
+        <ion-col class="lastseat">
+          <input type="checkbox" id="11C" [(ngModel)]="isChecked11c" (change)="checkValue(isChecked11c,'11C')"[disabled]="alreadBookedSeats.includes('11C')"/>
+          <label for="11C">11C</label>
+        </ion-col>
+        <ion-col class="lastseat">
+          <input type="checkbox" id="11D" [(ngModel)]="isChecked11d" (change)="checkValue(isChecked11d,'11D')"[disabled]="alreadBookedSeats.includes('11D')"/>
+          <label for="11D">11D</label>
+        </ion-col>
+        <!-- <ion-col class="lastseat">
+          <input type="checkbox" id="10G"[(ngModel)]="isChecked10g" (change)="checkValue(isChecked10g,'10G')" [disabled]="alreadBookedSeats.includes('10G')"/>
+          <label for="10G">10G</label>
+        </ion-col>
+        <ion-col class="lastseat">
+          <input type="checkbox" id="10C" [(ngModel)]="isChecked10c" (change)="checkValue(isChecked10c,'10C')"[disabled]="alreadBookedSeats.includes('10C')"/>
+          <label for="10C">10C</label>
+        </ion-col> -->
+        <!-- <ion-col class="lastseat">
+          <input type="checkbox"  id="10D"[(ngModel)]="isChecked10d" (change)="checkValue(isChecked10d,'10D')" [disabled]="alreadBookedSeats.includes('10D')"/>
+            <label for="10D">10D</label>
+        </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </div>
+  
+  <div *ngIf="totalSeats == '24'">
+    <ion-grid class="cabin fuselage">
+      <ion-row class="row row--1">
+        <ion-col class="seat" >
+          <input type="checkbox" id="1A" [(ngModel)]="isChecked" (change)="checkValue(isChecked,'1A')"[disabled]="alreadBookedSeats.includes('1A')" />
+          <!-- <input type="checkbox" id="1A" [(ngModel)]="isChecked" (change)="checkValue(isChecked,'1A')"ng-class="{'disabled': alreadBookedSeats.includes('1A')}" /> -->
+          <label for="1A">1A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat" >
+          <input type="checkbox" id="1B" [(ngModel)]="isChecked1b" (change)="checkValue(isChecked1b,'1B')" [disabled]="alreadBookedSeats.includes('1B')" />
+          <label for="1B">1B</label>
+        </ion-col>
+        <ion-col class="seat" >
+          <input type="checkbox" id="1C" [(ngModel)]="isChecked1c" (change)="checkValue(isChecked1c,'1C')"[disabled]="alreadBookedSeats.includes('1C')"/>
+          <label for="1C">1C</label>
+        </ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="1D" [(ngModel)]="isChecked2d" (change)="checkValue(isChecked2d,'1D')"[disabled]="alreadBookedSeats.includes('1D')"/>
+            <label for="1D">1D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--2">
+        <ion-col class="seat">
+          <input type="checkbox" id="2A" [(ngModel)]="isChecked2a" (change)="checkValue(isChecked2a,'2A')"[disabled]="alreadBookedSeats.includes('2A')"/>
+            <label for="2A">2A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="2B" [(ngModel)]="isChecked2b" (change)="checkValue(isChecked2b,'2B')"[disabled]="alreadBookedSeats.includes('2B')"/>
+          <label for="2B">2B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="2C" [(ngModel)]="isChecked2c" (change)="checkValue(isChecked2c,'2C')"[disabled]="alreadBookedSeats.includes('2C')"/>
+          <label for="2C">2C</label>
+        </ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="2D" [(ngModel)]="isChecked2d" (change)="checkValue(isChecked2d,'2D')"[disabled]="alreadBookedSeats.includes('2D')"/>
+            <label for="2D">2D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--3">
+        <ion-col class="seat">
+          <input type="checkbox" id="3A" [(ngModel)]="isChecked3a" (change)="checkValue(isChecked3a,'3A')"[disabled]="alreadBookedSeats.includes('3A')"/>
+            <label for="3A">3A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="3B" [(ngModel)]="isChecked3b" (change)="checkValue(isChecked3b,'3B')"[disabled]="alreadBookedSeats.includes('3B')"/>
+          <label for="3B">3B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="3C" [(ngModel)]="isChecked3c" (change)="checkValue(isChecked3c,'3C')"[disabled]="alreadBookedSeats.includes('3C')"/>
+          <label for="3C">3C</label>
+        </ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="3D" [(ngModel)]="isChecked3d" (change)="checkValue(isChecked3d,'3D')"[disabled]="alreadBookedSeats.includes('3D')"/>
+            <label for="3D">3D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--4">
+        <ion-col class="seat">
+          <input type="checkbox" id="4A"[(ngModel)]="isChecked4a" (change)="checkValue(isChecked4a,'4A')" [disabled]="alreadBookedSeats.includes('4A')"/>
+            <label for="4A">4A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="4B" [(ngModel)]="isChecked4b" (change)="checkValue(isChecked4b,'4B')"[disabled]="alreadBookedSeats.includes('4B')"/>
+          <label for="4B">4B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="4C" [(ngModel)]="isChecked4c" (change)="checkValue(isChecked4c,'4C')"[disabled]="alreadBookedSeats.includes('4C')"/>
+          <label for="4C">4C</label>
+        </ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="4D" [(ngModel)]="isChecked4d" (change)="checkValue(isChecked4d,'4D')"[disabled]="alreadBookedSeats.includes('4D')"/>
+            <label for="4D">4D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--5">
+        <ion-col class="seat">
+          <input type="checkbox" id="5A" [(ngModel)]="isChecked5a" (change)="checkValue(isChecked5a,'5A')"[disabled]="alreadBookedSeats.includes('5A')"/>
+            <label for="5A">5A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="5B" [(ngModel)]="isChecked5b" (change)="checkValue(isChecked5b,'5B')"[disabled]="alreadBookedSeats.includes('5B')"/>
+          <label for="5B">5B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="5C" [(ngModel)]="isChecked5c" (change)="checkValue(isChecked5c,'5C')"[disabled]="alreadBookedSeats.includes('5C')"/>
+          <label for="5C">5C</label>
+        </ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="5D" [(ngModel)]="isChecked5d" (change)="checkValue(isChecked5d,'5D')"[disabled]="alreadBookedSeats.includes('5D')"/>
+            <label for="5D">5D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--6">
+        <ion-col class="seat">
+          <input type="checkbox" id="6A" [(ngModel)]="isChecked6a" (change)="checkValue(isChecked6a,'6A')"[disabled]="alreadBookedSeats.includes('6A')"/>
+            <label for="6A">6A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="6B" [(ngModel)]="isChecked6b" (change)="checkValue(isChecked6b,'6B')"[disabled]="alreadBookedSeats.includes('6B')"/>
+          <label for="6B">6B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="6C" [(ngModel)]="isChecked6c" (change)="checkValue(isChecked6c,'6C')"[disabled]="alreadBookedSeats.includes('6C')"/>
+          <label for="6C">6C</label>
+        </ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="6D" [(ngModel)]="isChecked6d" (change)="checkValue(isChecked6d,'6D')"[disabled]="alreadBookedSeats.includes('6D')"/>
+            <label for="6D">6D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--7">
+        <ion-col class="seat">
+          <input type="checkbox" id="7A" [(ngModel)]="isChecked7a" (change)="checkValue(isChecked7a,'7A')"[disabled]="alreadBookedSeats.includes('7A')"/>
+            <label for="7A">7A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="7B"[(ngModel)]="isChecked7b" (change)="checkValue(isChecked7b,'7B')" [disabled]="alreadBookedSeats.includes('7B')"/>
+          <label for="7B">7B</label>
+        </ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="7C" [(ngModel)]="isChecked7c" (change)="checkValue(isChecked7c,'7C')"[disabled]="alreadBookedSeats.includes('7C')"/>
+          <label for="7C">7C</label>
+        </ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="7D" [(ngModel)]="isChecked7d" (change)="checkValue(isChecked7d,'7D')"[disabled]="alreadBookedSeats.includes('7D')"/>
+            <label for="7D">7D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--7">
+        <ion-col class="twoByOneLastseat">
+          <input type="checkbox" id="8A" [(ngModel)]="isChecked8a" (change)="checkValue(isChecked8a,'8A')"[disabled]="alreadBookedSeats.includes('8A')"/>
+            <label for="8A">8A</label>
+        </ion-col>
+        
+        <ion-col class="twoByOneLastseat">
+          <input type="checkbox" id="8B"[(ngModel)]="isChecked8b" (change)="checkValue(isChecked8b,'8B')" [disabled]="alreadBookedSeats.includes('8B')"/>
+          <label for="8B">8B</label>
+        </ion-col>
+        <ion-col class="twoByOneLastseat">
+          <input type="checkbox" id="8C" [(ngModel)]="isChecked8c" (change)="checkValue(isChecked8c,'8C')"[disabled]="alreadBookedSeats.includes('8C')"/>
+          <label for="8C">8C</label>
+        </ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="7D" [(ngModel)]="isChecked7d" (change)="checkValue(isChecked7d,'7D')"[disabled]="alreadBookedSeats.includes('7D')"/>
+            <label for="7D">7D</label>
+        </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div *ngIf="totalSeats == '18'">
+    <ion-grid class="cabin fuselage">
+      <ion-row class="row row--1">
+        <ion-col></ion-col>
+        <ion-col class="seat" >
+          <input type="checkbox" id="1A" [(ngModel)]="isChecked" (change)="checkValue(isChecked,'1A')"[disabled]="alreadBookedSeats.includes('1A')" />
+          <!-- <input type="checkbox" id="1A" [(ngModel)]="isChecked" (change)="checkValue(isChecked,'1A')"ng-class="{'disabled': alreadBookedSeats.includes('1A')}" /> -->
+          <label for="1A">1A</label>
+        </ion-col>
+        
+        <ion-col class="seat" >
+          <input type="checkbox" id="1B" [(ngModel)]="isChecked1b" (change)="checkValue(isChecked1b,'1B')" [disabled]="alreadBookedSeats.includes('1B')" />
+          <label for="1B">1B</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="1D" [(ngModel)]="isChecked2d" (change)="checkValue(isChecked2d,'1D')"[disabled]="alreadBookedSeats.includes('1D')"/>
+            <label for="1D">1D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--2">
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="2A" [(ngModel)]="isChecked2a" (change)="checkValue(isChecked2a,'2A')"[disabled]="alreadBookedSeats.includes('2A')"/>
+            <label for="2A">2A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="2B" [(ngModel)]="isChecked2b" (change)="checkValue(isChecked2b,'2B')"[disabled]="alreadBookedSeats.includes('2B')"/>
+          <label for="2B">2B</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="2D" [(ngModel)]="isChecked2d" (change)="checkValue(isChecked2d,'2D')"[disabled]="alreadBookedSeats.includes('2D')"/>
+            <label for="2D">2D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--3">
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="3A" [(ngModel)]="isChecked3a" (change)="checkValue(isChecked3a,'3A')"[disabled]="alreadBookedSeats.includes('3A')"/>
+            <label for="3A">3A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="3B" [(ngModel)]="isChecked3b" (change)="checkValue(isChecked3b,'3B')"[disabled]="alreadBookedSeats.includes('3B')"/>
+          <label for="3B">3B</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="3D" [(ngModel)]="isChecked3d" (change)="checkValue(isChecked3d,'3D')"[disabled]="alreadBookedSeats.includes('3D')"/>
+            <label for="3D">3D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--4">
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="4A"[(ngModel)]="isChecked4a" (change)="checkValue(isChecked4a,'4A')" [disabled]="alreadBookedSeats.includes('4A')"/>
+            <label for="4A">4A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="4B" [(ngModel)]="isChecked4b" (change)="checkValue(isChecked4b,'4B')"[disabled]="alreadBookedSeats.includes('4B')"/>
+          <label for="4B">4B</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="4D" [(ngModel)]="isChecked4d" (change)="checkValue(isChecked4d,'4D')"[disabled]="alreadBookedSeats.includes('4D')"/>
+            <label for="4D">4D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--5">
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="5A" [(ngModel)]="isChecked5a" (change)="checkValue(isChecked5a,'5A')"[disabled]="alreadBookedSeats.includes('5A')"/>
+            <label for="5A">5A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="5B" [(ngModel)]="isChecked5b" (change)="checkValue(isChecked5b,'5B')"[disabled]="alreadBookedSeats.includes('5B')"/>
+          <label for="5B">5B</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="5D" [(ngModel)]="isChecked5d" (change)="checkValue(isChecked5d,'5D')"[disabled]="alreadBookedSeats.includes('5D')"/>
+            <label for="5D">5D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--6">
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="6A" [(ngModel)]="isChecked6a" (change)="checkValue(isChecked6a,'6A')"[disabled]="alreadBookedSeats.includes('6A')"/>
+            <label for="6A">6A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="6B" [(ngModel)]="isChecked6b" (change)="checkValue(isChecked6b,'6B')"[disabled]="alreadBookedSeats.includes('6B')"/>
+          <label for="6B">6B</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="6D" [(ngModel)]="isChecked6d" (change)="checkValue(isChecked6d,'6D')"[disabled]="alreadBookedSeats.includes('6D')"/>
+            <label for="6D">6D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--7">
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="7A" [(ngModel)]="isChecked7a" (change)="checkValue(isChecked7a,'7A')"[disabled]="alreadBookedSeats.includes('7A')"/>
+            <label for="7A">7A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="7B"[(ngModel)]="isChecked7b" (change)="checkValue(isChecked7b,'7B')" [disabled]="alreadBookedSeats.includes('7B')"/>
+          <label for="7B">7B</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="7D" [(ngModel)]="isChecked7d" (change)="checkValue(isChecked7d,'7D')"[disabled]="alreadBookedSeats.includes('7D')"/>
+            <label for="7D">7D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--7">
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="8A" [(ngModel)]="isChecked8a" (change)="checkValue(isChecked8a,'8A')"[disabled]="alreadBookedSeats.includes('8A')"/>
+            <label for="8A">8A</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col class="seat">
+          <input type="checkbox" id="8B"[(ngModel)]="isChecked8b" (change)="checkValue(isChecked8b,'8B')" [disabled]="alreadBookedSeats.includes('8B')"/>
+          <label for="8B">8B</label>
+        </ion-col>
+        <ion-col></ion-col>
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="7D" [(ngModel)]="isChecked7d" (change)="checkValue(isChecked7d,'7D')"[disabled]="alreadBookedSeats.includes('7D')"/>
+            <label for="7D">7D</label>
+        </ion-col> -->
+      </ion-row>
+      <ion-row class="row row--7">
+        <ion-col class="oneByOneLastseat">
+          <input type="checkbox" id="9A" [(ngModel)]="isChecked9a" (change)="checkValue(isChecked9a,'9A')"[disabled]="alreadBookedSeats.includes('9A')"/>
+            <label for="9A">9A</label>
+        </ion-col>
+        
+        <ion-col class="oneByOneLastseat">
+          <input type="checkbox" id="9B"[(ngModel)]="isChecked9b" (change)="checkValue(isChecked9b,'9B')" [disabled]="alreadBookedSeats.includes('9B')"/>
+          <label for="9B">9B</label>
+        </ion-col>
+        <!-- <ion-col class="oneByOneLastseat">
+          <input type="checkbox" id="7C" [(ngModel)]="isChecked7c" (change)="checkValue(isChecked7c,'7C')"[disabled]="alreadBookedSeats.includes('7C')"/>
+          <label for="7C">7C</label>
+        </ion-col> -->
+        <!-- <ion-col class="seat">
+          <input type="checkbox"  id="7D" [(ngModel)]="isChecked7d" (change)="checkValue(isChecked7d,'7D')"[disabled]="alreadBookedSeats.includes('7D')"/>
+            <label for="7D">7D</label>
+        </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </div>
+  </div>
+</ion-col>
+<ion-col size-lg = "6" size-xs="12">
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col size = "12" >
+          <ion-label color="light" >Price per ticket =  </ion-label> 
+           <ion-label color="light" >
+             {{pricePerSeat}}
+           </ion-label>
+         </ion-col> 
+        <ion-col size = "12" >
+         <ion-label color="light" >Tickets = </ion-label> 
+          <ion-label color="light" *ngFor = "let seat of bookedSeats">
+            {{seat}}
+          </ion-label>
+        </ion-col>
+        <ion-col size = "12">
+          <ion-label color="light" >Total price = </ion-label> 
+          <ion-label color="light" >
+            ${{price}}
+          </ion-label>
+          
+          
+        </ion-col> 
+        
+      </ion-row>
+     
+       
+        
+        <ion-row>
+        <ion-col size = "12">
+          <ion-item>
+            <ion-label color ="light" position = "floating">
+              Customer Name
+            </ion-label>
+            <ion-input type ="text"color ="light"  [(ngModel)]="customerName" >
+            </ion-input>
+          </ion-item>
+        </ion-col>
+   
+        <ion-col size = "12">
+          <ion-item>
+            <ion-label color ="light" position = "floating">
+              Customer Phone
+            </ion-label>
+            <ion-input appPhoneMask type ="tel" maxlength="12" color ="light"  [(ngModel)]="customerPhone" >
+            </ion-input>
+          </ion-item>
+        </ion-col>
+     
+      <ion-col size = "12">
+        <ion-datetime  displayFormat="DD-MMM-YYYY" min="2020" max="2025" placeholder="Select Date" [(ngModel)]="timingValue" [ngModelOptions]="{ standalone: true }"></ion-datetime>
+      <ion-button expand="full" shape="round" [disabled]="price==0" (click)="saveData()">
+        <h3>submit</h3></ion-button>
+      </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-col>
+</ion-row>
+</ion-grid>
+    <div>
+      <ion-grid>
+        
+      </ion-grid>
+    </div>
+</ion-content>
+<!-- <div class="plane">
+  <div class="cockpit">
+    <h1>Please select a seat</h1>
+  </div>
+
+
+
+
+  <ion-grid class="cabin fuselage">
+    <ion-row class="row row--1">
+      <ion-col class="seat">
+        <input type="checkbox" id="1A" [(ngModel)]="isChecked" (change)="checkValue(isChecked,'1A')"[disabled]="alreadBookedSeats.includes('1A')" />
+
+        <label for="1A">1A</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="1B" [(ngModel)]="isChecked1b" (change)="checkValue(isChecked1b,'1B')" [disabled]="alreadBookedSeats.includes('1B')" />
+        <label for="1B">1B</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="1C" [(ngModel)]="isChecked1c" (change)="checkValue(isChecked1c,'1C')"[disabled]="alreadBookedSeats.includes('1C')"/>
+        <label for="1C">1C</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox"  id="1D" [(ngModel)]="isChecked2d" (change)="checkValue(isChecked2d,'1D')"[disabled]="alreadBookedSeats.includes('1D')"/>
+          <label for="1D">1D</label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row row--2">
+      <ion-col class="seat">
+        <input type="checkbox" id="2A" [(ngModel)]="isChecked2a" (change)="checkValue(isChecked2a,'2A')"[disabled]="alreadBookedSeats.includes('2A')"/>
+          <label for="2A">2A</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="2B" [(ngModel)]="isChecked2b" (change)="checkValue(isChecked2b,'2B')"[disabled]="alreadBookedSeats.includes('2B')"/>
+        <label for="2B">2B</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="2C" [(ngModel)]="isChecked2c" (change)="checkValue(isChecked2c,'2C')"[disabled]="alreadBookedSeats.includes('2C')"/>
+        <label for="2C">2C</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox"  id="2D" [(ngModel)]="isChecked2d" (change)="checkValue(isChecked2d,'2D')"[disabled]="alreadBookedSeats.includes('2D')"/>
+          <label for="2D">2D</label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row row--3">
+      <ion-col class="seat">
+        <input type="checkbox" id="3A" [(ngModel)]="isChecked3a" (change)="checkValue(isChecked3a,'3A')"[disabled]="alreadBookedSeats.includes('3A')"/>
+          <label for="3A">3A</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="3B" [(ngModel)]="isChecked3b" (change)="checkValue(isChecked3b,'3B')"[disabled]="alreadBookedSeats.includes('3B')"/>
+        <label for="3B">3B</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="3C" [(ngModel)]="isChecked3c" (change)="checkValue(isChecked3c,'3C')"[disabled]="alreadBookedSeats.includes('3C')"/>
+        <label for="3C">3C</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox"  id="3D" [(ngModel)]="isChecked3d" (change)="checkValue(isChecked3d,'3D')"[disabled]="alreadBookedSeats.includes('3D')"/>
+          <label for="3D">3D</label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row row--4">
+      <ion-col class="seat">
+        <input type="checkbox" id="4A"[(ngModel)]="isChecked4a" (change)="checkValue(isChecked4a,'4A')" [disabled]="alreadBookedSeats.includes('4A')"/>
+          <label for="4A">4A</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="4B" [(ngModel)]="isChecked4b" (change)="checkValue(isChecked4b,'4B')"[disabled]="alreadBookedSeats.includes('4B')"/>
+        <label for="4B">4B</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="4C" [(ngModel)]="isChecked4c" (change)="checkValue(isChecked4c,'4C')"[disabled]="alreadBookedSeats.includes('4C')"/>
+        <label for="4C">4C</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox"  id="4D" [(ngModel)]="isChecked4d" (change)="checkValue(isChecked4d,'4D')"[disabled]="alreadBookedSeats.includes('4D')"/>
+          <label for="4D">4D</label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row row--5">
+      <ion-col class="seat">
+        <input type="checkbox" id="5A" [(ngModel)]="isChecked5a" (change)="checkValue(isChecked5a,'5A')"[disabled]="alreadBookedSeats.includes('5A')"/>
+          <label for="5A">5A</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="5B" [(ngModel)]="isChecked5b" (change)="checkValue(isChecked5b,'5B')"[disabled]="alreadBookedSeats.includes('5B')"/>
+        <label for="5B">5B</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="5C" [(ngModel)]="isChecked5c" (change)="checkValue(isChecked5c,'5C')"[disabled]="alreadBookedSeats.includes('5C')"/>
+        <label for="5C">5C</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox"  id="5D" [(ngModel)]="isChecked5d" (change)="checkValue(isChecked5d,'5D')"[disabled]="alreadBookedSeats.includes('5D')"/>
+          <label for="5D">5D</label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row row--6">
+      <ion-col class="seat">
+        <input type="checkbox" id="6A" [(ngModel)]="isChecked6a" (change)="checkValue(isChecked6a,'6A')"[disabled]="alreadBookedSeats.includes('6A')"/>
+          <label for="6A">6A</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="6B" [(ngModel)]="isChecked6b" (change)="checkValue(isChecked6b,'6B')"[disabled]="alreadBookedSeats.includes('6B')"/>
+        <label for="6B">6B</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="6C" [(ngModel)]="isChecked6c" (change)="checkValue(isChecked6c,'6C')"[disabled]="alreadBookedSeats.includes('6C')"/>
+        <label for="6C">6C</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox"  id="6D" [(ngModel)]="isChecked6d" (change)="checkValue(isChecked6d,'6D')"[disabled]="alreadBookedSeats.includes('6D')"/>
+          <label for="6D">6D</label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row row--7">
+      <ion-col class="seat">
+        <input type="checkbox" id="7A" [(ngModel)]="isChecked7a" (change)="checkValue(isChecked7a,'7A')"[disabled]="alreadBookedSeats.includes('7A')"/>
+          <label for="7A">7A</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="7B"[(ngModel)]="isChecked7b" (change)="checkValue(isChecked7b,'7B')" [disabled]="alreadBookedSeats.includes('7B')"/>
+        <label for="7B">7B</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="7C" [(ngModel)]="isChecked7c" (change)="checkValue(isChecked7c,'7C')"[disabled]="alreadBookedSeats.includes('7C')"/>
+        <label for="7C">7C</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox"  id="7D" [(ngModel)]="isChecked7d" (change)="checkValue(isChecked7d,'7D')"[disabled]="alreadBookedSeats.includes('7D')"/>
+          <label for="7D">7D</label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row row--8">
+      <ion-col class="seat">
+        <input type="checkbox" id="8A" [(ngModel)]="isChecked8a" (change)="checkValue(isChecked8a,'8A')"[disabled]="alreadBookedSeats.includes('8A')"/>
+          <label for="8A">8A</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="8B" [(ngModel)]="isChecked8b" (change)="checkValue(isChecked8b,'8B')"[disabled]="alreadBookedSeats.includes('8B')"/>
+        <label for="8B">8B</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="8C"[(ngModel)]="isChecked8c" (change)="checkValue(isChecked8c,'8C')" [disabled]="alreadBookedSeats.includes('8C')"/>
+        <label for="8C">8C</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox"  id="8D" [(ngModel)]="isChecked8d" (change)="checkValue(isChecked8d,'8D')"[disabled]="alreadBookedSeats.includes('8D')"/>
+          <label for="8D">8D</label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row row--9">
+      <ion-col class="seat">
+        <input type="checkbox" id="9A"[(ngModel)]="isChecked9a" (change)="checkValue(isChecked9a,'9A')"[disabled]="alreadBookedSeats.includes('9A')"/>
+          <label for="9A">9A</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="9B"[(ngModel)]="isChecked9b" (change)="checkValue(isChecked9b,'9B')" [disabled]="alreadBookedSeats.includes('9B')"/>
+        <label for="9B">9B</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox" id="9C"[(ngModel)]="isChecked9c" (change)="checkValue(isChecked9c,'9C')" [disabled]="alreadBookedSeats.includes('9C')"/>
+        <label for="9C">9C</label>
+      </ion-col>
+      <ion-col class="seat">
+        <input type="checkbox"  id="9D" [(ngModel)]="isChecked9d" (change)="checkValue(isChecked9d,'9D')"[disabled]="alreadBookedSeats.includes('9D')"/>
+          <label for="9D">9D</label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row row--10">
+      <ion-col class="lastseat">
+        <input type="checkbox" id="10A" [(ngModel)]="isChecked10a" (change)="checkValue(isChecked10a,'10A')"[disabled]="alreadBookedSeats.includes('10A')"/>
+          <label for="10A">10A</label>
+      </ion-col>
+      <ion-col class="lastseat">
+        <input type="checkbox" id="10B" [(ngModel)]="isChecked10b" (change)="checkValue(isChecked10b,'10B')"[disabled]="alreadBookedSeats.includes('10B')"/>
+        <label for="10B">10B</label>
+      </ion-col>
+      <ion-col class="lastseat">
+        <input type="checkbox" id="10E" [(ngModel)]="isChecked10e" (change)="checkValue(isChecked10e,'10E')"[disabled]="alreadBookedSeats.includes('10E')"/>
+        <label for="10E">10E</label>
+      </ion-col>
+      <ion-col class="lastseat">
+        <input type="checkbox" id="10F" [(ngModel)]="isChecked10f" (change)="checkValue(isChecked10f,'10F')"[disabled]="alreadBookedSeats.includes('10F')"/>
+        <label for="10F">10F</label>
+      </ion-col>
+      <ion-col class="lastseat">
+        <input type="checkbox" id="10G"[(ngModel)]="isChecked10g" (change)="checkValue(isChecked10g,'10G')" [disabled]="alreadBookedSeats.includes('10G')"/>
+        <label for="10G">10G</label>
+      </ion-col>
+      <ion-col class="lastseat">
+        <input type="checkbox" id="10C" [(ngModel)]="isChecked10c" (change)="checkValue(isChecked10c,'10C')"[disabled]="alreadBookedSeats.includes('10C')"/>
+        <label for="10C">10C</label>
+      </ion-col>
+      <ion-col class="lastseat">
+        <input type="checkbox"  id="10D"[(ngModel)]="isChecked10d" (change)="checkValue(isChecked10d,'10D')" [disabled]="alreadBookedSeats.includes('10D')"/>
+          <label for="10D">10D</label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </div> -->

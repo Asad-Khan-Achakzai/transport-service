@@ -1,0 +1,101 @@
+
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <div id="title">
+      <ion-title>invoice</ion-title>
+    </div>
+    </ion-toolbar>
+  </ion-header>
+  <div *ngIf="!loading">
+  <ion-card >
+    <ion-header>
+      <ion-toolbar  >
+       <ion-buttons slot="primary">
+         <ion-button (click)="edit()" >
+          <ion-icon color="light" name="trash" slot="icon-only"></ion-icon>
+           <!-- <ion-icon name="trash-outline" slot="icon-only"></ion-icon> -->
+         </ion-button>
+       </ion-buttons>
+       
+      </ion-toolbar>
+    </ion-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label class ="labels">Name :</ion-label>
+        </ion-col>
+        <ion-col size="6">
+          <ion-label class ="labels">{{ customerName }} </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label class ="labels">Seats :</ion-label>
+        </ion-col>
+        <ion-col size="6">
+        
+          <ion-label class ="labels" id="label" *ngFor = "let seat of seats" >{{ seat }}</ion-label>
+          <!-- <ion-label  id="label"  *ngFor = "let seat of seats" >{{ seat }}</ion-label> -->
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label class ="labels">number of seats :</ion-label>
+        </ion-col>
+        <ion-col size="6">
+          <ion-label class ="labels">{{ numberOfSeats }} </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label class ="labels">Total Price :</ion-label>
+        </ion-col>
+        <ion-col size="6">
+          <ion-label class ="labels">${{ price }} </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label class ="labels">Date of journey :</ion-label>
+        </ion-col>
+        <ion-col size="6">
+          <ion-label class ="labels">${{ date }} </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label class ="labels">Booking ID :</ion-label>
+        </ion-col>
+        <ion-col size="6">
+          <ion-label class ="labels">{{ bookingId }} </ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card>
+</div>
+  <div *ngIf="loading">
+    <ion-card>
+      
+      <ion-item *ngFor="let item of skeletonlist">
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+  <div id="wrapper">
+    <ion-button [disabled]="disabled" expand="full" shape="round" class="labels" ion-button (click)='makePdf()' >Generate PDF
+      
+    </ion-button>
+    </div>
+</ion-content>

@@ -5,80 +5,117 @@ import { DeprecatedCurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 //import {CustomerService} from '../../sdk/custom/customer.service';
-import {ServiceProvidersService} from '../../sdk/custom/service-providers.service';
-import {Routes} from '../../sdk/custom/service-providers.service';
+import { ServiceProvidersService } from '../../sdk/custom/service-providers.service';
+import { Routes } from '../../sdk/custom/service-providers.service';
 import { PopoverController } from '@ionic/angular';
+import { DatePipe } from '@angular/common'
+
 @Component({
   selector: 'app-provider-services',
   templateUrl: './provider-services.component.html',
   styleUrls: ['./provider-services.component.scss'],
 })
 export class ProviderServicesComponent implements OnInit {
-loading = false;
+  loading = false;
   Form: FormGroup;
   Departure: string;
   Destination: string;
   departureValue: string;
-  destinationValue:string;
-  timingValue:string;
-  seatValue:number;
-  routesCopy:[];
-  from:string;
+  destinationValue: string;
+  timingValue;
+  seatValue: string;
+  routesCopy: [];
+  from: string;
   buttonDisabled = true;
   firstIndexOfArrayDeleted = false;
+  time;
+  doneButtonDisable = true;
+  numberOfSeats: number;
+  pricePerSeat:number;
   //routes: Routes;
   routesArray: Routes[];
-cities = ['quetta','peshawer'];
-  constructor(private popoverCtrl: PopoverController, private formBuilder: FormBuilder,private router :Router,private modalCtrl: ModalController,private serviceProviderServices: ServiceProvidersService) {
+  cities = ['quetta', 'peshawer'];
+  constructor(public datepipe: DatePipe, private popoverCtrl: PopoverController, private formBuilder: FormBuilder, private router: Router, private modalCtrl: ModalController, private serviceProviderServices: ServiceProvidersService) {
+
     this.Form = this.formBuilder.group({
-      routes : [[
+      routes: [[
       ]],
-      to:[null,[Validators.required]],
-      from:[null,[Validators.required]]
+      to: [null, [Validators.required]],
+      from: [null, [Validators.required]]
     });
     //this.routes = new Routes();
-    this.routesArray = [new Routes] ;
-    
+    this.routesArray = [new Routes];
+
   }
   ngOnInit() {
-    
+
   }
-  nextButton(){
-   // console.log(this.routesArray);
+  nextButton() {
+    console.log(this.routesArray);
     this.serviceProviderServices.sendServices(this.routesArray);
-      this.modalCtrl.dismiss({
-        dismissed: true
-      });
-      }
+    this.modalCtrl.dismiss({
+      dismissed: true
+    });
+  }
 
   //entering to the list
 
-  enterToTheList(){
+  enterToTheList() {
+
+    console.log('seat = ', this.seatValue);
+    //converting time to a readeable formate
+    this.timingValue = new Date(this.timingValue);
+    this.timingValue = this.datepipe.transform(this.timingValue, 'shortTime');
+    //    console.log('time= ',this.timingValue);
     //deleting first index
-    if(!this.firstIndexOfArrayDeleted){
-      this.routesArray.splice(0,1);
+    if (!this.firstIndexOfArrayDeleted) {
+      this.routesArray.splice(0, 1);
       this.firstIndexOfArrayDeleted = true;
     }
-  //  pushing routes to the array
-    this.routesArray.push({timing: this.timingValue,totalSeats: this.seatValue,availableSeats:this.seatValue,departure: this.departureValue,destination:this.destinationValue});
-    
-      
+    //  pushing routes to the array
+    this.routesArray.push({ timing: this.timingValue, totalSeats: this.numberOfSeats, availableSeats: this.numberOfSeats,priceperSeat:this.pricePerSeat, departure: this.departureValue, destination: this.destinationValue });
+
+
     console.log(this.routesArray);
-    this.Form.value['routes'].push({Departure: this.departureValue , Destination : this.destinationValue});
+    this.Form.value['routes'].push({ Departure: this.departureValue, Destination: this.destinationValue });
     this.routesCopy = this.Form.controls['routes'].value;
 
     this.departureValue = '';
     this.destinationValue = '';
+    this.timingValue = '';
+    this.seatValue = ' ';
+    this.pricePerSeat = 0;
     this.buttonDisabled = true;
-    console.log('RoutesCopy  = ',this.routesCopy);
+    this.doneButtonDisable = false;
+    console.log('RoutesCopy  = ', this.routesCopy);
 
   }
-  delete(id: number): void{
-    this.routesCopy.splice(id, 1);  }
-    test(event){
-      if(this.departureValue != '' && this.destinationValue != ''&& this.timingValue != '' && this.seatValue != 0)
-           this.buttonDisabled = false;
-      }
+  delete(id: number): void {
+    this.routesCopy.splice(id, 1);
+    this.routesArray.splice(id, 1);
+    console.log('Routess   ', this.routesArray);
+    console.log('routesCopy   ', this.routesCopy);
+    if (this.routesArray.length === 0) {
+      this.doneButtonDisable = true;
+    }
+  }
+  optionsFn() {
+    if (this.departureValue != '' && this.destinationValue != '' && this.timingValue != '' && this.seatValue != ''&& this.pricePerSeat != null)
+      this.buttonDisabled = false;
+    if (this.seatValue === '2/2') {
+      this.numberOfSeats = 44;
+    } else if (this.seatValue === '2/1') {
+      this.numberOfSeats = 24;
+    } else if (this.seatValue === '1/1') {
+      this.numberOfSeats = 18;
+    } else {
+      this.buttonDisabled = false;
+    }
+  }
+
+  closeModal() {
+    this.modalCtrl.dismiss();
+  }
   // delet(item)
   // {
   //   //console.log("dlete Function");
@@ -97,4 +134,4 @@ cities = ['quetta','peshawer'];
   //     }
   //   );
   //  }
-  }
+}

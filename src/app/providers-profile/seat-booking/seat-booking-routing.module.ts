@@ -7,6 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: SeatBookingPage
+  },
+
+  {
+    path: 'invoice',
+    loadChildren: () => import('./invoice/invoice.module').then( m => m.InvoicePageModule)
   }
 ];
 

@@ -12,7 +12,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor } from './sdk/core/httpinterceptor.service';
 import { NgIoModule, NgIoConfig } from 'ng-io';
-const config: NgIoConfig = { url: 'http://localhost:3001', options: {} };
+import { DatePipe } from '@angular/common'
+import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+const config: NgIoConfig = { url: 'http://192.168.43.249:3001', options: {} };
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,12 +28,17 @@ const config: NgIoConfig = { url: 'http://localhost:3001', options: {} };
   providers: [
     StatusBar,
     SplashScreen,
+    DatePipe,
+    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
     },
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    File,
+    FileOpener
+   
   ],
   bootstrap: [AppComponent]
 })

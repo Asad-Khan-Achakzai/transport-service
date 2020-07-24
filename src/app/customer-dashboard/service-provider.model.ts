@@ -12,4 +12,5 @@ export interface serviceProvider {
     servicesArray: Routes[];
     companyName: string;
     officeLocation: string;
+    imageUrl:string;
   }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ServiceProvidersService } from 'src/app/sdk/custom/service-providers.service';
 import { serviceProvider } from '../service-provider.model';
+import { MenuController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-search-company',
@@ -12,14 +13,22 @@ export class SearchCompanyPage implements OnInit {
   Form: FormGroup;
   serviceProviderInfo: serviceProvider[];
   oldServiceProviderInfo: serviceProvider[];
+  loading = false;
+  skeletonlist = [1, 2, 3, 4, 5];
   // departs = 's';
   // dests = 'd';
-  constructor(private formBuilder: FormBuilder, private serviceProvidersService: ServiceProvidersService) { }
+  constructor(public toastController: ToastController,private menu: MenuController,private formBuilder: FormBuilder, private serviceProvidersService: ServiceProvidersService) { }
 
   ngOnInit() {
     this.formInitializer();
     this.fillArray();
   }
+  ionViewDidEnter() {
+   
+    this.menu.enable(true, 'first');
+    this.menu.enable(false, 'custom');
+    this.menu.enable(false, 'end');
+  }   
   public optionsFn(): void { //here item is an object 
   }
   formInitializer() {
@@ -27,6 +36,13 @@ export class SearchCompanyPage implements OnInit {
       departureValue: [null, [Validators.required]],
       destinationValue: [null, [Validators.required]]
     });
+  }
+  clear(){
+    this.serviceProviderInfo = this.oldServiceProviderInfo;
+    this.Form.controls['departureValue'].setValue('');
+    this.Form.controls['destinationValue'].setValue('');
+    //this.Form.setValue['departureValue'] = '';
+    //this.Form.setValue['destinationValue'] = '';
   }
   searchButton() {
     let departs = this.Form.value['departureValue'];
@@ -78,15 +94,24 @@ export class SearchCompanyPage implements OnInit {
   // }
 
   fillArray() {
+    this.loading = true;
     this.serviceProvidersService.getAllServiceProvider().subscribe(
       data => {
         //  console.log('got response from server', data);
+        this.loading = false;
+        console.log('all serviceProviders =',this.oldServiceProviderInfo);
         this.oldServiceProviderInfo = data.data.docs;
         this.serviceProviderInfo = this.oldServiceProviderInfo;
         this.serviceProvidersService.filloldServiceProviderInfo(this.serviceProviderInfo);
       },
       async error => {
-        // this.loading = false;
+         this.loading = false;
+         const toast = await this.toastController.create({
+          message: error.error.message,
+         // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+        toast.present();
         console.log('error');
       });
     //   this.oldServiceProviderInfo = await this.serviceProvidersService.getAllProviders();

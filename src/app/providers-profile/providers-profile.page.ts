@@ -27,36 +27,77 @@ export class ProvidersProfilePage implements OnInit {
   routesArr: Routes[];
   segment = 0;  
   providerID;
+  image:string;
 @ViewChild('slides', { static: true }) slider: IonSlides;  
   constructor(private chatService: ChatServiceService,private socket: SocketIo,private customerService:CustomersService,private activatedRoute: ActivatedRoute, private router: Router,private serviceProvidersService: ServiceProvidersService) {
     this.routesArr = [new Routes];
    }
 
-  ngOnInit() {
-    this.activatedRoute.paramMap.subscribe(paramMap =>{
-      if(!paramMap.has('providerID')){
-        return;
-      }
+  async ngOnInit() {
+  
+    let id = await this.customerService.getproviderIdForProviderProfile();
+    this.getServiceProvider(id);
+
+    // this.activatedRoute.paramMap.subscribe(paramMap =>{
+    //   if(!paramMap.has('providerID')){
+    //     return;
+    //   }
       
-      this.providerID =  paramMap.get('providerID');
-      this.serviceProviderInfo = this.serviceProvidersService.getSingleProvider(this.providerID);
-      //console.log("from profile",this.provider);
-      console.log('object = ',this.serviceProviderInfo)
-      this.email = this.serviceProviderInfo.email;
-      this.userName = this.serviceProviderInfo.username;
-      this.phone = this.serviceProviderInfo.phone;
-      this.cnic = this.serviceProviderInfo.cnic;
-      this.cities = this.serviceProviderInfo.citiesArray;
-      this.routes = this.serviceProviderInfo.servicesArray;
-      this.companyName = this.serviceProviderInfo.companyName;
-      this.officeLocation = this.serviceProviderInfo.officeLocation;
-      this.routesArr = this.serviceProviderInfo.servicesArray;
-      this.email = this.serviceProviderInfo.email;
-      this.userName = this.serviceProviderInfo.username;
-      this.phone = this.serviceProviderInfo.phone;
-      this.cnic = this.serviceProviderInfo.cnic
-    });
+    //   this.providerID =  paramMap.get('providerID');
+    //   this.serviceProviderInfo = this.serviceProvidersService.getSingleProvider(this.providerID);
+    //   //console.log("from profile",this.provider);
+    //   console.log('object = ',this.serviceProviderInfo)
+    //   this.email = this.serviceProviderInfo.email;
+    //   this.userName = this.serviceProviderInfo.username;
+    //   this.phone = this.serviceProviderInfo.phone;
+    //   this.cnic = this.serviceProviderInfo.cnic;
+    //   this.cities = this.serviceProviderInfo.citiesArray;
+    //   this.routes = this.serviceProviderInfo.servicesArray;
+    //   this.companyName = this.serviceProviderInfo.companyName;
+    //   this.officeLocation = this.serviceProviderInfo.officeLocation;
+    //   this.routesArr = this.serviceProviderInfo.servicesArray;
+    //   this.email = this.serviceProviderInfo.email;
+    //   this.userName = this.serviceProviderInfo.username;
+    //   this.phone = this.serviceProviderInfo.phone;
+    //   this.cnic = this.serviceProviderInfo.cnic
+    //   this.image = this.serviceProviderInfo.imageUrl;
+    // });
   }
+  async ionViewDidEnter() {
+    let id = await this.customerService.getproviderIdForProviderProfile();
+    this.getServiceProvider(id);
+  }
+  async  getServiceProvider(id){
+    const observable = await this.serviceProvidersService.getServiceProvider(id);
+    observable.subscribe(
+      data => {
+        console.log('data too =',data);
+        this.serviceProvidersService.serviceProviderPass= data.pass;
+        this.serviceProviderInfo = data.data;
+        this.providerID = this.serviceProviderInfo._id;
+       // console.log('data tosdo =',this.serviceProviderInfo);
+        this.email = this.serviceProviderInfo.email;
+        this.userName = this.serviceProviderInfo.username;
+        console.log('userName = ',this.userName);
+      //    this.id = this.serviceProviderInfo._id;
+      //    this.serviceProvidersService.saveServiceProviderImg(this.serviceProviderInfo.imageUrl);
+      //   // this.serviceProvidersService.setServiceProviderIdForInbox(this.serviceProviderInfo._id);
+      //   this.serviceProvidersService.saveServiceProviderName(this.userName);
+      //  // this.serviceProvidersService.serviceProviderNameForInbox(this.userName );
+      //   this.serviceProvidersService.serviceProviderImage_url = this.serviceProviderInfo.imageUrl;
+        this.phone = this.serviceProviderInfo.phone;
+        this.cnic = this.serviceProviderInfo.cnic;
+        this.cities = this.serviceProviderInfo.citiesArray;
+        this.routes = this.serviceProviderInfo.servicesArray;
+        this.companyName = this.serviceProviderInfo.companyName;
+        this.officeLocation = this.serviceProviderInfo.officeLocation;
+        this.routesArr = this.serviceProviderInfo.servicesArray;
+        this.image = this.serviceProviderInfo.imageUrl;
+      },
+      err => {
+        console.log('err', err);
+      });
+    }
   async segmentChanged(ev: any) {  
     await this.slider.slideTo(this.segment);  
   }  
@@ -71,7 +112,10 @@ export class ProvidersProfilePage implements OnInit {
   }
   openChatRoom(){
     //this.socket.connect();
-    this.chatService.setproviderName(this.userName,this.serviceProviderInfo._id);
+    console.log('id in ',this.providerID);
+    this.chatService.setproviderName(this.userName,this.providerID,this.image);
+    //console.log('image in provider profile = ',this.image);
+
     this.chatService.setCustomerFrom('fromProvidersProfile');
     // this.socket.emit('set-nickname',this.customerService.customerName);
     // this.socket.emit('set-reciever', this.userName);
@@ -80,10 +124,14 @@ export class ProvidersProfilePage implements OnInit {
     this.router.navigateByUrl('/chat-room');
   }
   goToBooking(route){
+    this.customerService.saveProviderBookingData(route.id,this.providerID,route.timing,route.bookedSeats,route.totalSeats,route.priceperSeat)
+    //this.customerService.saveProviderRoute(route);
     console.log('route id = ',route.id);
-    this.customerService.putrouteIdOfRoute(route.id);
-    this.customerService.putprividerIdOfRoute(this.providerID);
-    this.customerService.putrouteTiming(route.timing);
+    // this.customerService.putrouteIdOfRoute(route.id);
+    // this.customerService.putprividerIdOfRoute(this.providerID);
+    // this.customerService.putrouteTiming(route.timing);
+    
+    // this.customerService.putroute(route);
     this.router.navigateByUrl('providers-profile/seat-booking');
   }
 }

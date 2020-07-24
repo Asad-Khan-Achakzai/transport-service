@@ -6,6 +6,7 @@ import { CustomerDashboardPage } from './customer-dashboard.page';
 const routes: Routes = [
   {
     path: '',
+    
     component: CustomerDashboardPage,
     children: [
       {
@@ -16,6 +17,10 @@ const routes: Routes = [
       {
         path: 'search-company',
         loadChildren: () => import('./search-company/search-company.module').then(m => m.SearchCompanyPageModule)
+      },{
+        path:'',
+    redirectTo: '/customer-dashboard/search-route',
+    pathMatch: 'full',
       }
     ]
   }

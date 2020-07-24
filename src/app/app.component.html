@@ -1,3 +1,136 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-split-pane contentId="main">
+    <ion-menu id="customMenu" side="start" menuId="first" content-id ="main" type="overlay">
+
+      <ion-content class = "background2">
+
+        <ion-list id="inbox-list">
+          <!-- <ion-list-header>cccInbox</ion-list-header>
+          <ion-note>hi@ionicframework.com</ion-note> -->
+          <ion-card text-center class="hide-card"  >
+            <img *ngIf="customerImg && customerImg!='null'" [src]="customerImg" class="custom-avatar"/>
+            <img *ngIf="!customerImg||  customerImg=='null' " src="../assets/player104.png" class="custom-avatar" alt="">
+            <!-- <h2>Victorcodex</h2>
+            <p>Have some p tag here</p>
+            <p>I am the third guy inline here</p>
+            <hr> -->
+        </ion-card>
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item  id='pageLink' (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none"
+              detail="false" >
+              <ion-icon color="light" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label color="light">{{ p.title }}</ion-label>
+            </ion-item>
+            
+          </ion-menu-toggle>
+          <ion-item lines="none" id='pageLink' >
+            <ion-icon color="light" slot="start" name ="log-out-outline"> 
+
+            </ion-icon>
+            <ion-buttons>
+              <ion-button color="light" (click) = "logOut()">
+                Logout
+               </ion-button>
+            </ion-buttons>
+           
+           
+          </ion-item>
+       
+        </ion-list>
+
+        <!-- <ion-list id="labels-list">
+          <ion-list-header>Labels</ion-list-header>
+
+          <ion-item *ngFor="let label of labels" lines="none">
+            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+            <ion-label>{{ label }}</ion-label>
+          </ion-item>
+        </ion-list> -->
+
+      </ion-content>
+    </ion-menu>
+    
+    <!-- <ion-menu side="start" menuId="first" content-id ="main">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Start Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item>Menu Item</ion-item>
+        <ion-item>Menu Item</ion-item>
+        <ion-item>Menu Item</ion-item>
+        <ion-item>Menu Item</ion-item>
+        <ion-item>Menu Item</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu> -->
+  
+  <ion-menu id="customMenu" side="start" menuId="custom"  content-id ="main" class="my-custom-menu">
+    <ion-content class = "background1">
+
+      <ion-list id="inbox-list">
+        <!-- <ion-list-header>cccInbox</ion-list-header>
+        <ion-note>hi@ionicframework.com</ion-note> -->
+        <ion-card text-center class="hide-card" >
+          <img *ngIf="serviceProviderImg && serviceProviderImg!='null'" [src]="serviceProviderImg" class="custom-avatar"/>
+          <img *ngIf="!serviceProviderImg||  serviceProviderImg=='null' " src="../assets/player104.png" class="custom-avatar" alt="">
+          <!-- <img [src]="serviceProviderImg" class="custom-avatar"/> -->
+          <!-- <h2>Victorcodex</h2>
+          <p>Have some p tag here</p>
+          <p>I am the third guy inline here</p>
+          <hr> -->
+      </ion-card>
+        <ion-menu-toggle auto-hide="false" *ngFor="let p of serviceProviderPages; let i = index">
+          <ion-item id='pageLink' (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none"
+            detail="false" >
+            <ion-icon slot="start" color="light" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+            <ion-label color="light">{{ p.title }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-item lines="none" id='pageLink' (click) ="logOut()">
+          <ion-icon color="light" slot="start" name ="log-out-outline"> 
+
+          </ion-icon>
+          <ion-buttons>
+            <ion-button color="light" (click) = "logOut()">
+              Logout
+             </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+
+      <!-- <ion-list id="labels-list">
+        <ion-list-header>Labels</ion-list-header>
+
+        <ion-item *ngFor="let label of labels" lines="none">
+          <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+          <ion-label>{{ label }}</ion-label>
+        </ion-item>
+      </ion-list> -->
+
+    </ion-content>
+  </ion-menu>
+  
+  <!-- <ion-menu side="end" type="push" contentId="main">
+    <ion-header>
+      <ion-toolbar color="danger">
+        <ion-title>End Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item>Menu Item</ion-item>
+        <ion-item>Menu Item</ion-item>
+        <ion-item>Menu Item</ion-item>
+        <ion-item>Menu Item</ion-item>
+        <ion-item>Menu Item</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu> -->
+  
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-split-pane>
+  <!-- <ion-router-outlet></ion-router-outlet> -->
 </ion-app>

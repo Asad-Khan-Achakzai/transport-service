@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button [text]="'back'" defaultHref="/home"></ion-back-button>
+      <ion-back-button  defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>service-provider-signup</ion-title>
+    <div class ="title">
+    <ion-title>Registration</ion-title>
+  </div>
   </ion-toolbar>
 </ion-header>
 
@@ -48,12 +50,13 @@
                   </ion-item>
                 </ion-col>
 
-                <ion-col size="6" text-center>
-                  <ion-card-content>
+                <ion-col size="6" text-center id ="imageCol">
+                  <app-image-picker (imagePick)="onImagePicked($event)"></app-image-picker>
+                  <!-- <ion-card-content>
                     <ion-button color="medium" size="large">
                       <ion-icon slot="icon-only" name="camera"></ion-icon>
                     </ion-button>
-                  </ion-card-content>
+                  </ion-card-content> -->
                 </ion-col>
               </ion-row>
 
@@ -123,15 +126,17 @@
  -->
 
                     <ion-item>
-                      <ion-label>Cities</ion-label>
+                      <ion-label>Services in cities</ion-label>
                       <ion-input
                         (keyup.enter)="onEnter()"
                         formControlName="skillInput"
                         clearInput="true"
+                        
+                        
                       ></ion-input>
-                      <button ion-button item-right (click)="upload()">
+                      <!-- <button ion-button item-right (click)="upload()">
                         <ion-icon name="checkmark"></ion-icon>
-                      </button>
+                      </button> -->
                     </ion-item>
                     <ion-chip
                       outline
@@ -167,8 +172,8 @@
                   <ion-button (click)="nextButton()">
                     Services
                   </ion-button>
-                  <ion-button (click)="display()">
-                    display
+                  <ion-button (click)="display()" [disabled]="!Form.valid ">
+                    signup &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
                   </ion-button>
                 </ion-col>
               </ion-row>

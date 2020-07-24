@@ -4,9 +4,12 @@ import { IsLoginGuard } from './sdk/custom/guards/islogin.guard';
 import { RedirectLoginGuard } from './sdk/custom/guards/redirectlogin.guard';
 import { ProviderRedirectLoginGuard } from './sdk/custom/guards/providerRredirectlogin.guard';
 
+
+
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home',    canActivate: [RedirectLoginGuard], loadChildren: () => import('./home/home.module').then(m => m.HomePageModule) },
+  { path: 'home',    canActivate: [RedirectLoginGuard],
+   loadChildren: () => import('./home/home.module').then(m => m.HomePageModule) },
   {
     path: 'customer-sign-up',
     canActivate: [RedirectLoginGuard],
@@ -56,8 +59,18 @@ const routes: Routes = [
       },
       {
         path: 'search-company',
+        children: [{
+          path: '',
         loadChildren: () => import('./customer-dashboard/search-company/search-company.module').then(m => m.SearchCompanyPageModule)
+      },
+      {
+        path: ':providerID',
+        loadChildren: () => import('./providers-profile/providers-profile.module')
+          .then(m => m.ProvidersProfilePageModule)
       }
+    ]
+
+    },
     ]
   },
   {

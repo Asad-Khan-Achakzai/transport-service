@@ -1,11 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform, AlertController } from '@ionic/angular';
 //import {CustomerService} from '../../sdk/custom/customer.service';
 import { ProviderServicesComponent } from './provider-services/provider-services.component';
 import { ServiceProvidersService } from '../sdk/custom/service-providers.service';
+import { MixedService } from '../sdk/custom/mixed.service';
+import { ToastController } from '@ionic/angular';
+function base64toBlob(base64Data, contentType) {
+  contentType = contentType || '';
+  const sliceSize = 1024;
+  const byteCharacters = window.atob(base64Data);
+  const bytesLength = byteCharacters.length;
+  const slicesCount = Math.ceil(bytesLength / sliceSize);
+  const byteArrays = new Array(slicesCount);
 
+  for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+    const begin = sliceIndex * sliceSize;
+    const end = Math.min(begin + sliceSize, bytesLength);
+
+    const bytes = new Array(end - begin);
+    for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
+      bytes[i] = byteCharacters[offset].charCodeAt(0);
+    }
+    byteArrays[sliceIndex] = new Uint8Array(bytes);
+  }
+  return new Blob(byteArrays, { type: contentType });
+}
 @Component({
   selector: 'app-service-provider-signup',
   templateUrl: './service-provider-signup.page.html',
@@ -16,12 +37,33 @@ export class ServiceProviderSignupPage implements OnInit {
   loading = false;
   val;
   val1;
-  constructor(private formBuilder: FormBuilder, private router: Router, private modalController: ModalController, private serviceProviderServices: ServiceProvidersService) { }
+  constructor(public alertController: AlertController,public toastController: ToastController,private formBuilder: FormBuilder, private router: Router, private modalController: ModalController, private serviceProviderServices: ServiceProvidersService,private platform: Platform,private mixedService: MixedService) { }
   // cities = ['quetta','peshawer'];
   public skillInput: string = '';
   public cities: any[] = [];
+  img1: any;
   ngOnInit() {
     this.formInitializer();
+  }
+  onImagePicked(imageData: string | File) {
+    console.log('imageData = ',imageData);
+    let imageFile;
+    if (typeof imageData === 'string') {
+      try {
+        imageFile = base64toBlob(
+          imageData.replace('data:image/jpeg;base64,', ''),
+          'image/jpeg'
+        );
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    } else {
+      imageFile = imageData;
+    }
+    console.log('image path = ',imageFile);
+    this.Form.patchValue({ image: imageFile });
+    
   }
   formInitializer() {
     this.Form = this.formBuilder.group({
@@ -35,9 +77,30 @@ export class ServiceProviderSignupPage implements OnInit {
       skillInput: [null],
       // confirmPassword: [null, [Validators.required]]
       citiesArray: [[]],
-      servicesArray: [[]]
+      servicesArray: [[]],
+      imageUrl:[]
 
     });
+  }
+  fileChange(event){
+    this.platform.is('pwa')
+    {
+    if(event.target.files && event.target.files[0]){
+      let reader = new FileReader();
+
+      reader.onload = (event:any) => {
+        this.img1 = event.target.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+      let fileList: FileList = event.target.files;  
+      let file: File = fileList[0];
+      console.log(file);
+    }
+    this.platform.is('hybrid')
+    {
+      
+    }
   }
   onEnter(value) {
     this.cities.push(this.Form.value['skillInput'])
@@ -61,20 +124,68 @@ export class ServiceProviderSignupPage implements OnInit {
     this.Form.controls['citiesArray'].setValue(this.cities);
     this.openAddModal();
   }
-  display() {
-    this.Form.controls['servicesArray'].setValue(this.serviceProviderServices.getServices());
-    console.log(this.Form.value);
+   async display() {
+    // this.Form.controls['servicesArray'].setValue(this.serviceProviderServices.getServices());
+    // console.log('formValue = ',this.Form.value);
 
-    this.serviceProviderServices.serviceProviderRegister(this.Form.value).subscribe(
-      data => {
-        console.log('got response from server', data);
-        this.loading = false;
-      },
-      error => {
-        this.loading = false;
-        console.log('error', error);
+    if(this.mixedService.imageURL)
+    {
+      if(this.serviceProviderServices.getServices()){
+        this.loading = true;
+        this.Form.controls['imageUrl'].setValue(this.mixedService.imageURL);
+      this.Form.controls['servicesArray'].setValue(this.serviceProviderServices.getServices());
+      console.log(this.Form.value);
+  
+      this.serviceProviderServices.serviceProviderRegister(this.Form.value).subscribe(
+        async data => {
+          console.log('got response from server', data);
+          //this.loading = false;
+          const toast = await this.toastController.create({
+            message: data.message,
+           // message: `${name} has been saved successfully.`,
+            duration: 3500
+          });
+          toast.present();
+          if(data.message === 'Signup successful'){
+            this.router.navigateByUrl('/home');
+          }
+  
+          this.loading = false;
+        },
+        async error => {
+          this.loading = false;
+          console.log('error', error);
+          const alert = await this.alertController.create({
+            header: 'Alert',
+            //subHeader: 'Subtitle',
+            message: error.error.message,
+            buttons: ['OK']
+          });
+          alert.present();
+        }
+      );
       }
-    );
+      else{
+        const alert = await this.alertController.create({
+          header: 'Alert',
+          //subHeader: 'Subtitle',
+          message: 'Fill services ',
+          buttons: ['OK']
+        });
+        alert.present();
+      }
+      
+    }
+    else{
+      const alert = await this.alertController.create({
+        header: 'Alert',
+        //subHeader: 'Subtitle',
+        message: 'please select picture ',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+    
   }
   // upload(form) {
   //   console.log(this.Form.value);

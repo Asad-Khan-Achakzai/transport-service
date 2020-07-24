@@ -1,6 +1,8 @@
-ion-content {
-    --background: url(../../assets/background_full.jpg) no-repeat top center/cover fixed, #fff;
-    position: relative;
+#mainContent {
+  //  --background: url(../../assets/bryan-goff-rjEoFD8l1vo-unsplash.jpg) no-repeat top center/cover fixed, #fff;
+  --ion-background-color:#124603;
+ 
+  position: relative;
     height: 100%;
     width: 100%;
 
@@ -9,14 +11,13 @@ ion-content {
         margin-bottom: 1em
     }
 }
-
 ion-toolbar {
     --background: transparent;
 }
 
 ion-chip {
-    --background: #9dc912;
-    --color: #fff;
+    --background: #867b7b;
+    --color: rgb(0, 0, 0);
 }
 
 .card {
@@ -36,7 +37,7 @@ ion-chip {
                 border-radius: 50%;
                 position: absolute;
                 bottom: calc(-1*(80px + 4px)); // -42px;
-                border: 8px solid #9Dc912;
+                border: 8px solid #000000;
                 background-color: #fff;
             }
         }
@@ -44,7 +45,8 @@ ion-chip {
 }
 
 .card-body {
-    background-color: #ffffff;
+    background-image: url('../../assets/rodion-kutsaev-049M_crau5k-unsplash.jpg');
+  //  background-color: #ffffff;
     padding: 30px;
     height: calc(100vh - (200px + 56px));
     overflow: hidden;
@@ -56,16 +58,22 @@ ion-chip {
             position: absolute;
             font-size: 24px;
             font-weight: 600;
-            color: #303940;
+            color: #fcfcfc;
             width: 50%;
                    }
 
+        // .country {
+        //     font-size: 90%;
+        //     color: #949ea6;
+        //     text-transform: uppercase;
+        //     margin: 0 auto;
+        // }
     }
 }
 
 .ranking{
     font-weight: 600;
-    color: #303940;
+    color: #fcfcfc;
     width: 50%;
     margin-left: 60%;
 }
@@ -73,7 +81,70 @@ ion-chip {
     height: 200px;
 }
 
+
 ion-slides{
     overflow-y: scroll;
   }
- 
+  .user-img {
+    //position: absolute;
+    object-fit: cover;
+    border-radius: 45px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.36);
+  }
+//   .nameAvatar {
+//     display: flex;
+//     /* justify-content: center; */
+//     align-items: center;
+//     width: 50%;
+//     h2 {
+//       font-size: 0.94em;
+//       font-weight: bold;
+//     }
+//   }
+  .online {
+    position: absolute;
+    // right: 6px;
+    
+    left: 48px;
+    top: 58%;
+    width: 10px;
+    //background: #92ff92;
+    color: rgb(228, 10, 10);
+    height: 10px;
+    border-radius: 50%;
+  }
+  #icon{
+    margin-right: 40%;
+}
+ion-button{
+    --background:  #867b7b;  
+     
+    --color: rgb(0, 0, 0);
+    
+}
+#list{
+    width: 500px;
+}
+ion-item{
+    --background: #867b7b;
+}
+ion-list{
+    background-color: transparent;
+}
+#slidesContent{
+    height: 250px;
+
+--ion-background-color: rgb(0, 0, 0,0);
+}
+.badge-two {
+    position: absolute;
+    top: 0px;
+    right: -5px;
+    font-size: 0.6em;
+    --padding-start: 3px;
+    --padding-end: 3px;
+  }
+  ion-toolbar.large-title-fix {
+    padding-top: env(safe-area-inset-top);
+  }

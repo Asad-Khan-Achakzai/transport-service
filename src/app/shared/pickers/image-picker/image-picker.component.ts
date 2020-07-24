@@ -13,6 +13,9 @@ import {
   CameraResultType
 } from '@capacitor/core';
 import { Platform } from '@ionic/angular';
+import { CustomersService } from 'src/app/sdk/custom/customers.service';
+import { MixedService } from 'src/app/sdk/custom/mixed.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-image-picker',
@@ -22,10 +25,10 @@ import { Platform } from '@ionic/angular';
 export class ImagePickerComponent implements OnInit {
   @ViewChild('filePicker',{static: false}) filePickerRef: ElementRef<HTMLInputElement>;
   @Output() imagePick = new EventEmitter<string | File>();
-  selectedImage: string;
+  selectedImage: any;
   usePicker = false;
 
-  constructor(private platform: Platform) {}
+  constructor(private platform: Platform,private customerService: CustomersService,private mixedService: MixedService,public dms: DomSanitizer) {}
 
   ngOnInit() {
     console.log('Mobile:', this.platform.is('mobile'));
@@ -55,7 +58,9 @@ export class ImagePickerComponent implements OnInit {
       resultType: CameraResultType.Base64
     })
       .then(image => {
-        this.selectedImage = image.base64String;
+        this.selectedImage = 'data:image/jpeg;base64,'+image.base64String;
+        this.mixedService.imageURL = this.selectedImage;
+        console.log('cam image = ',this.selectedImage);
         this.imagePick.emit(image.base64String);
       })
       .catch(error => {
@@ -75,11 +80,14 @@ export class ImagePickerComponent implements OnInit {
     const fr = new FileReader();
     fr.onload = () => {
       const dataUrl = fr.result.toString();
-      console.log('here = ',fr.result);
+      this.mixedService.imageURL = dataUrl;
+      // this.customerService.imageURL = dataUrl;
+       console.log('imageurl of service = ',this.mixedService.imageURL)
 
-      this.selectedImage = dataUrl;
+      // this.selectedImage = this.dms.bypassSecurityTrustUrl("data:image/jpeg;base64," + dataUrl);
+  this.selectedImage = 'data:image/jpeg;base64,'+dataUrl;
       this.imagePick.emit(pickedFile);
-      console.log(pickedFile);
+      //console.log('pickedfile = ',pickedFile);
     };
     fr.readAsDataURL(pickedFile);
     console.log('readAsDataURL = ',fr.result);

@@ -1,41 +1,81 @@
-
-<ion-content>
-  <ion-header translucent no-border>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/customer-profile"></ion-back-button>
-      </ion-buttons>
-      <ion-title>
-          <ion-searchbar
-          [(ngModel)]="searchTerm"
-          (ionChange)="setFilteredItems()"
-        ></ion-searchbar>
+<ion-header translucent no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-menu-button autoHide="false"></ion-menu-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <!-- <ion-buttons slot="start">
+      <ion-back-button defaultHref="/customer-profile"></ion-back-button>
+    </ion-buttons> -->
+    <ion-title>
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionChange)="setFilteredItems()"
+      ></ion-searchbar>
     </ion-title>
-   
-    </ion-toolbar>
-  </ion-header>  
-  
-  <ion-list>
-    <ion-list-header>
-      Recent Conversations
-      {{item?.email}}
-    </ion-list-header>
-
-    <ion-card *ngFor="let tag of serviceProviderInfo" [routerLink]= "['./',tag._id]">
-      <ion-item>
-    
-
+  </ion-toolbar>
+</ion-header>
+<ion-content color="">
+  <div *ngIf="!loading">
+  <ion-list class="ion-no-padding">
+    <ion-card>
+      <ion-item
+        *ngFor="let item of serviceProviderInfo; let i=index"
+        (click)="saveIdToStroage(item._id)"
+        [routerLink]="['./',item._id]"
+      >
+        <ion-thumbnail slot="start">
+          <ion-img [src]="item.imageUrl"></ion-img>
+        </ion-thumbnail>
         <ion-label>
-          <h6>{{tag?.companyName}}</h6>
-          <h2>{{tag?.username}}</h2>
-          <h2>{{tag?.email}}</h2>
-          <h2>{{tag?.phone}}</h2>
-          <h2>{{tag?.officeLocation}}</h2>
-          <p>Listen, I've had a pretty messed up day...</p>
+          <div class="withcount">
+            <div class="nameAvatar">
+              <h6>{{item.companyName}}</h6>
+            </div>
+          </div>
+          <div>
+            <div class="withcount">
+              <h3 id="heading">Owner:</h3>
+              <h2>{{item?.username}}</h2>
+            </div>
+            <div class="withcount">
+              <h3 id="headingOffice">Main Office:</h3>
+              <h2>{{item?.officeLocation}}</h2>
+            </div>
+            <div class="withcount">
+              <h3 id="headingEmail">Email:</h3>
+              <h2>{{item?.email}}</h2>
+            </div>
+            <div class="withcount">
+              <h3 id="heading">Phone:</h3>
+              <h2>{{item?.phone}}</h2>
+            </div>
+          </div>
         </ion-label>
-
       </ion-item>
-
     </ion-card>
   </ion-list>
+</div>
+<div *ngIf="loading">
+  <ion-card>
+    
+    <ion-item *ngFor="let item of skeletonlist">
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated>one</ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+</div>
 </ion-content>
