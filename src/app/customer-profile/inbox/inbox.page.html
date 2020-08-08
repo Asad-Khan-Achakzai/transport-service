@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-button slot="end" fill="clear">
+  <ion-toolbar >
+    <!-- <ion-button slot="end" fill="clear">
       <ion-icon name="search" expand="icon-only"> </ion-icon>
-    </ion-button>
+    </ion-button> -->
     <div class ="title">
       <ion-title>Inbox</ion-title>
     </div>
@@ -10,8 +10,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list class="ion-no-padding">
-
+    <div *ngIf="!loading">
     <ion-item *ngFor="let chat of chatData; let i=index" (click)="goforChat(chat)">
       <ion-avatar slot="start">
         <ion-img class="user-img" [src]="chat.senderImage_url"></ion-img>
@@ -27,7 +30,7 @@
           <div class="nameAvatar">
             <h2>{{chat.name}}
             </h2>
-            <ion-avatar class="chatCount" *ngIf="2">4</ion-avatar>
+            <!-- <ion-avatar class="chatCount" *ngIf="2">4</ion-avatar> -->
 
           </div>
 
@@ -51,6 +54,25 @@
        
       </ion-label>
     </ion-item>
+  </div>
+  <div *ngIf="loading">
+    <ion-item *ngFor="let item of skeletonlist">
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated>one</ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text color="light" animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text color="light" animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text color="light" animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </div>
   </ion-list>
 
 </ion-content>

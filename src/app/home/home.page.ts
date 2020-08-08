@@ -6,8 +6,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomersService } from '../sdk/custom/customers.service';
 import { ServiceProvidersService } from '../sdk/custom/service-providers.service';
-import { AlertController, ToastController, MenuController } from '@ionic/angular';
+import { AlertController, ToastController, MenuController, ModalController } from '@ionic/angular';
 import { AuthService } from '../sdk/core/auth.service';
+import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 
 @Component({
   selector: 'app-home',
@@ -17,13 +18,20 @@ import { AuthService } from '../sdk/core/auth.service';
 export class HomePage {
   loading = false;
   Form: FormGroup;
-  constructor(private menu: MenuController,public toastController: ToastController,private authService: AuthService, private router: Router, private formBuilder: FormBuilder, public alertController: AlertController, private customerService: CustomersService,private serviceProvidersService: ServiceProvidersService) {
+  constructor(    private modalController: ModalController, private menu: MenuController,public toastController: ToastController,private authService: AuthService, private router: Router, private formBuilder: FormBuilder, public alertController: AlertController, private customerService: CustomersService,private serviceProvidersService: ServiceProvidersService) {
     this.menu.enable(false, 'first');
     this.menu.enable(false, 'custom');
     this.menu.enable(false, 'end');
    }
   ngOnInit() {
     this.formInitializer();
+  }
+  async forgotPass(){
+    console.log('clicked');
+    const modal = await this.modalController.create({
+      component: ForgotPassComponent
+    });
+    return await modal.present();
   }
   formInitializer() {
     this.Form = this.formBuilder.group({
@@ -40,6 +48,7 @@ export class HomePage {
 
   // }
   ionViewWillEnter(){
+    this.formInitializer();
     this.menu.enable(false, 'first');
     this.menu.enable(false, 'custom');
     this.menu.enable(false, 'end');

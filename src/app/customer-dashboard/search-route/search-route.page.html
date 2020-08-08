@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-toggle>
-        <ion-menu-button autoHide="false"></ion-menu-button>
+        <ion-menu-button color="light" autoHide="false"></ion-menu-button>
       </ion-menu-toggle>
     </ion-buttons>
     <!-- <ion-buttons slot="start">
@@ -12,44 +12,48 @@
       <ion-searchbar
         [(ngModel)]="searchTerm"
         (ionChange)="setFilteredItems()"
+        placeholder="search by company title"
       ></ion-searchbar>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content color="">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div *ngIf="!loading">
   <ion-list class="ion-no-padding">
     <ion-card>
-      <ion-item
+      <ion-item 
         *ngFor="let item of serviceProviderInfo; let i=index"
         (click)="saveIdToStroage(item._id)"
         [routerLink]="['./',item._id]"
-      >
+      > 
         <ion-thumbnail slot="start">
           <ion-img [src]="item.imageUrl"></ion-img>
         </ion-thumbnail>
         <ion-label>
           <div class="withcount">
             <div class="nameAvatar">
-              <h6>{{item.companyName}}</h6>
+              <h6 class="heading">{{item.companyName}}</h6>
             </div>
           </div>
           <div>
             <div class="withcount">
-              <h3 id="heading">Owner:</h3>
-              <h2>{{item?.username}}</h2>
+              <h3  class="heading" id="heading">Owner:</h3>
+              <h2  class="heading">{{item?.username}}</h2>
             </div>
             <div class="withcount">
-              <h3 id="headingOffice">Main Office:</h3>
-              <h2>{{item?.officeLocation}}</h2>
+              <h3  class="heading" id="headingOffice">Main Office:</h3>
+              <h2 class="heading">{{item?.officeLocation}}</h2>
             </div>
             <div class="withcount">
-              <h3 id="headingEmail">Email:</h3>
-              <h2>{{item?.email}}</h2>
+              <h3  class="heading"id="headingEmail">Email:</h3>
+              <h2  class="heading">{{item?.email}}</h2>
             </div>
             <div class="withcount">
-              <h3 id="heading">Phone:</h3>
-              <h2>{{item?.phone}}</h2>
+              <h3 class="heading" id="heading">Phone:</h3>
+              <h2 class="heading">{{item?.phone}}</h2>
             </div>
           </div>
         </ion-label>

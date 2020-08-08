@@ -1,7 +1,7 @@
 #mainContent {
   //  --background: url(../../assets/bryan-goff-rjEoFD8l1vo-unsplash.jpg) no-repeat top center/cover fixed, #fff;
-  --ion-background-color:#124603;
- 
+  //--ion-background-color:#124603;
+  --background: linear-gradient(197deg, rgb(247, 242, 0) 0%, rgb(199, 10, 10) 13.5%, rgb(73, 9, 9) 33.33%, rgba(0,0,0,1) 100%) !important;
   position: relative;
     height: 100%;
     width: 100%;
@@ -16,8 +16,8 @@ ion-toolbar {
 }
 
 ion-chip {
-    --background: #867b7b;
-    --color: rgb(0, 0, 0);
+    --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    color: white;
 }
 
 .card {
@@ -45,7 +45,7 @@ ion-chip {
 }
 
 .card-body {
-    background-image: url('../../assets/rodion-kutsaev-049M_crau5k-unsplash.jpg');
+   // background-image: url('../../assets/rodion-kutsaev-049M_crau5k-unsplash.jpg');
   //  background-color: #ffffff;
     padding: 30px;
     height: calc(100vh - (200px + 56px));
@@ -115,19 +115,37 @@ ion-slides{
     border-radius: 50%;
   }
   #icon{
-    margin-right: 40%;
+    margin-right: 10%;
 }
 ion-button{
-    --background:  #867b7b;  
-     
-    --color: rgb(0, 0, 0);
+    --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    color: white;
     
 }
+ion-button:hover {animation-name: background-color; 
+    animation-duration: 500ms; }
+        @keyframes background-color { 
+        100% { 
+
+            background-color: #4065F3; 
+        } 
+    } 
 #list{
     width: 500px;
 }
 ion-item{
-    --background: #867b7b;
+    --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    color: white;
+}
+ion-card{
+    --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    color: white;
+}
+ion-label{
+    --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+}
+h3{
+    --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
 }
 ion-list{
     background-color: transparent;

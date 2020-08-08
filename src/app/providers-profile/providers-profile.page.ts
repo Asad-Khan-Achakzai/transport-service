@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceProvidersService, Routes } from '../sdk/custom/service-providers.service';
 import {serviceProvider} from '../customer-dashboard/service-provider.model';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, MenuController } from '@ionic/angular';
 import { CustomersService } from '../sdk/custom/customers.service';
 import { SocketIo } from 'ng-io';
 import { ChatServiceService } from '../chat-room/chat-service.service';
@@ -28,11 +28,27 @@ export class ProvidersProfilePage implements OnInit {
   segment = 0;  
   providerID;
   image:string;
+  loading =true;
+  skeletonlist = [1,2,3,4,5];
 @ViewChild('slides', { static: true }) slider: IonSlides;  
-  constructor(private chatService: ChatServiceService,private socket: SocketIo,private customerService:CustomersService,private activatedRoute: ActivatedRoute, private router: Router,private serviceProvidersService: ServiceProvidersService) {
+  constructor(private menu: MenuController,private chatService: ChatServiceService,private socket: SocketIo,private customerService:CustomersService,private activatedRoute: ActivatedRoute, private router: Router,private serviceProvidersService: ServiceProvidersService) {
     this.routesArr = [new Routes];
    }
-
+   async refreshPage(event) { 
+    
+    this.loading = true;
+    let id = await this.customerService.getproviderIdForProviderProfile();
+    this.getServiceProvider(id);
+   // if(this.completed){
+   //   this.loading = false;
+   //   event.target.complete();
+   //   this.completed = false;
+   // }
+   setTimeout(() => {
+     console.log('Async operation has ended');
+     event.target.complete();
+   }, 1000);
+  }
   async ngOnInit() {
   
     let id = await this.customerService.getproviderIdForProviderProfile();
@@ -63,7 +79,11 @@ export class ProvidersProfilePage implements OnInit {
     //   this.image = this.serviceProviderInfo.imageUrl;
     // });
   }
+
   async ionViewDidEnter() {
+    this.menu.enable(true, 'first');
+    this.menu.enable(false, 'custom');
+    this.menu.enable(false, 'end');
     let id = await this.customerService.getproviderIdForProviderProfile();
     this.getServiceProvider(id);
   }
@@ -71,6 +91,7 @@ export class ProvidersProfilePage implements OnInit {
     const observable = await this.serviceProvidersService.getServiceProvider(id);
     observable.subscribe(
       data => {
+        this.loading = false;
         console.log('data too =',data);
         this.serviceProvidersService.serviceProviderPass= data.pass;
         this.serviceProviderInfo = data.data;
@@ -127,11 +148,7 @@ export class ProvidersProfilePage implements OnInit {
     this.customerService.saveProviderBookingData(route.id,this.providerID,route.timing,route.bookedSeats,route.totalSeats,route.priceperSeat)
     //this.customerService.saveProviderRoute(route);
     console.log('route id = ',route.id);
-    // this.customerService.putrouteIdOfRoute(route.id);
-    // this.customerService.putprividerIdOfRoute(this.providerID);
-    // this.customerService.putrouteTiming(route.timing);
-    
-    // this.customerService.putroute(route);
-    this.router.navigateByUrl('providers-profile/seat-booking');
+
+    this.router.navigateByUrl('/providers-profile/seat-booking');
   }
 }

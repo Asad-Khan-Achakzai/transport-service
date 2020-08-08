@@ -7,12 +7,25 @@ ion-content{
   --background: linear-gradient(45deg, #2ecc71, #2980b9, #8e44ad);
 }
  ion-toolbar {
-  --background: linear-gradient(45deg, #2ecc71, #2980b9, #8e44ad);
+  --background: linear-gradient(to right, #780206 0%, #061161 51%, #780206 100%);
  }
  ion-button{
-   --background: #867b7b;
-   --color: rgb(0, 0, 0);
+  --background: linear-gradient(to right, #780206 0%, #061161 51%, #780206 100%);
+   color: white;
  }
+ ion-spinner {
+color: white;
+  position: fixed;
+  z-index: 999;
+  height: 5em;
+  width: em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
  #planeCol{
    text-align: center;
  }
@@ -32,7 +45,7 @@ ion-content{
    }
    
    .plane {
-     margin-left: 13%;
+     margin-left: 5%;
     // margin: 20px ;
      max-width: 300px;
    }

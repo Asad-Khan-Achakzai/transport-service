@@ -37,6 +37,8 @@ countArr;
 observableCompleted = false;
 msgs:number;
 completed = false;
+loading = true;
+skeletonlist = [1,2,3,4,5];
   @ViewChild('slides', { static: true }) slider: IonSlides;  
   segment = 0;  
   constructor(private menu: MenuController,private chatService:ChatServiceService,private socket: SocketIo,public navCtrl: NavController,private router :Router,private serviceProvidersService: ServiceProvidersService,private authService: AuthService) {
@@ -50,10 +52,12 @@ completed = false;
     });
    }
    async getUsersList(event) { 
+    this.loading = true;
     console.log('Pull Event Triggered!');  
     let id = await this.serviceProvidersService.getServiceProviderId();
     this.getServiceProvider(id);
     if(this.completed){
+      this.loading = false;
       event.target.complete();
     }
     // setTimeout(() => {
@@ -85,6 +89,7 @@ completed = false;
 
   }
   async ionViewDidEnter() {
+    this.menu.enable(true)
     this.chatService.serviceProviderLogedIn();
     this.menu.enable(false, 'first');
     this.menu.enable(true, 'custom');
@@ -128,23 +133,17 @@ filterArray(chats){
   back(){
     this.router.navigateByUrl('/home');
   }
-  // async  getServiceProvider(){
-  //       this.serviceProviderInfo = this.serviceProvidersService.getLogedInServiceProvider();
-  //       this.email = this.serviceProviderInfo.email;
-  //       this.userName = this.serviceProviderInfo.username;
-  //       this.phone = this.serviceProviderInfo.phone;
-  //       this.cnic = this.serviceProviderInfo.cnic;
-  //       this.cities = this.serviceProviderInfo.citiesArray;
-  //       this.routes = this.serviceProviderInfo.servicesArray;
-  // }
+
   async  getServiceProvider(id){
     const observable = await this.serviceProvidersService.getServiceProvider(id);
     observable.subscribe(
       data => {
+        this.loading = false;
         this.completed = true;
         console.log('data too =',data);
         this.serviceProvidersService.serviceProviderPass= data.pass;
         this.serviceProviderInfo = data.data;
+        console.log(' this.serviceProviderInfo =', this.serviceProviderInfo);
         this.email = this.serviceProviderInfo.email;
         this.userName = this.serviceProviderInfo.username;
         console.log('userName = ',this.userName);
@@ -189,7 +188,7 @@ filterArray(chats){
     console.log('delet',i)
   }
   openChatRoom(){
-    console.log('button clicked');
+    
     this.socket.connect();
     this.socket.emit('set-nickname',this.userName);
     //this.socket.emit('set-reciever', this.userName);

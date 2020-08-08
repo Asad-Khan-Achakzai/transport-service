@@ -85,7 +85,8 @@ export class ImagePickerComponent implements OnInit {
        console.log('imageurl of service = ',this.mixedService.imageURL)
 
       // this.selectedImage = this.dms.bypassSecurityTrustUrl("data:image/jpeg;base64," + dataUrl);
-  this.selectedImage = 'data:image/jpeg;base64,'+dataUrl;
+  //this.selectedImage = 'data:image/jpeg;base64,'+dataUrl;
+  this.selectedImage = '../../assets/selected.png';
       this.imagePick.emit(pickedFile);
       //console.log('pickedfile = ',pickedFile);
     };

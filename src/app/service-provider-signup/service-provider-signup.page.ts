@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ModalController, Platform, AlertController } from '@ionic/angular';
+import { ModalController, Platform, AlertController, MenuController } from '@ionic/angular';
 //import {CustomerService} from '../../sdk/custom/customer.service';
 import { ProviderServicesComponent } from './provider-services/provider-services.component';
 import { ServiceProvidersService } from '../sdk/custom/service-providers.service';
@@ -37,7 +37,12 @@ export class ServiceProviderSignupPage implements OnInit {
   loading = false;
   val;
   val1;
-  constructor(public alertController: AlertController,public toastController: ToastController,private formBuilder: FormBuilder, private router: Router, private modalController: ModalController, private serviceProviderServices: ServiceProvidersService,private platform: Platform,private mixedService: MixedService) { }
+  email;
+  vissible =false;
+  code;
+  verifyLoading = false;
+  emailVerified = false;
+  constructor(private menu: MenuController,public alertController: AlertController,public toastController: ToastController,private formBuilder: FormBuilder, private router: Router, private modalController: ModalController, private serviceProviderServices: ServiceProvidersService,private platform: Platform,private mixedService: MixedService) { }
   // cities = ['quetta','peshawer'];
   public skillInput: string = '';
   public cities: any[] = [];
@@ -45,6 +50,11 @@ export class ServiceProviderSignupPage implements OnInit {
   ngOnInit() {
     this.formInitializer();
   }
+  ionViewDidEnter() {
+    this.formInitializer();
+    this.menu.enable(false, 'first');
+    this.menu.enable(false, 'custom');
+    this.menu.enable(false, 'end');}
   onImagePicked(imageData: string | File) {
     console.log('imageData = ',imageData);
     let imageFile;
@@ -78,7 +88,8 @@ export class ServiceProviderSignupPage implements OnInit {
       // confirmPassword: [null, [Validators.required]]
       citiesArray: [[]],
       servicesArray: [[]],
-      imageUrl:[]
+      imageUrl:[],
+      code:[]
 
     });
   }
@@ -187,6 +198,60 @@ export class ServiceProviderSignupPage implements OnInit {
     }
     
   }
+  sendEmail(){
+    this.Form.invalid;
+    this.verifyLoading = true;
+    this.mixedService.sendEmail({email:this.Form.value['email'],message:'whats up'}).subscribe(
+      async data => {
+        this.verifyLoading = false;
+        console.log('got response from server', data);
+    
+        const toast = await this.toastController.create({
+          message: data.message,
+        // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+  
+        this.code = data.code;
+        toast.present();
+        if(data.message === 'Email sent successfuly'){
+          this.vissible = true;
+        }
+    
+        this.loading = false;
+      // this.router.navigateByUrl('/home');
+      },
+      async error => {
+        this.loading = false;
+        const toast = await this.toastController.create({
+          message: error.error.message,
+        // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+       
+      }
+    );
+      }
+      async verifyCode(){
+        if(this.code ===this.Form.value['code'] ){
+          this.emailVerified = true;
+          const toast = await this.toastController.create({
+            message: 'Email verified',
+          // message: `${name} has been saved successfully.`,
+            duration: 3500
+          });
+          toast.present();
+        }
+        else{
+          const toast = await this.toastController.create({
+            message: 'Invalid code',
+          // message: `${name} has been saved successfully.`,
+            duration: 3500
+          });
+          toast.present();
+        }
+  
+      }
   // upload(form) {
   //   console.log(this.Form.value);
   // }

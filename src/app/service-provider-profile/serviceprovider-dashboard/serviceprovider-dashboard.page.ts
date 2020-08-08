@@ -21,6 +21,15 @@ export class ServiceproviderDashboardPage implements OnInit {
     let id = await this.serviceProvidersService.getServiceProviderId();
     this.getServiceProvider(id);
   }
+  async refreshPage(event) { 
+    this.loading = true;
+    let id = await this.serviceProvidersService.getServiceProviderId();
+    this.getServiceProvider(id);
+    setTimeout(() => {
+      this.loading = false;
+      event.target.complete();
+    }, 1000);
+  }
   // getServiceProvider(){
   //   this.serviceProvider = this.serviceProvidersService.serviceProviderData;
   //   this.routesArr = this.serviceProvider.servicesArray;

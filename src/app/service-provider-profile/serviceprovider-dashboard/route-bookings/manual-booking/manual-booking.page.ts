@@ -82,8 +82,25 @@ export class ManualBookingPage implements OnInit {
   totalSeats;
   pricePerSeat: number;
   timingValue;
+  loading = true;
   constructor(public datepipe: DatePipe,private menu: MenuController,public toastController: ToastController,public alertController: AlertController,private customerService:CustomersService,private bookingsService:BookingsService, private serviceProviderServices: ServiceProvidersService) { }
-
+  async refreshPage(event) { 
+    this.loading = true;
+    let route = await this.bookingsService.getBookingroute();
+    console.log('route = ',route);
+    //this.bookedSeats = route.bookedSeats;
+    this.routeId = route.id;
+    this.totalSeats = route.totalSeats;
+    this.pricePerSeat = route.priceperSeat;
+    this.alreadBookedSeats = route.bookedSeats;
+    this.providerId = await this.serviceProviderServices.getServiceProviderId();
+    this.routeTiming = route.timing;
+    this.bookingsService.getInvoiceServiceProvider(this.providerId);
+    setTimeout(() => {
+      this.loading = false;
+      event.target.complete();
+    }, 1000);
+  }
   async ngOnInit() {
     let route = await this.bookingsService.getBookingroute();
     console.log('route = ',route);
@@ -94,10 +111,29 @@ export class ManualBookingPage implements OnInit {
     this.alreadBookedSeats = route.bookedSeats;
     this.providerId = await this.serviceProviderServices.getServiceProviderId();
     this.routeTiming = route.timing;
+
+       //assigning time of departure
+   let today: number = Date.now();
+   console.log('this.timingValue = ',this.timingValue);
+   let time = new Date("1990-01-01 "+this.datepipe.transform(today, 'shortTime'));
+   let routeTime = new Date("1990-01-01 "+this.routeTiming);
+   //if time has passed the todays bus departure time then assing tomorrows date else assing todays date
+   if(time > routeTime){
+    const today = new Date()
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    console.log('tomorrows date',this.datepipe.transform(tomorrow, 'longDate'));
+    this.timingValue = this.datepipe.transform(tomorrow, 'longDate');
+   }else{
+    let today: number = Date.now();
+    let date = this.datepipe.transform(today, 'longDate');
+    this.timingValue = date;
+   }
     console.log('this.bookedSeats = ',this.bookedSeats);
     console.log('this.routeId = ',this.routeId);
     console.log('provider di = ',this.providerId);
     this.bookingsService.getInvoiceServiceProvider(this.providerId);
+    this.loading = false;
     // this.alreadBookedSeats = this.serviceProviderServices.routeForManualBooking.bookedSeats;
     // this.routeId = this.serviceProviderServices.routeForManualBooking.id;
   }

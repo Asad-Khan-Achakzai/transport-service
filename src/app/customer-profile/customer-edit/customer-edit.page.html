@@ -1,14 +1,15 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button  (click)="back()" defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <div class ="title">
-      <ion-title>Registration</ion-title>
-    </div>
-  </ion-toolbar>
-</ion-header>
+
 <ion-content>
+  <ion-header>
+    <ion-toolbar >
+      <ion-buttons slot="start">
+        <ion-back-button  (click)="back()" defaultHref="/home"></ion-back-button>
+      </ion-buttons>
+      <div class ="title">
+        <ion-title>Edit</ion-title>
+      </div>
+    </ion-toolbar>
+  </ion-header>
   <div class = "mainDiv" >
     <ion-grid>
       <ion-row>
@@ -19,7 +20,7 @@
             <ion-card-header>
           
               <div class ="title">
-            <ion-card-title size="large" text-center>Welcome</ion-card-title>
+            <ion-card-title color="light" size="large" text-center>Welcome</ion-card-title>
           </div>
 
 
@@ -103,7 +104,7 @@
               <ion-row justify-content: end>
                 <ion-col class="ion-text-center">
                   
-              <ion-button (click) = "signUpButton() ">
+              <ion-button expand="full" shape="round" (click) = "signUpButton() ">
                 Edit &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
               </ion-button >
             </ion-col>

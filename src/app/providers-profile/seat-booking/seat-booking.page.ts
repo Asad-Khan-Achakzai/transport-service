@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { CustomersService } from '../../sdk/custom/customers.service';
 import { AlertController, MenuController, ToastController } from '@ionic/angular';
 import { error } from 'util';
-import { DatePipe, PlatformLocation } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-seat-booking',
@@ -82,22 +82,37 @@ export class SeatBookingPage implements OnInit {
   totalSeats;
   pricePerSeat: number;
   timingValue;
-  constructor(private location:PlatformLocation,public datepipe: DatePipe,private menu: MenuController,public toastController: ToastController,public alertController: AlertController, private customerService: CustomersService, private bookingsService: BookingsService, private serviceProviderServices: ServiceProvidersService, private router: Router) { 
+  loading =true;
+  skeletonlist = [1,2,3,4,5];
+  constructor(public datepipe: DatePipe,private menu: MenuController,public toastController: ToastController,public alertController: AlertController, private customerService: CustomersService, private bookingsService: BookingsService, private serviceProviderServices: ServiceProvidersService, private router: Router) { 
     
    
   }
+  async refreshPage(event) { 
+    
+    this.loading = true;
+    this.loadIds();
+   // if(this.completed){
+   //   this.loading = false;
+   //   event.target.complete();
+   //   this.completed = false;
+   // }
+   setTimeout(() => {
+     event.target.complete();
+   }, 1000);
+  }
 
-  async ngOnInit() {
+   ngOnInit() {
+
     this.loadIds();
 
   }
-  ionViewWillEnter(){
-
+  
+  ionViewDidEnter() {
+    
     this.menu.enable(true, 'first');
     this.menu.enable(false, 'custom');
     this.menu.enable(false, 'end');
-  }
-  ionViewDidEnter() {
     this.loadIds();
   
     
@@ -113,7 +128,28 @@ export class SeatBookingPage implements OnInit {
     this.totalSeats = await this.customerService.getTotalSeats();
     this.pricePerSeat = await this.customerService.getRoutePrice();
 
+   this.loading = false;
+
+   //assigning time of departure
+   let today: number = Date.now();
+   console.log('this.timingValue = ',this.timingValue);
+   let time = new Date("1990-01-01 "+this.datepipe.transform(today, 'shortTime'));
+   let routeTime = new Date("1990-01-01 "+this.routeTiming);
+   //if time has passed the todays bus departure time then assing tomorrows date else assing todays date
+   if(time > routeTime){
+    const today = new Date()
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    console.log('tomorrows date',this.datepipe.transform(tomorrow, 'longDate'));
+    this.timingValue = this.datepipe.transform(tomorrow, 'longDate');
+   }else{
+    let today: number = Date.now();
+    let date = this.datepipe.transform(today, 'longDate');
+    this.timingValue = date;
+   }
    
+
+   console.log('todays time = ',time);
     console.log('price =', this.pricePerSeat);
     console.log('booked  = ', this.totalSeats);
     console.log('booked already = ', this.alreadBookedSeats);

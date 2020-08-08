@@ -1,19 +1,22 @@
 
-
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/customer-profile">
+        <ion-icon slot="start" name="ios-arrow-back"></ion-icon>
+        Back
+      </ion-back-button>
+    </ion-buttons>
+    <div id="title">
+      <ion-title>Booking Cart</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/customer-profile">
-          <ion-icon slot="start" name="ios-arrow-back"></ion-icon>
-          Back
-        </ion-back-button>
-      </ion-buttons>
-      <div id="title">
-        <ion-title>Booking Cart</ion-title>
-      </div>
-    </ion-toolbar>
-  </ion-header>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
   <div *ngIf="!loading">
     <ion-card *ngFor="let tag of booking let i = index">
       <ion-header>
@@ -24,6 +27,7 @@
              <!-- <ion-icon name="trash-outline" slot="icon-only"></ion-icon> -->
            </ion-button>
          </ion-buttons>
+         <ion-label *ngIf="tag.expire ===true" slot="start" color="danger">Expired</ion-label>
          
         </ion-toolbar>
       </ion-header>

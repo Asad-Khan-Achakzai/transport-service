@@ -23,14 +23,14 @@ ion-toolbar {
    --background: transparent;
 }
 
-ion-chip {
-   --background: #ffffff;
-   --color: rgb(0, 0, 0);
+ion-item{
+    --background: linear-gradient(to right, #780206 0%, #061161 51%, #780206 100%);
+    color: white;
 }
 ion-button{
    
-   --background: #ffffff;  
-   --color: rgb(0, 0, 0);
+    --background: linear-gradient(to right, #780206 0%, #061161 51%, #780206 100%);
+    color: white;
    
 }
 

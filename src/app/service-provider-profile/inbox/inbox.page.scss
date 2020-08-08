@@ -1,3 +1,15 @@
+ion-content{
+  --background: linear-gradient(#00449e, #e66465);
+
+}
+ion-toolbar {
+  --background: linear-gradient(#00449e, #e66465);
+  color: white;
+}
+ion-item{
+  --background: linear-gradient(to right, #780206 0%, #061161 51%, #780206 100%);
+  color: white;
+}
 .title{
   text-align: center;
 }
@@ -70,6 +82,12 @@
     display: flex;
     justify-content: flex-end;
     width: 50%;
+  }
+  .countEnd {
+    display: flex;
+    justify-content: flex-end;
+    width: 50%;
+    position: absolute;
   }
   .widthHalf {
     width: 70%;

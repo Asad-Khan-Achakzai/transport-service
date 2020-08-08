@@ -19,7 +19,14 @@ export class RouteBookingsPage implements OnInit {
   skeletonlist = [1, 2, 3, 4, 5];
   expireBookingLoading = false;
   constructor(private menu: MenuController, public toastController: ToastController, public alertController: AlertController, private router: Router, private bookingsService: BookingsService, private serviceProviderServices: ServiceProvidersService) { }
-
+  async refreshPage(event) { 
+    this.loading = true;
+    this.getBookings();
+    setTimeout(() => {
+      this.loading = false;
+      event.target.complete();
+    }, 1000);
+  }
   ngOnInit() {
     this.getBookings();
   }
@@ -97,7 +104,8 @@ export class RouteBookingsPage implements OnInit {
               async data => {
                 //   this.completed = true;
                 this.expireBookingLoading = false;
-                this.booking[i].expire = true;
+                //this.booking[i].expire = true;
+                this.booking.splice(i,1);
                 console.log('data too =', data);
                 const toast = await this.toastController.create({
                   message: data.message,

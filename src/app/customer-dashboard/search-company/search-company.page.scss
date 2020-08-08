@@ -2,12 +2,43 @@
     text-align: center;
   }
   ion-item{
-    --background: #808dd8;
+    --background: #3f0606;
     
 }
+ion-content{
+  //  --ion-background-color:#00003d;
+  --background: linear-gradient(197deg, rgba(100,100,100,1) 0%, rgba(63,63,63,1) 13.5%, rgba(29,29,29,1) 33.33%, rgba(0,0,0,1) 100%) !important;
+}
 ion-card{
-  --background: #cde6f5;
+  background-color: transparent;
 }
 #item{
   margin-bottom: 10px;
 }
+.label{
+  color: white;
+}
+ion-list{
+  background-color: transparent;
+}
+ion-toolbar{
+  // --background: #cde6f5;
+  --background: linear-gradient(197deg, rgba(100,100,100,1) 0%, rgba(63,63,63,1) 13.5%, rgba(29,29,29,1) 33.33%, rgba(0,0,0,1) 100%) !important;
+   color: white;
+ }
+ ion-select-option {
+    --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    color: white;
+ }
+ ion-button{
+  --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+  color: white;
+ }
+ ion-button:hover {animation-name: background-color; 
+  animation-duration: 500ms; }
+      @keyframes background-color { 
+      100% { 
+
+          background-color: #4065F3; 
+      } 
+  } 

@@ -6,6 +6,7 @@ import { AuthService } from '../core/auth.service';
 import { Storage } from '@ionic/storage';
 import { MixedService } from './mixed.service';
 import {Subject} from 'rxjs';
+import { ToastController } from '@ionic/angular';
 
 
 @Injectable({
@@ -26,7 +27,8 @@ export class CustomersService {
   imageURL:string;
   customerData:customer;
   customerPassword:string;
-  constructor(mixedService:MixedService,private authService: AuthService,private http: HttpClient,private storage: Storage) { }
+  toast;
+  constructor(public toastController: ToastController,mixedService:MixedService,private authService: AuthService,private http: HttpClient,private storage: Storage) { }
   private fooSubject = new Subject<any>();
 //sending image to side menu after user is successfully logined
   publishSomeData(data: any) {
@@ -36,6 +38,19 @@ export class CustomersService {
   getObservable(): Subject<any> {
       return this.fooSubject;
   }
+  async showToast(message){
+    this.toast = await this.toastController.create({
+      message: message,
+      
+     // message: `${name} has been saved successfully.`,
+      duration: 1500,
+    });
+
+    this.toast.present();
+  }
+dismissToast(){
+  this.toast.dismiss();
+}
   public saveCustomerId(id:string){
     this.storage.set('customerId',id);
   }
@@ -237,6 +252,7 @@ export class CustomersService {
 //   }
 }
 interface customer {
+  shortID:string;
   _id: string;
   username: string;
   email: string;

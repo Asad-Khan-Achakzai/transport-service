@@ -17,6 +17,7 @@ export class AppComponent {
   labels= ['facebook','google'];
   customerImg;
   serviceProviderImg;
+  public selectedIndex = 0;
   constructor(
     public authService:AuthService,
     private serviceProvidersService: ServiceProvidersService,
@@ -67,7 +68,7 @@ export class AppComponent {
   //     });
   // }
   async loadImg(){
-    console.log('in menu');
+    console.log('in mnu');
     this.serviceProviderImg = await this.serviceProvidersService.getServiceProviderImg();
     this.customerImg = await this.customerService.getCustomerImg();
     console.log('customer img =',this.customerImg);
@@ -92,6 +93,11 @@ export class AppComponent {
 
   appPages = [
     {
+      title: 'Profile',
+      url: '/customer-profile',
+      icon: 'person'
+    },
+    {
       title: 'Dashboard',
       url: '/customer-dashboard',
       icon: 'easel'
@@ -100,12 +106,7 @@ export class AppComponent {
       title: 'Bookings',
       url: '/customer-profile/booking-cart',
       icon: 'cart'
-    },
-    {
-      title: 'Profile',
-      url: '/customer-profile',
-      icon: 'person'
-    },
+    }, 
     {
       title: 'Settings',
       url: '//customer-profile/customer-edit',

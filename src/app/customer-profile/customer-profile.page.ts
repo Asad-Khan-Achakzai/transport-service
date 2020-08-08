@@ -15,6 +15,7 @@ import { MixedService } from '../sdk/custom/mixed.service';
   styleUrls: ['./customer-profile.page.scss'],
 })
 export class CustomerProfilePage implements OnInit {
+  loading = true;
   costomerInfo: customer;
   email: string;
   userName: string;
@@ -28,6 +29,7 @@ unreadMessages:chat[];
 countArr;
 observableCompleted = false;
 msgs:number;
+completed = false;
   constructor(private mixedService:MixedService,private menu: MenuController,private socket: SocketIo,private chatService:ChatServiceService,private authService: AuthService, private router: Router, private customerService: CustomersService) {
     this.getNewMessage().subscribe(message => {
       if (this.customerService.logedInCustomerId === message['recieverId'] || this.customerService.logedInCustomerId === message['senderId']) {
@@ -37,6 +39,21 @@ msgs:number;
 
     });
    }
+   async refreshPage(event) { 
+    
+     this.loading = true;
+    console.log('Pull Event Triggered!');  
+    this.getCustomer();
+    // if(this.completed){
+    //   this.loading = false;
+    //   event.target.complete();
+    //   this.completed = false;
+    // }
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 1000);
+   } 
    
    
    getNewMessage() {
@@ -99,9 +116,11 @@ msgs:number;
     const observable = await this.customerService.getCustomer();
     observable.subscribe(
       data => {
+        this.completed = true;
        // console.log('data =',data);
         console.log('password = ',data.pass);
         this.costomerInfo = data.data;
+        console.log('this.costomerInfo = ',this.costomerInfo);
        //saving imageurl to storage
        this.customerService.saveCustomerImg(this.costomerInfo.imageUrl);
 
@@ -120,6 +139,7 @@ msgs:number;
         this.customerService.publishSomeData({
           customerImg: this.image
         })
+        this.loading = false;
         //console.log('data', data.data);
       },
       err => {
@@ -158,7 +178,7 @@ filterArray(chats){
 
 }
 interface customer {
-  
+  shortID:string;
   _id: string;
   username: string;
   email: string;

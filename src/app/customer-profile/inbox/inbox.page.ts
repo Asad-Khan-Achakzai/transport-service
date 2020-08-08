@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SocketIo } from 'ng-io';
 import { Observable } from 'rxjs';
 import { CustomersService } from 'src/app/sdk/custom/customers.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inbox',
@@ -18,7 +19,9 @@ export class InboxPage implements OnInit {
   unreadMessages:chat[];
   countArr:chatCount[];
   customerId;
-  constructor(private chatService: ChatServiceService,private router :Router,private socket: SocketIo, private customerService: CustomersService) { 
+  loading = true;
+skeletonlist = [1,2,3,4,5];
+  constructor(private menu: MenuController,private chatService: ChatServiceService,private router :Router,private socket: SocketIo, private customerService: CustomersService) { 
     this.getNewMessage().subscribe(message => {
       if (this.customerService.logedInCustomerId === message['recieverId'] || this.customerService.logedInCustomerId === message['senderId']) {
         this.chats.push(message);
@@ -27,9 +30,27 @@ export class InboxPage implements OnInit {
 
     });
   }
-
-  async ngOnInit() {
+  async refreshPage(event) { 
     
+    this.loading = true;
+    (await this.getMessages()).subscribe(message => {
+      this.chats = message;
+      console.log('inbox data = ',message)
+      this.filterArray(this.chats);
+     });
+       //after reload the image in side menu is lost so here i send again the picture
+    let img  = await this.customerService.getCustomerImg();
+    this.customerService.publishSomeData({
+      customerImg: img
+    })
+   setTimeout(() => {
+     event.target.complete();
+   }, 1000);
+  } 
+  async ngOnInit() {
+    this.menu.enable(true, 'first');
+    this.menu.enable(false, 'custom');
+    this.menu.enable(false, 'end');
     (await this.getMessages()).subscribe(message => {
       this.chats = message;
       console.log('inbox data = ',message)
@@ -49,8 +70,8 @@ filterArray(chats){
   this.unreadMessages = this.chatt.filter(item => item.status == 'unread');
 
  const result = [...this.unreadMessages.reduce( (mp, o) => {
-  if (!mp.has(o.name)) mp.set(o.name, { ...o, count: 0 });
-  mp.get(o.name).count++;
+  if (!mp.has(o.recieverId)) mp.set(o.recieverId, { ...o, count: 0 });
+  mp.get(o.recieverId).count++;
   return mp;
 }, new Map).values()];
 this.countArr = result.slice();;
@@ -74,6 +95,7 @@ const uniqueById = uniqByProp("senderId");
 
 const unifiedArray = uniqueById(chats);
   this.chatData = unifiedArray;
+  this.loading = false;
   console.log('filtered array',this.chatData);
  }
  
@@ -111,7 +133,9 @@ this.customerId = await this.customerService.getCustomerId();
 this.router.navigateByUrl('/chat-room');  
 }
   async ionViewDidEnter() {
-
+    this.menu.enable(true, 'first');
+    this.menu.enable(false, 'custom');
+    this.menu.enable(false, 'end');
   //this.getMessages();
   (
     //this.getMessages();

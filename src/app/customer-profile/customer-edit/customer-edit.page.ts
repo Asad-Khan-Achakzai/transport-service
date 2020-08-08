@@ -71,6 +71,7 @@ export class CustomerEditPage implements OnInit {
   this.Form.patchValue(this.customerService.customerData);
   this.Form.controls['imageUrl'].setValue(this.customerService.logedInCustomerImage_url);
   this.Form.controls['password'].setValue(this.customerService.customerPassword); 
+  console.log('form value = ',this.Form.value);
   }
   }
     
@@ -102,6 +103,7 @@ export class CustomerEditPage implements OnInit {
         password: [null],
         phone: [null, [Validators.required,Validators.minLength(12)]],
         image: new FormControl(null),
+        shortID:[],
         imageUrl:[]
         //confirmPassword: [null, [Validators.required]],
       });
@@ -131,9 +133,10 @@ export class CustomerEditPage implements OnInit {
     }
   }
   async signUpButton(){
-   // this.loading = true;
+   // 
            console.log('form value = ',this.Form.value);
     if (this.mixedService.imageURL) {
+      this.loading = true;
       this.Form.controls['imageUrl'].setValue(this.mixedService.imageURL);
       this.mixedService.imageURL=null;
 

@@ -34,6 +34,22 @@ export class InvoicePage implements OnInit {
       
           });
   }
+  async refreshPage(event) { 
+    
+    this.loading = true;
+    this.bookingId = await this.bookingsService.getBookingId()
+    this.customerName = await this.customerService.getCustomerName();
+    this.getBooking();
+   // if(this.completed){
+   //   this.loading = false;
+   //   event.target.complete();
+   //   this.completed = false;
+   // }
+   setTimeout(() => {
+     console.log('Async operation has ended');
+     event.target.complete();
+   }, 1000);
+  }
 
   async ngOnInit() {
     this.bookingId = await this.bookingsService.getBookingId()

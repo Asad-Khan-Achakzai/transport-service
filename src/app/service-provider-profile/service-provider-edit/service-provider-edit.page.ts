@@ -58,6 +58,15 @@ export class ServiceProviderEditPage implements OnInit {
     this.menu.enable(false, 'first');
     this.menu.enable(true, 'custom');
     this.menu.enable(false, 'end');
+    if(!this.serviceProviderServices.serviceProviderData){
+      this.router.navigateByUrl('/service-provider-profile');
+    }else{
+      this.formInitializer();
+      this.Form.patchValue(this.serviceProviderServices.serviceProviderData);
+      this.cities = this.serviceProviderServices.serviceProviderData.citiesArray;
+      this.Form.controls['imageUrl'].setValue(this.serviceProviderServices.serviceProviderData.imageUrl);
+      this.Form.controls['password'].setValue(this.serviceProviderServices.serviceProviderPass);
+    }
   }
   onImagePicked(imageData: string | File) {
     console.log('imageData = ',imageData);
@@ -92,6 +101,7 @@ export class ServiceProviderEditPage implements OnInit {
       // confirmPassword: [null, [Validators.required]]
       citiesArray: [[]],
       servicesArray: [[]],
+      shortID:[],
       imageUrl:[]
 
     });

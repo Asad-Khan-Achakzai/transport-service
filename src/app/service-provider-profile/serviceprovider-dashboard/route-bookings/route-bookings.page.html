@@ -15,10 +15,13 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div *ngIf="!loading">
   <ion-list *ngFor="let tag of booking let i = index">
     <ion-card >
-      <div *ngIf ="tag?.customerId != 'manual'">
+      <div *ngIf ="tag?.customerId != 'manual' || tag?.expire != true">
       <ion-header>
         <ion-toolbar  >
           <ion-buttons slot="end">

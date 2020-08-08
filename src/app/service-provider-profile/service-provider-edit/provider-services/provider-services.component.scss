@@ -8,4 +8,27 @@
   #item {
     --ion-background-color:rgb(221, 214, 214);
   }
+  ion-content{
+    --background: linear-gradient(to top, #93F9B9, #1D976C);
+  
+  }
+  ion-list{
+    background-color: transparent;
+  }
+  ion-toolbar{
+    --background: linear-gradient(to right, #134E5E 0%, #71B280 51%, #134E5E 100%);
+    color: white;
+  }
+  ion-card-title {
+    --background: transparent;
+  }
+  ion-card{
+    --background: linear-gradient(45deg, #2ecc71, #2980b9, #8e44ad);
+  }
+  ion-item{
+    --background: transparent;
+  }
+  ion-button{
+    --background: linear-gradient(to right, #134E5E 0%, #71B280 51%, #134E5E 100%);
+  }
  

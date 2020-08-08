@@ -13,6 +13,10 @@
 </ion-header> -->
 
 <ion-content fullscreen="true" slot="fixed" >
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="!loading">
     <div class="card">
       <div class="header">
         <div class="avatar">
@@ -45,6 +49,52 @@
           <!-- <ion-icon name="browsers-outline" id ="icon"></ion-icon> -->
           <ion-icon name="reader-outline" id ="icon"></ion-icon>{{cnic}}</ion-button>
 
+      </div>
+    </div>
+  </div>
+    <div *ngIf="loading">
+      <div class="card">
+        <div class="header">
+          <div class="avatar">
+            <img *ngIf="image && image!='null'" [src]="image">
+            
+            <img *ngIf="!image||  image=='null' " src="../../assets/player104.png" alt="">
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="user-meta ion-text-center">
+            
+            <!-- <ion-chip (click)="openChatRoom()">
+              Message
+              <div class="online">
+                {{msgs}}
+              </div>
+            </ion-chip> -->
+            <!-- <h5 class="country">Switzerland</h5>
+            <h6 class="ranking">Current ranking: <ion-chip>
+                <ion-label>2</ion-label>
+              </ion-chip>
+            </h6> -->
+          </div>
+          <ion-card>
+          
+            <ion-item class="btn-grad " >
+              <ion-label>
+                <h3>
+                  <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                </h3>
+                <p>
+                  <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+                </p>
+                <p>
+                  <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-card>
+          
+    
+        </div>
       </div>
     </div>
 </ion-content>

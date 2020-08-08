@@ -1,4 +1,4 @@
-import { Platform, AlertController } from '@ionic/angular';
+import { Platform, AlertController, MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup,FormControl, FormBuilder, Validators } from '@angular/forms';
 import {CustomersService} from '../sdk/custom/customers.service';
@@ -37,10 +37,20 @@ export class CustomerSignUpPage implements OnInit {
   Form: FormGroup;
   loading = false;
   img1: any;
-  constructor(public toastController: ToastController, private router :Router,private formBuilder: FormBuilder,private customerService: CustomersService,private platform: Platform,private mixedService: MixedService, public alertController: AlertController) { }
+  email;
+  vissible =false;
+  code;
+  verifyLoading = false;
+  emailVerified = false;
+  constructor(private menu: MenuController,public toastController: ToastController, private router :Router,private formBuilder: FormBuilder,private customerService: CustomersService,private platform: Platform,private mixedService: MixedService, public alertController: AlertController) { }
 
   ngOnInit() {
     this.formInitializer();}
+    ionViewDidEnter() {
+      this.formInitializer();
+      this.menu.enable(false, 'first');
+      this.menu.enable(false, 'custom');
+      this.menu.enable(false, 'end');}
     
   onImagePicked(imageData: string | File) {
     //console.log('imageData = ',imageData);
@@ -70,7 +80,8 @@ export class CustomerSignUpPage implements OnInit {
         password: [null, [Validators.required]],
         phone: [null, [Validators.required,Validators.minLength(12)]],
         image: new FormControl(null),
-        imageUrl:[]
+        imageUrl:[],
+        code:[]
         //confirmPassword: [null, [Validators.required]],
       });
   }
@@ -99,43 +110,44 @@ export class CustomerSignUpPage implements OnInit {
     }
   }
   async signUpButton(){
-    this.loading = true;
+   
     if(this.mixedService.imageURL)
     {
+      this.loading = true;
       this.Form.controls['imageUrl'].setValue(this.mixedService.imageURL);
       //clear imageUrl otherwise it will cause problem in cutomerEdit
       this.mixedService.imageURL=null;
       console.log('form value = ',this.Form);
-      this.customerService.userRegister(this.Form.value).subscribe(
-        async data => {
-          
-          console.log('got response from server', data);
+        this.customerService.userRegister(this.Form.value).subscribe(
+          async data => {
+            
+            console.log('got response from server', data);
 
-          const toast = await this.toastController.create({
-            message: data.message,
-           // message: `${name} has been saved successfully.`,
-            duration: 3500
-          });
-          toast.present();
-          if(data.message === 'Signup successful'){
-            this.router.navigateByUrl('/home');
+            const toast = await this.toastController.create({
+              message: data.message,
+            // message: `${name} has been saved successfully.`,
+              duration: 3500
+            });
+            toast.present();
+            if(data.message === 'Signup successful'){
+              this.router.navigateByUrl('/home');
+            }
+
+            this.loading = false;
+          // this.router.navigateByUrl('/home');
+          },
+          async error => {
+            this.loading = false;
+            const alert = await this.alertController.create({
+              header: 'Alert',
+              //subHeader: 'Subtitle',
+              message: error.error.message,
+              buttons: ['OK']
+            });
+            alert.present();
           }
-
-          this.loading = false;
-         // this.router.navigateByUrl('/home');
-        },
-        async error => {
-          this.loading = false;
-          const alert = await this.alertController.create({
-            header: 'Alert',
-            //subHeader: 'Subtitle',
-            message: error.error.message,
-            buttons: ['OK']
-          });
-          alert.present();
-        }
-      );
-     }
+        );
+      }
     else{
       const alert = await this.alertController.create({
         header: 'Alert',
@@ -150,5 +162,59 @@ export class CustomerSignUpPage implements OnInit {
 search(){
   console.log("button clicker");
 }
+sendEmail(){
+  this.Form.invalid;
+  this.verifyLoading = true;
+  this.mixedService.sendEmail({email:this.Form.value['email'],message:'whats up'}).subscribe(
+    async data => {
+      this.verifyLoading = false;
+      console.log('got response from server', data);
+  
+      const toast = await this.toastController.create({
+        message: data.message,
+      // message: `${name} has been saved successfully.`,
+        duration: 3500
+      });
+
+      this.code = data.code;
+      toast.present();
+      if(data.message === 'Email sent successfuly'){
+        this.vissible = true;
+      }
+  
+      this.loading = false;
+    // this.router.navigateByUrl('/home');
+    },
+    async error => {
+      this.loading = false;
+      const toast = await this.toastController.create({
+        message: error.error.message,
+      // message: `${name} has been saved successfully.`,
+        duration: 3500
+      });
+     
+    }
+  );
+    }
+    async verifyCode(){
+      if(this.code ===this.Form.value['code'] ){
+        this.emailVerified = true;
+        const toast = await this.toastController.create({
+          message: 'Email verified',
+        // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+        toast.present();
+      }
+      else{
+        const toast = await this.toastController.create({
+          message: 'Invalid code',
+        // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+        toast.present();
+      }
+
+    }
 }
 

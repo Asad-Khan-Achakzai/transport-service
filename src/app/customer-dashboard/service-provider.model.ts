@@ -2,6 +2,7 @@ import { Routes } from '../sdk/custom/service-providers.service';
 
 export interface serviceProvider {
     _id: string;
+    shortID:string;
     username: string;
     email: string;
     password: string;

@@ -16,10 +16,18 @@ email: string;
   id: string;
   chats;
   image:string;
+  loading = true;
   constructor(private serviceProvidersService: ServiceProvidersService,private bookingsService:BookingsService) { }
   costomerInfo:customer;
 bookedSeats:Array<string>;
-
+async refreshPage(event) { 
+  this.loading = true;
+  this.getDetails();
+  setTimeout(() => {
+    this.loading = false;
+    event.target.complete();
+  }, 1000);
+}
   ngOnInit() {
     this.getDetails();
     //this.getSeats();
@@ -38,6 +46,7 @@ bookedSeats:Array<string>;
         this.phone = this.costomerInfo.phone;
         this.cnic = this.costomerInfo.cnic;
         this.image = this.costomerInfo.imageUrl;
+        this.loading = false;
         // this.id = this.costomerInfo._id;
         // this.email = this.costomerInfo.email;
         // this.userName = this.costomerInfo.username;

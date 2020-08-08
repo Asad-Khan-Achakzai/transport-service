@@ -1,16 +1,17 @@
-<ion-header>
-  <ion-toolbar color="primary" >
-    <ion-buttons slot="start">
-      <ion-button color="dark" (click)="closeModal()">
-        <ion-icon name="arrow-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <div class ="title">
-    <ion-title text-center>Routes</ion-title>
-  </div>
-  </ion-toolbar>
-</ion-header>
+
 <ion-content>
+  <ion-header>
+    <ion-toolbar >
+      <ion-buttons slot="start">
+        <ion-button color="dark" (click)="closeModal()">
+          <ion-icon color="light" name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <div class ="title">
+      <ion-title color="light" text-center>Routes</ion-title>
+    </div>
+    </ion-toolbar>
+  </ion-header>
   <form [formGroup]="Form">
     <!-- <ion-card color="primary">
       
@@ -98,8 +99,8 @@
       </ion-item>
       <ion-item lines="none" float-right>
        
-        <ion-button [disabled]="buttonDisabled" (click)="enterToTheList()">
-          Submit</ion-button
+        <ion-button expand="full" shape="round" [disabled]="buttonDisabled" (click)="enterToTheList()">
+          Enter </ion-button
         >
       </ion-item>
     </ion-card >
@@ -143,7 +144,7 @@
     <ion-grid>
       <ion-row>
         <ion-col class="ion-text-center">
-          <ion-button [disabled]="doneButtonDisable" (click)="nextButton()">
+          <ion-button expand="full" shape="round" [disabled]="doneButtonDisable" (click)="nextButton()">
             Done
           </ion-button>
         </ion-col>

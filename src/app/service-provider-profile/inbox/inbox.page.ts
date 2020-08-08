@@ -5,6 +5,7 @@ import { ServiceProvidersService } from 'src/app/sdk/custom/service-providers.se
 import { Router } from '@angular/router';
 import { Time } from '@angular/common';
 import { ChatServiceService } from 'src/app/chat-room/chat-service.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inbox',
@@ -18,7 +19,9 @@ chats;
 chatt:chat[];
 unreadMessages:chat[];
 countArr:chatCount[];
-  constructor(private chatService: ChatServiceService,private router :Router,private socket: SocketIo,private serviceProvidersService: ServiceProvidersService) { 
+loading = true;
+skeletonlist = [1,2,3,4,5];
+  constructor(private menu: MenuController,private chatService: ChatServiceService,private router :Router,private socket: SocketIo,private serviceProvidersService: ServiceProvidersService) { 
     this.getNewMessage().subscribe(message => {
       if (this.serviceProvidersService.serviceProviderIdInbox === message['recieverId'] || this.serviceProvidersService.serviceProviderIdInbox === message['senderId']) {
         this.chats.push(message);
@@ -28,8 +31,25 @@ countArr:chatCount[];
 
     });
   }
- 
+  async refreshPage(event) { 
+    
+    this.loading = true;
+    this.serviceProvidersService.serviceProviderIdInbox = await this.serviceProvidersService.getServiceProviderId(); 
+    //this.serviceProviderName = this.serviceProvidersService.getServiceProviderName();
+//this.getMessages();
+this.getMessages().subscribe(message => {
+this.chats = message;
+console.log('inbox data = ',message)
+this.filterArray(this.chats);
+});
+   setTimeout(() => {
+     event.target.complete();
+   }, 1000);
+  } 
   async ngOnInit() {
+    this.menu.enable(false, 'first');
+    this.menu.enable(true, 'custom');
+    this.menu.enable(false, 'end');
     this.serviceProvidersService.serviceProviderIdInbox = await this.serviceProvidersService.getServiceProviderId(); 
        //this.serviceProviderName = this.serviceProvidersService.getServiceProviderName();
 //this.getMessages();
@@ -114,6 +134,7 @@ const unifiedArray = uniqueById(chats);
 //  }
 //  this.chatData = this.chatt;
 this.chatData = unifiedArray;
+this.loading = false;
  console.log('filtered array',this.chatData);
 }
 
@@ -143,6 +164,9 @@ goforChat(chat){
 this.router.navigateByUrl('/chat-room');  
 }
   async ionViewDidEnter() {
+    this.menu.enable(false, 'first');
+    this.menu.enable(true, 'custom');
+    this.menu.enable(false, 'end');
   //this.serviceProviderName = this.serviceProvidersService.getServiceProviderName();;
   //this.getMessages();
   this.serviceProvidersService.serviceProviderIdInbox = await this.serviceProvidersService.getServiceProviderId(); 

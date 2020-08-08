@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar >
+    <div id="title">
+    <ion-title>Get Password</ion-title>
+  </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+ 
+  <ion-grid>
+    <ion-row>
+<ion-col>
+  <ion-item *ngIf="sendCodeButton">
+    <ion-label  position = "floating" >
+      Email
+    </ion-label>
+    <ion-input type="email" [(ngModel)]="email"  >
+    </ion-input>
+  </ion-item>
+</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button *ngIf="sendCodeButton" [disabled]="!email" expand="full" shape = "round" (click)="sendEmail()">send code
+          &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item *ngIf="vissible && verifyCodeButton">
+          <ion-label position = "floating" >
+            Enter code
+          </ion-label>
+          <ion-input type ="text" [(ngModel)]="code"  >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col  >
+        <ion-button *ngIf="vissible && verifyCodeButton" expand="full" shape = "round" (click)="verifyCode()" >
+          Verify</ion-button>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item *ngIf="emailVerified">
+          <ion-label position = "floating" >
+            new password
+          </ion-label>
+          <ion-input type ="password" [(ngModel)]="password"  >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item *ngIf="emailVerified">
+          <ion-label position = "floating" >
+            Conform password
+          </ion-label>
+          <ion-input type ="password" [(ngModel)]="conformPassword"  >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button *ngIf="emailVerified " [disabled]="password !== conformPassword" expand="full" shape = "round" (click)="changePassword()">Save
+        &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  
+  </ion-grid>
+
+
+
+</ion-content>

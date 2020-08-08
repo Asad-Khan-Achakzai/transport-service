@@ -1,14 +1,14 @@
 #mainContent {
-    --background: url(../../assets/bryan-goff-rjEoFD8l1vo-unsplash.jpg) no-repeat top center/cover fixed, #fff;
+   // --background: url(../../assets/bryan-goff-rjEoFD8l1vo-unsplash.jpg) no-repeat top center/cover fixed, #fff;
   //--ion-background-color:#39393d;
- 
+  --background: linear-gradient(45deg, #ff0000, #1800f3, #ff0000);
   position: relative;
     height: 100%;
     width: 100%;
 
     ion-button {
-        margin-top: 1em;
-        margin-bottom: 1em
+        --background: linear-gradient(to right, #780206 0%, #061161 51%, #780206 100%);
+        color: white;
     }
 }
 ion-toolbar {
@@ -16,8 +16,8 @@ ion-toolbar {
 }
 
 ion-chip {
-    --background: #867b7b;
-    --color: rgb(0, 0, 0);
+    --background: linear-gradient(to right, #780206 0%, #061161 51%, #780206 100%);
+    color: white;
 }
 
 .card {
@@ -37,15 +37,16 @@ ion-chip {
                 border-radius: 50%;
                 position: absolute;
                 bottom: calc(-1*(80px + 4px)); // -42px;
-                border: 8px solid #000000;
-                background-color: #fff;
+                border: 8px solid #530404;
+                background-color: transparent;
             }
         }
     }
 }
 
 .card-body {
-    background-image: url('../../assets/rodion-kutsaev-049M_crau5k-unsplash.jpg');
+   // background-image: url('../../assets/rodion-kutsaev-049M_crau5k-unsplash.jpg');
+   background: linear-gradient(#00449e, #e66465);
   //  background-color: #ffffff;
     padding: 30px;
     height: calc(100vh - (200px + 56px));
@@ -56,7 +57,7 @@ ion-chip {
 
         .playername {
             position: absolute;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: #fcfcfc;
             width: 50%;
@@ -115,7 +116,7 @@ ion-slides{
     border-radius: 50%;
   }
   #icon{
-    margin-right: 40%;
+    margin-right: 20%;
 }
 ion-button{
     --background:  #867b7b;  
@@ -127,7 +128,8 @@ ion-button{
     width: 500px;
 }
 ion-item{
-    --background: #867b7b;
+    --background: linear-gradient(to right, #780206 0%, #061161 51%, #780206 100%);
+        color: white;
 }
 ion-list{
     background-color: transparent;

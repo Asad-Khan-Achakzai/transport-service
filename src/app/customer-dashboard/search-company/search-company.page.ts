@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ServiceProvidersService } from 'src/app/sdk/custom/service-providers.service';
 import { serviceProvider } from '../service-provider.model';
 import { MenuController, ToastController } from '@ionic/angular';
+import { CustomersService } from 'src/app/sdk/custom/customers.service';
 
 @Component({
   selector: 'app-search-company',
@@ -17,11 +18,22 @@ export class SearchCompanyPage implements OnInit {
   skeletonlist = [1, 2, 3, 4, 5];
   // departs = 's';
   // dests = 'd';
-  constructor(public toastController: ToastController,private menu: MenuController,private formBuilder: FormBuilder, private serviceProvidersService: ServiceProvidersService) { }
-
+  constructor(private customerService:CustomersService,public toastController: ToastController,private menu: MenuController,private formBuilder: FormBuilder, private serviceProvidersService: ServiceProvidersService) { }
+  async refreshPage(event) { 
+    
+    this.loading = true;
+  
+   this.fillArray();
+   setTimeout(() => {
+     event.target.complete();
+   }, 1000);
+  } 
   ngOnInit() {
     this.formInitializer();
     this.fillArray();
+  }
+  displayToast(){
+    this.customerService.showToast('Navigating....');
   }
   ionViewDidEnter() {
    
@@ -54,7 +66,11 @@ export class SearchCompanyPage implements OnInit {
     for(let i =0 ;i< this.oldServiceProviderInfo.length;i++){
       for(let j = 0; j<this.oldServiceProviderInfo[i].servicesArray.length;j++  ){
         if(departs === this.oldServiceProviderInfo[i].servicesArray[j].departure && this.oldServiceProviderInfo[i].servicesArray[j].destination === dests)
-        {this.serviceProviderInfo = [];
+        {          console.log('came = ',this.oldServiceProviderInfo[i]);
+    //    this.serviceProviderInfo.splice(0, this.serviceProviderInfo.length);
+
+          this.serviceProviderInfo = [];
+          console.log('came = ',this.serviceProviderInfo);
           this.serviceProviderInfo.push(this.oldServiceProviderInfo[i]);
         }
       }

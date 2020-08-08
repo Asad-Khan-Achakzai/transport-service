@@ -1,15 +1,16 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button  defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <div class ="title">
-    <ion-title>Registration</ion-title>
-  </div>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
+  <ion-header>
+    <ion-toolbar >
+      <ion-buttons slot="start">
+        <ion-back-button  defaultHref="/home"></ion-back-button>
+      </ion-buttons>
+      <div class ="title">
+      <ion-title>Registration</ion-title>
+    </div>
+    </ion-toolbar>
+  </ion-header>
   <div class="mainDiv">
     <ion-grid>
       <ion-row>
@@ -81,8 +82,40 @@
                 >
                 </ion-input>
               </ion-item>
-
-              <ion-item>
+              <ion-row>
+                <ion-col size="8">
+                <ion-item>
+                  
+                    
+                  <ion-label position = "floating">
+                    Valid Gmail Address
+                  </ion-label>
+                  <ion-input type ="text"  formControlName="email" id = "emailaddress">
+                  </ion-input>
+                
+                </ion-item>
+              </ion-col>
+              <ion-col size="4" >
+                <ion-button expand="full" [disabled]="!Form.value['email']" (click)="sendEmail()" >
+                  Send Code &nbsp;<ion-spinner *ngIf="verifyLoading"></ion-spinner></ion-button>
+                </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="8">
+                <ion-item *ngIf="vissible">
+                  <ion-label position = "floating" >
+                    Enter code
+                  </ion-label>
+                  <ion-input type ="text" formControlName="code"  >
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="4" >
+                <ion-button *ngIf="vissible" expand="full" (click)="verifyCode()" >
+                  Verify</ion-button>
+                </ion-col>
+              </ion-row>
+              <!-- <ion-item>
                 <ion-label position="floating">
                   Email Address
                 </ion-label>
@@ -92,7 +125,7 @@
                   id="emailaddress"
                 >
                 </ion-input>
-              </ion-item>
+              </ion-item> -->
 
               <ion-item>
                 <ion-label position="floating">
@@ -104,26 +137,7 @@
               <div>
                 <div>
                   <ion-card>
-                    <!-- 
-                    <ion-card-content>
-
-                      <ion-item>
-                        <ion-label id="cities-label">Services in Cities</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <tag-input formControlName="tags" [separatorKeyCodes]="[32]">
-                          <tag-input-dropdown [focusFirstElement]="true" [showDropdownIfEmpty]="true"
-                            [autocompleteItems]="cities"></tag-input-dropdown>
-                        </tag-input>
-                      </ion-item>
-                      <ion-item lines="none" float-right>
-                        <ion-button (click)="upload(Form.value)">
-                          Submit</ion-button>
-                      </ion-item>
-
-
-                    </ion-card-content>
- -->
+              
 
                     <ion-item>
                       <ion-label>Services in cities</ion-label>
@@ -172,7 +186,7 @@
                   <ion-button (click)="nextButton()">
                     Services
                   </ion-button>
-                  <ion-button (click)="display()" [disabled]="!Form.valid ">
+                  <ion-button (click)="display()" [disabled]="!Form.valid || !emailVerified ">
                     signup &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
                   </ion-button>
                 </ion-col>

@@ -1,5 +1,8 @@
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-header>
     <ion-toolbar>
       <div id="title">

@@ -15,15 +15,16 @@ import { NgIoModule, NgIoConfig } from 'ng-io';
 import { DatePipe } from '@angular/common'
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
-const config: NgIoConfig = { url: 'http://192.168.43.249:3001', options: {} };
+const config: NgIoConfig = { url: 'https://socket-server-appp.herokuapp.com', options: {} };
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, HttpClientModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({menuType: 'overlay'}),
     IonicStorageModule.forRoot(),
-    AppRoutingModule, NgIoModule.forRoot(config)
+    AppRoutingModule, NgIoModule.forRoot(config),
+    
   ],
   providers: [
     StatusBar,
@@ -42,4 +43,5 @@ const config: NgIoConfig = { url: 'http://192.168.43.249:3001', options: {} };
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

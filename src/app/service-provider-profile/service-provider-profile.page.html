@@ -2,11 +2,10 @@
   <ion-toolbar>
    
     <ion-title>&nbsp;</ion-title>
-    <ion-buttons slot="start">
-      <ion-menu-toggle>
+      <ion-menu-toggle slot="start">
       <ion-menu-button   color="light" autoHide="false"></ion-menu-button>
     </ion-menu-toggle>
-    </ion-buttons>
+    
     <ion-buttons slot="end">
       <ion-button color="light" (click)="goToDashboard()">
         <ion-icon name="ios-arrow-back"></ion-icon>
@@ -49,13 +48,8 @@
     <div class="card-body">
       <div class="user-meta ion-text-center">
         <h3 class="playername">
-          <div id="name">{{companyName}}</div>
-          <div>
-            <ion-button class="badge-button" (click)="openChatRoom()">
-              <ion-icon size="large" name="notifications-circle-outline">
-              </ion-icon>
-              <ion-badge [class.badge-one]="msgs < 10" [class.badge-two]="msgs >= 10" color="danger">{{ msgs }}</ion-badge>
-            </ion-button>
+          <div id="name">{{companyName}}
+            
         </div>
           <!-- <ion-chip (click)="openChatRoom()">
             Message
@@ -73,10 +67,14 @@
         </h3>
         <!-- <h5 class="country">Switzerland</h5> -->
         <h6 class="ranking">
-          Current ranking:
-          <ion-chip>
-            <ion-label>2</ion-label>
-          </ion-chip>
+          <ion-button class="badge-button" (click)="openChatRoom()" *ngIf="!loading">
+            <ion-icon size="large" src="../../assets/inbox.svg">
+            </ion-icon>
+            <ion-badge [class.badge-one]="msgs < 10" [class.badge-two]="msgs >= 10" color="danger">{{ msgs }}</ion-badge>
+          </ion-button>
+          <ion-button *ngIf="loading">
+            loading..
+          </ion-button>
         </h6>
       </div>
 
@@ -104,6 +102,7 @@
         <ion-slides #slides (ionSlideDidChange)="slideChanged()">
           <ion-slide>
             <ion-grid>
+              <div *ngIf="!loading">
               <ion-row>
                 <ion-col size-md="12" size-lg="12" size-sm="12" size-xs="12">
                   <ion-button expand="full" shape="round">
@@ -144,31 +143,38 @@
                   >
                 </ion-col>
               </ion-row>
+            </div>
+              <div *ngIf="loading">
+                <ion-card>
+                  <ion-item>
+                    <ion-label>
+                      <h3>
+                        <ion-skeleton-text
+                          animated
+                          style="width: 50%;"
+                        ></ion-skeleton-text>
+                      </h3>
+                      <p>
+                        <ion-skeleton-text
+                          animated
+                          style="width: 80%;"
+                        ></ion-skeleton-text>
+                      </p>
+                      <p>
+                        <ion-skeleton-text
+                          animated
+                          style="width: 80%;"
+                        ></ion-skeleton-text>
+                      </p>
+                    </ion-label>
+                  </ion-item>
+                </ion-card>
+              </div>
             </ion-grid>
           </ion-slide>
           <ion-slide>
             <ion-list id="list">
-              <!-- <ion-card>
-
-                <ion-item id ='item' text-wrap>
-                
-                  
-                                 <ion-label>From :</ion-label>
-                    <ion-label >unknown</ion-label>
-  
-                    <ion-label>To :</ion-label>
-                    <ion-label >unknown</ion-label>
-                  </ion-item>
-                  <ion-item>
-  
-                    <ion-label>Timing :</ion-label>
-                    <ion-label>unknown</ion-label>
-                    <ion-label>Seats :</ion-label>
-                    <ion-label>unknown</ion-label>
-                  </ion-item>
-  
-                
-              </ion-card> -->
+              <div *ngIf="!loading" >
               <ion-menu-toggle
                 auto-hide="false"
                 *ngFor="let item  of routesArr"
@@ -188,17 +194,36 @@
                   </ion-item>
                 </ion-card>
               </ion-menu-toggle>
-              <!-- <ion-menu-toggle auto-hide="false" *ngFor="let item of routesArr; let i = index">
-              <ion-item-sliding (ionSwipe)="delete(i)">
-                <ion-item>From {{item?.departure}} To {{item?.destination}} Timing {{item?.timing}} Total seats {{item?.totalSeats}}</ion-item>
-                <ion-item-options>
-                  <button ion-button expandable (click)="delete(i)">
-                    <ion-icon name="trash"></ion-icon>
-                    Delete
-                  </button>
-                </ion-item-options>
-              </ion-item-sliding>
-            </ion-menu-toggle> -->
+            </div>
+            <div *ngIf="loading">
+              <ion-card>
+                <ion-item *ngFor="let item of skeletonlist">
+                  <ion-label>
+                    <h3>
+                      <ion-skeleton-text
+                        color="light"
+                        animated
+                        style="width: 50%;"
+                      ></ion-skeleton-text>
+                    </h3>
+                    <p>
+                      <ion-skeleton-text
+                        color="light"
+                        animated
+                        style="width: 80%;"
+                      ></ion-skeleton-text>
+                    </p>
+                    <p>
+                      <ion-skeleton-text
+                        color="light"
+                        animated
+                        style="width: 60%;"
+                      ></ion-skeleton-text>
+                    </p>
+                  </ion-label>
+                </ion-item>
+              </ion-card>
+            </div>
             </ion-list></ion-slide
           >
           <ion-slide>

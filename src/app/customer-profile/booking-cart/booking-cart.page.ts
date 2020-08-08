@@ -18,7 +18,22 @@ skeletonlist = [1, 2, 3, 4, 5];
 noBooking= false;
 customerName;
   constructor(private menu: MenuController,public alertController: AlertController,public toastController: ToastController, private serviceProviderServices: ServiceProvidersService,private router: Router,private bookingsService:BookingsService, private customerService: CustomersService) { }
-
+  async refreshPage(event) { 
+    
+    this.loading = true;
+    this.customerId = await this.customerService.getCustomerId();
+    this.customerName = await this.customerService.getCustomerName();
+      this.getBooking();
+   // if(this.completed){
+   //   this.loading = false;
+   //   event.target.complete();
+   //   this.completed = false;
+   // }
+   setTimeout(() => {
+     console.log('Async operation has ended');
+     event.target.complete();
+   }, 1000);
+  }
   async ngOnInit() {
     //after reload the image in side menu is lost so here i send again the picture
     let img  = await this.customerService.getCustomerImg();

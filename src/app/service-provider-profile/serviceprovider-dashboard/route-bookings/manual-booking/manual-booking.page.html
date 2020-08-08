@@ -1,6 +1,10 @@
 
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="!loading">
   <ion-grid>
     <ion-row >
 
@@ -585,6 +589,12 @@
           
           
         </ion-col> 
+        <ion-col size = "12">
+          <ion-label color="light" >Departure Date: </ion-label> 
+          <ion-label color="light" >
+            {{timingValue}} at {{routeTiming}}
+          </ion-label>
+        </ion-col>   
         
       </ion-row>
      
@@ -610,9 +620,9 @@
             </ion-input>
           </ion-item>
         </ion-col>
-     
+          
       <ion-col size = "12">
-        <ion-datetime  displayFormat="DD-MMM-YYYY" min="2020" max="2025" placeholder="Select Date" [(ngModel)]="timingValue" [ngModelOptions]="{ standalone: true }"></ion-datetime>
+        <!-- <ion-datetime  displayFormat="DD-MMM-YYYY" min="2020" max="2025" placeholder="Select Date" [(ngModel)]="timingValue" [ngModelOptions]="{ standalone: true }"></ion-datetime> -->
       <ion-button expand="full" shape="round" [disabled]="price==0" (click)="saveData()">
         <h3>submit</h3></ion-button>
       </ion-col>
@@ -622,11 +632,12 @@
 </ion-col>
 </ion-row>
 </ion-grid>
-    <div>
-      <ion-grid>
-        
-      </ion-grid>
-    </div>
+</div>
+<div *ngIf="loading">
+  <ion-card>
+    <ion-spinner></ion-spinner>
+  </ion-card>
+  </div>
 </ion-content>
 <!-- <div class="plane">
   <div class="cockpit">

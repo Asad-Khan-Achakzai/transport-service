@@ -8,9 +8,18 @@
    
 }
 ion-button{
-  --background: #867b7b;
-  --color: rgb(0, 0, 0);
+    --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    color: white;
+    
 }
+ion-button:hover {animation-name: background-color; 
+    animation-duration: 500ms; }
+        @keyframes background-color { 
+        100% { 
+
+            background-color: #4065F3; 
+        } 
+    } 
 .labels{
     color: darken($color: #ffffff, $amount: 0);
     font-weight: bold;
@@ -21,7 +30,8 @@ ion-content{
    
    }
    ion-item{
-    --background: #867b7b;
+    --background: #3f0606;
+    color: white;
 }
 ion-card{
     --background: #3f0606;

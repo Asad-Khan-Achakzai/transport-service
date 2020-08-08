@@ -1,6 +1,10 @@
 .title{
     text-align: center;
   }
+  ion-content{
+    //  --ion-background-color:#00003d;
+    --background: linear-gradient(197deg, rgba(100,100,100,1) 0%, rgba(63,63,63,1) 13.5%, rgba(29,29,29,1) 33.33%, rgba(0,0,0,1) 100%) !important;
+  }
   .plusClass {
       display: flex;
       justify-content: center;
@@ -16,7 +20,8 @@
     ion-header {
       &:after {
         //box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
-        background-image: none;
+       // background-image: none;
+       
         left: 0;
         bottom: -8px;
         background-position: left 0 top 0;
@@ -90,31 +95,6 @@
       justify-content: center;
     }
     
-    .online {
-      position: absolute;
-      // right: 6px;
-      left: 48px;
-      top: 58%;
-      width: 10px;
-      background: #92ff92;
-      height: 10px;
-      border-radius: 50%;
-    }
-    
-    .ofline {
-      position: absolute;
-      // right: 6px;
-      left: 48px;
-      top: 58%;
-      width: 10px;
-      background: #c1c3c1;
-      height: 10px;
-      border-radius: 50%;
-    }
-    ion-chip {
-      --background: #9dc912;
-      --color: #fff;
-  }
     .user-img {
       //position: absolute;
       object-fit: cover;
@@ -132,18 +112,29 @@
     #headingEmail{
         margin-right: 20.5%;
     }
+    .heading{
+      color: white;
+    }
   ion-item{
-    --background: #808dd8;
+    --background: #3f0606;
     margin-bottom: 10px;
 
   }
+  ion-toolbar{
+    --background: linear-gradient(197deg, rgba(100,100,100,1) 0%, rgba(63,63,63,1) 13.5%, rgba(29,29,29,1) 33.33%, rgba(0,0,0,1) 100%) !important;
+  }
   ion-searchbar{
-    --background: #cde6f5;
+   // --background: #cde6f5;
+   --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+    color: white;
   }
   ion-label{
     background-color: transparent;
 
    }
    ion-card{
-    --background: #cde6f5;
+background-color: transparent;
+   }
+   ion-list{
+    background-color: transparent;
    }

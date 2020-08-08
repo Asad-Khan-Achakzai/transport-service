@@ -3,14 +3,35 @@ ion-content{
  --background: linear-gradient(197deg, rgba(100,100,100,1) 0%, rgba(63,63,63,1) 13.5%, rgba(29,29,29,1) 33.33%, rgba(0,0,0,1) 100%) !important;
 
 }
+ion-spinner {
+  color: white;
+  position: fixed;
+  z-index: 999;
+  height: 5em;
+  width: em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
 
 ion-toolbar {
   --background: #000000;
 }
 ion-button{
-  --background: #867b7b;
-  --color: rgb(0, 0, 0);
+  --background: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
+  color: white;
 }
+ion-button:hover {animation-name: background-color; 
+  animation-duration: 500ms; }
+      @keyframes background-color { 
+      100% { 
+
+          background-color: #4065F3; 
+      } 
+  } 
 #planeCol{
   text-align: center;
 }
@@ -20,7 +41,7 @@ ion-header{
 
 ion-datetime{
   color: white;
-  background-color: #867b7b;
+  background-color: #2b0101;
 }
 *,*:before,*:after {
     box-sizing: border-box;
@@ -30,7 +51,7 @@ ion-datetime{
   }
   
   .plane {
-    margin-left: 13%;
+    margin-left: 5%;
    // margin: 20px ;
     max-width: 300px;
   }

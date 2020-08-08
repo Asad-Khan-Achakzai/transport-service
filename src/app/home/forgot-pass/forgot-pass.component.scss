@@ -1,0 +1,24 @@
+ion-content{
+    --background: linear-gradient(to top, #93F9B9, #1D976C);
+  
+  }
+  ion-toolbar{
+    --background: linear-gradient(to right, #e8faff 0%, #71B280 51%, #134E5E 100%);
+    color: white;
+  }
+  ion-card-title {
+    --background: transparent;
+  }
+  ion-card{
+    --background: linear-gradient(to right, #e8faff 0%, #71B280 51%, #134E5E 100%);
+    color: white;
+  }
+  ion-item{
+    --background: transparent;
+  }
+  ion-button{
+    --background: linear-gradient(to right, #134E5E 0%, #71B280 51%, #134E5E 100%);
+  }
+  #title{
+    text-align: center;
+  }

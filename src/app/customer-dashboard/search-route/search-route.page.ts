@@ -24,7 +24,20 @@ export class SearchRoutePage implements OnInit {
 
 
   constructor(public toastController: ToastController,private customerService:CustomersService,private menu: MenuController,private serviceProvidersService: ServiceProvidersService) { }
-
+  async refreshPage(event) { 
+    
+    this.loading = true;
+   // if(this.completed){
+   //   this.loading = false;
+   //   event.target.complete();
+   //   this.completed = false;
+   // }
+   this.fillArray();
+   setTimeout(() => {
+     console.log('Async operation has ended');
+     event.target.complete();
+   }, 1000);
+  } 
   ionViewDidEnter() {
    
     this.menu.enable(true, 'first');
@@ -41,8 +54,9 @@ export class SearchRoutePage implements OnInit {
   }
 
  
-  saveIdToStroage(id){
+  async saveIdToStroage(id){
     this.customerService.saveProviderIdForProviderProfile(id);
+    this.customerService.showToast('Navigating....');
   }
 
 
@@ -79,8 +93,10 @@ export class SearchRoutePage implements OnInit {
     if (this.searchTerm != "") {
       this.serviceProviderInfo = this.serviceProviderInfo.filter(item => {
         //item.companyName == this.searchTerm;
+        if(item.companyName){
         return item.companyName.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
         this.item = item;
+      }
         //console.log(item.email);
         return 0;
       });
