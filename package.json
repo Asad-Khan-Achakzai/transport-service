@@ -36,6 +36,7 @@
     "cordova-sms-plugin": "^1.0.0",
     "cordova-sqlite-storage": "^5.0.0",
     "core-js": "^2.5.4",
+    "ionic": "^5.4.16",
     "mongoose": "^5.9.25",
     "ng-io": "^1.2.0",
     "ng-socket-io": "^0.2.4",
