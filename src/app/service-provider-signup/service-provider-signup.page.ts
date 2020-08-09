@@ -113,7 +113,7 @@ export class ServiceProviderSignupPage implements OnInit {
       
     }
   }
-  onEnter(value) {
+  onEnter() {
     this.cities.push(this.Form.value['skillInput'])
     this.Form.controls['skillInput'].setValue('');
   }
