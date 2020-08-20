@@ -6,7 +6,7 @@
           <ion-col size-md ="6" offset-md = "3">
               <div [formGroup]="Form">
             <ion-card >
-              <ion-card-header color="primary">
+              <ion-card-header >
                 <div class ="title">
               <ion-card-title >Welcome</ion-card-title>
             </div>
@@ -15,25 +15,25 @@
             <ion-card-content>
               
               <ion-item>
-                <ion-label position = "floating">
+                <ion-label color="light" position = "floating">
                   User Name
                 </ion-label>
                 <ion-input type ="text"  formControlName="email" >
                 </ion-input>
               </ion-item>
               <ion-item>
-                  <ion-label position = "floating">
+                  <ion-label color="light"  position = "floating">
                     Password
                   </ion-label>
                   <ion-input type ="password" formControlName="password">
                   </ion-input>
                 </ion-item>
                 <ion-item>
-                  <ion-label>User Type</ion-label>
-                  <ion-select formControlName="slectedGender" (ionChange)="optionsFn()" >
+                  <ion-label color="light">User Type</ion-label>
+                  <ion-select  formControlName="slectedGender" (ionChange)="optionsFn()" >
                   <ion-select-option value="customer">Customer</ion-select-option>
                   <ion-select-option value="serviceProvider">Service Provider</ion-select-option>
-                  <ion-select-option value="admin">Admin</ion-select-option>
+                 
                   </ion-select>
                   </ion-item>
                <ion-row >
@@ -55,14 +55,14 @@
               </ion-row>
               <ion-row justify-content-center>
                 <div padding id ="buttonDIv">
-                  <ion-button size="large"  expand="full" shape="round" (click) = "loginButton()" [disabled]="!Form.valid">
+                  <ion-button size="large" id="logButton" expand="full" shape="round" (click) = "loginButton()" [disabled]="!Form.valid">
                     Login &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
                   </ion-button>
                 </div>
               </ion-row>
               <ion-row justify-content-center>
                 <div padding id ="buttonDIv">
-                  <ion-button size="large"  expand="full" shape="round" fill="outline" (click) = "signUp()">signup</ion-button>
+                  <ion-button size="large" color="light" expand="full" shape="round" fill="outline" (click) = "signUp()">signup</ion-button>
                 </div>
               </ion-row>
             </ion-card-content>

@@ -105,7 +105,7 @@ this.mixedService.sendPassword({email:this.email,message:'whats up'}).subscribe(
         async data => {
           
           console.log('got response from server', data);
-
+          this.modalController.dismiss();
           const toast = await this.toastController.create({
             message: data.message,
            // message: `${name} has been saved successfully.`,
@@ -166,6 +166,9 @@ this.mixedService.sendPassword({email:this.email,message:'whats up'}).subscribe(
   else{
     console.log('Code expired try again')
   }
+}
+closeModal() {
+  this.modalController.dismiss();
 }
 
 }

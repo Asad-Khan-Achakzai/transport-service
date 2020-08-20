@@ -108,6 +108,11 @@ export class AppComponent {
       icon: 'cart'
     }, 
     {
+      title: 'Routes',
+      url: '/customer-dashboard/search-company',
+      icon: ''
+    }, 
+    {
       title: 'Settings',
       url: '//customer-profile/customer-edit',
       icon: 'settings'

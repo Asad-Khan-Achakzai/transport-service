@@ -80,7 +80,7 @@
 
           <ion-row>
             <ion-col size="8">
-            <ion-item>
+            <ion-item *ngIf="disableEmailColumn">
               
                 
               <ion-label position = "floating">
@@ -92,7 +92,7 @@
             </ion-item>
           </ion-col>
           <ion-col size="4" >
-            <ion-button expand="full" [disabled]="!Form.value['email']" (click)="sendEmail()" >
+            <ion-button *ngIf="disableEmailColumn" expand="full" [disabled]="!Form.value['email']" (click)="sendEmail()" >
               Send Code &nbsp;<ion-spinner *ngIf="verifyLoading"></ion-spinner></ion-button>
             </ion-col>
             </ion-row>
@@ -118,17 +118,11 @@
                 <ion-input type ="password" formControlName="password">
                 </ion-input>
               </ion-item>
-              <!-- <ion-item>
-                <ion-label position = "floating">
-                  Confirm Password
-                </ion-label>
-                <ion-input type ="password" formControlName="confirmPassword">
-                </ion-input>
-              </ion-item> -->
+              
               <ion-row justify-content: end>
                 <ion-col class="ion-text-center">
                   
-              <ion-button expand="full" shape="round" (click) = "signUpButton()" [disabled]="!Form.valid ">
+              <ion-button expand="full" shape="round" (click) = "signUpButton()" [disabled]="!Form.valid || !emailVerified">
                 Sign Up &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
               </ion-button >
             </ion-col>

@@ -18,17 +18,18 @@
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item  id='pageLink' (click)="selectedIndex = i" routerDirection="root" [class.selected]="selectedIndex == i" [routerLink]="[p.url]" lines="none"
               detail="false" >
-              <ion-icon color="light" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-icon color="light" slot="start" *ngIf="p.icon" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-icon color="light" slot="start" *ngIf="! p.icon" src="../assets/delivery.svg"></ion-icon>
               <ion-label color="light">{{ p.title }}</ion-label>
             </ion-item>
             
             
           </ion-menu-toggle>
-          <ion-item  id='pageLink' routerDirection="root" [routerLink]="['/customer-dashboard/search-company']" lines="none"
+          <!-- <ion-item  id='pageLink' routerDirection="root" [routerLink]="['/customer-dashboard/search-company']" lines="none" [class.selected]="selectedIndex == 4"
             detail="false" >
             <ion-icon color="light" slot="start" src="../assets/delivery.svg"></ion-icon>
             <ion-label color="light"> Routes </ion-label>
-          </ion-item>
+          </ion-item> -->
           <ion-item lines="none" id='pageLink' >
             <ion-icon color="light" slot="start" name ="log-out-outline"> 
 
@@ -89,7 +90,7 @@
           <hr> -->
       </ion-card>
         <ion-menu-toggle auto-hide="false" *ngFor="let p of serviceProviderPages; let i = index">
-          <ion-item id='pageLink' (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none"
+          <ion-item id='pageLink' (click)="selectedIndex = i" routerDirection="root" [class.selected]="selectedIndex == i" [routerLink]="[p.url]" lines="none"
             detail="false" >
             <ion-icon slot="start" color="light" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
             <ion-label color="light">{{ p.title }}</ion-label>

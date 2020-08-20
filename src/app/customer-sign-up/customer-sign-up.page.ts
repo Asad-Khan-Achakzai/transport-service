@@ -42,6 +42,7 @@ export class CustomerSignUpPage implements OnInit {
   code;
   verifyLoading = false;
   emailVerified = false;
+  disableEmailColumn = true;
   constructor(private menu: MenuController,public toastController: ToastController, private router :Router,private formBuilder: FormBuilder,private customerService: CustomersService,private platform: Platform,private mixedService: MixedService, public alertController: AlertController) { }
 
   ngOnInit() {
@@ -159,9 +160,7 @@ export class CustomerSignUpPage implements OnInit {
     }
     
   }
-search(){
-  console.log("button clicker");
-}
+
 sendEmail(){
   this.Form.invalid;
   this.verifyLoading = true;
@@ -180,6 +179,7 @@ sendEmail(){
       toast.present();
       if(data.message === 'Email sent successfuly'){
         this.vissible = true;
+        this.disableEmailColumn = false;
       }
   
       this.loading = false;

@@ -75,6 +75,9 @@ ion-item{
 .count{
   right: auto;
 }
+ion-item:hover {
+  cursor: pointer;
+}
 .bold{
   font-weight: bold;
 }

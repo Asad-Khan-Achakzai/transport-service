@@ -2,6 +2,32 @@
 .title{
   text-align: center;
 }
+a:hover {
+  cursor: pointer;
+}
+a{
+  color: black;
+}
+ion-content{
+  // --background: linear-gradient(#00449e, #e66465);
+  --background: radial-gradient(#ff5e7c 10%, #c272d4 50%, #6bbae8 80%);
+}
+ion-item{
+  --background: transparent;
+}
+ion-card {
+  --background: linear-gradient(to right, #603813 0%, #b29f94 51%, #603813 100%);
+  
+}
+ion-card-title{
+  color: white;
+  font-weight: bold;
+  font-size: x-large;
+  font-family: serif;
+}
+#logButton{
+  --background: linear-gradient(to right, #1A2980 0%, #26D0CE 51%, #1A2980 100%);
+}
 // #container {
 //   text-align: center;
 

@@ -1,12 +1,14 @@
 ion-content {
    // --background: radial-gradient(at 0 50%, rgb(28, 150, 197), #242225);
-   --ion-background-color:#020227;
-
+   //--ion-background-color:#020227;
+   --background: linear-gradient(to right, #1F1C2C 0%, #928DAB 51%, #1F1C2C 100%)
   }
   ion-header {
     --background: #5b2573;
   }
-  ion-toolbar,
+  ion-toolbar{
+    --background: linear-gradient(#00449e, #e66465);
+  }
   ion-item {
     --background: transparent;
   }
@@ -14,6 +16,19 @@ ion-content {
     background: transparent;
     padding-top: 20px;
     margin-bottom: 0;
+  }
+  ion-spinner {
+    color: white;
+    position: fixed;
+    z-index: 999;
+    height: 5em;
+    width: em;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
   }
   .imageAvatarRight {
     display: flex;

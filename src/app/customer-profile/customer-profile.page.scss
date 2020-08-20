@@ -27,6 +27,13 @@ ion-content {
 .icon{
     margin-right: 10%;
 }
+ion-badge {
+    background-color: red;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    border-radius: 100%;
+}
 ion-toolbar {
     --background: transparent;
 }

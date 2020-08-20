@@ -37,6 +37,12 @@ export class ServiceProviderEditPage implements OnInit {
   loading = false;
   //val;
   //val1;
+  email;
+  vissible =false;
+  code;
+  verifyLoading = false;
+  emailVerified = false;
+  disableEmailColumn = true;
   constructor(private menu: MenuController,public alertController: AlertController,public toastController: ToastController,private formBuilder: FormBuilder, private router: Router, private modalController: ModalController, private serviceProviderServices: ServiceProvidersService,private platform: Platform,private mixedService: MixedService) { }
   // cities = ['quetta','peshawer'];
   public skillInput: string = '';
@@ -102,7 +108,8 @@ export class ServiceProviderEditPage implements OnInit {
       citiesArray: [[]],
       servicesArray: [[]],
       shortID:[],
-      imageUrl:[]
+      imageUrl:[],
+      code:[]
 
     });
   }
@@ -210,4 +217,60 @@ export class ServiceProviderEditPage implements OnInit {
       
     
     
-  }}
+  }
+  sendEmail(){
+    this.Form.invalid;
+    this.verifyLoading = true;
+    this.mixedService.sendEmail({email:this.Form.value['email'],message:'whats up'}).subscribe(
+      async data => {
+        this.verifyLoading = false;
+        console.log('got response from server', data);
+    
+        const toast = await this.toastController.create({
+          message: data.message,
+        // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+  
+        this.code = data.code;
+        toast.present();
+        if(data.message === 'Email sent successfuly'){
+          this.vissible = true;
+          this.disableEmailColumn = false;
+        }
+    
+        this.loading = false;
+      // this.router.navigateByUrl('/home');
+      },
+      async error => {
+        this.loading = false;
+        const toast = await this.toastController.create({
+          message: error.error.message,
+        // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+       
+      }
+    );
+      }
+      async verifyCode(){
+        if(this.code ===this.Form.value['code'] ){
+          this.emailVerified = true;
+          const toast = await this.toastController.create({
+            message: 'Email verified',
+          // message: `${name} has been saved successfully.`,
+            duration: 3500
+          });
+          toast.present();
+        }
+        else{
+          const toast = await this.toastController.create({
+            message: 'Invalid code',
+          // message: `${name} has been saved successfully.`,
+            duration: 3500
+          });
+          toast.present();
+        }
+  
+      }
+}

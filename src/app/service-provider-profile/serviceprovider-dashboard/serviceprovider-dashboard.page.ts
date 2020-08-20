@@ -14,13 +14,23 @@ export class ServiceproviderDashboardPage implements OnInit {
   serviceProvider:serviceProvider;
   loading = false;
   skeletonlist = [1, 2, 3, 4, 5];
-
+  i = 0;
   constructor(private bookingsService:BookingsService,private router :Router,private serviceProvidersService: ServiceProvidersService) { }
 
   async ngOnInit() {
     let id = await this.serviceProvidersService.getServiceProviderId();
     this.getServiceProvider(id);
   }
+  
+//   // if you want your code to work everytime even though you leave the page
+// Observable..interval(1000).subscribe(()=>{
+//     this.increment();
+// });
+
+// setInterval(() => { 
+//   this.increment(); // Now the "this" still references the component
+// }, 1000);
+  // setInterval(increment, 1000);
   async refreshPage(event) { 
     this.loading = true;
     let id = await this.serviceProvidersService.getServiceProviderId();

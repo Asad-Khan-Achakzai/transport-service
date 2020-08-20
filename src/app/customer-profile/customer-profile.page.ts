@@ -66,6 +66,9 @@ completed = false;
     return observable;
   }
   async ngOnInit() {
+    if(this.customerService.getCustomerId()){
+      this.authService.logout();
+    }
   this.mixedService.user = 'customer';
     this.chatService.customerLogedIn();
     
@@ -79,12 +82,19 @@ completed = false;
     }
     if(this.observableCompleted){
      }
+    //  this.getMessages().subscribe(message => {
+    //   this.chats = message;
+    //   console.log('here');
+    //   console.log('inbox data = ',message)
+    //   this.filterArray(this.chats);
+    //  });
   }
   ionViewDidEnter() {
     this.menu.enable(true, 'first');
     this.menu.enable(false, 'custom');
     this.menu.enable(false, 'end');
     this.getCustomer();
+  
     
   }
   public async diplayToken(): Promise<any> {
@@ -144,7 +154,15 @@ completed = false;
       },
       err => {
         console.log('err', err);
+      },
+      async () => {
+        this.getMessages().subscribe(message => {
+          this.chats = message;
+          console.log('inbox data = ',message)
+          this.filterArray(this.chats);
+         });
       }
+
     //   () => {console.log('#1 Complete')
     //   this.customerService.saveCustomerImg(this.costomerInfo.imageUrl);
     //   this.getMessages().subscribe(message => {
@@ -157,15 +175,25 @@ completed = false;
      );
   }
   getMessages() {
-    this.socket.emit('set-recieverForCustomerInbox', this.id);
+    this.socket.emit('set-recieverForInbox', this.id);
     // Handle Output
    let observable = new Observable(observer => {
-    this.socket.on('customerInboxData', (data) => {
+    this.socket.on('inboxData', (data) => {
       observer.next(data);
     });
    })
    
    return observable;
+  //   this.socket.emit('set-recieverForCustomerInbox', this.id);
+  //   // Handle Output
+  //   console.log('here');
+  //  let observable = new Observable(observer => {
+  //   this.socket.on('customerInboxData', (data) => {
+  //     observer.next(data);
+  //   });
+  //  })
+   
+  //  return observable;
    }
    //filtering array to have each sender only once;
 filterArray(chats){

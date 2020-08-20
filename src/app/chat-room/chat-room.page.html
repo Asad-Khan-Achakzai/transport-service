@@ -1,5 +1,5 @@
 <ion-header translucent>
-  <ion-toolbar color="primary">
+  <ion-toolbar >
    <ion-buttons slot="start">
      <ion-back-button></ion-back-button>
    </ion-buttons>
@@ -16,6 +16,7 @@
 </ion-header>
 
 <ion-content #IonContent fullscreen="true"(click)="scrollTo()">
+  <div *ngIf="!loading">
   <ion-list>
     <div *ngFor="let chat of messages; let i = index; ">
       <div *ngIf="(chat.status ==='unread' && chat.name === sender)?markStatus(chat):false ">
@@ -32,9 +33,9 @@
               <!-- <ion-avatar class="avatar" [ngClass]="(msgList[i+1] && msgList[i+1].userId == chat.userId)?'hidden':''">
                  -->
                  <ion-avatar class="avatar" >
-                <div class="imageAvatarBottomIcon">
+                <!-- <div class="imageAvatarBottomIcon">
                   <ion-icon name="add" expand="icon-only" color="light"> </ion-icon>
-                </div>
+                </div> -->
                 <ion-img class="user-img" src="{{chat.senderImage_url}}"></ion-img>
               </ion-avatar>
             </div>
@@ -77,9 +78,9 @@
             <div class="imageAvatarBottom">
               <!-- <ion-avatar class="avatar" [ngClass]="(msgList[i+1] && msgList[i+1].userId == chat.userId)?'hidden':''"> -->
                 <ion-avatar class="avatar" >
-                <div class="imageAvatarBottomIcon">
+                <!-- <div class="imageAvatarBottomIcon">
                   <ion-icon name="add" expand="icon-only" color="light"> </ion-icon>
-                </div>
+                </div> -->
                 <ion-img class="user-img" src="{{chat.senderImage_url}}"></ion-img>
               </ion-avatar>
             </div>
@@ -94,46 +95,30 @@
       </ion-row>
     </div>
   </ion-list>
-
+</div>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)=" sendMessage()" [disabled]="message=== '' ">
       <ion-icon name="send" expand="icon-only"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <!-- <ion-row *ngIf="loader">
-    <ion-row >
-    <ion-col class="ion-no-padding" class="loading-col">
-      <div class="imageAvatarRight">
-        <div class="imageAvatarBottomLoader">
-          <ion-avatar class="avatar">
-            <div class="imageAvatarBottomIcon">
-            </div>
-            <ion-img src="../../assets/player104.png"></ion-img>
-          </ion-avatar>
-        </div>
-        <ion-label>
-          <div class="chatDivLoader">
-              <ion-spinner name="dots" color="light"></ion-spinner>
-            <div class="corner-parent-right">
-              <div class="corner-child-right">
-              </div>
-            </div>
-          </div>
-        </ion-label>
-      </div>
-    </ion-col>
-  </ion-row> -->
+
+
 </ion-content>
 
 <ion-footer translucent>
   <ion-item>
-    <ion-icon slot="start" name="camera" expand="icon-only" class="footerIcon"></ion-icon>
+    <!-- <ion-icon slot="start" name="camera" expand="icon-only" class="footerIcon"></ion-icon> -->
     <!-- <ion-input class="input-box" type="text" placeholder="Write a message..." [(ngModel)]="user_input" (keypress)="userTyping($event)"></ion-input> -->
     <ion-input class="input-box" type="text" [(ngModel)]="message" placeholder="Write a message..." ></ion-input>
 
   </ion-item>
 </ion-footer>
+<div *ngIf="loading">
+  <ion-card>
+    <ion-spinner></ion-spinner>
+  </ion-card>
+  </div>
 <!-- <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">

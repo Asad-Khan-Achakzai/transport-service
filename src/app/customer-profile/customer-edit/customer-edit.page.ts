@@ -37,6 +37,12 @@ export class CustomerEditPage implements OnInit {
   Form: FormGroup;
   loading = false;
   img1: any;
+  email;
+  vissible =false;
+  verifyLoading = false;
+  emailVerified = false;
+  disableEmailColumn = true;
+  code;
   constructor(private menu: MenuController,public toastController: ToastController, private router :Router,private formBuilder: FormBuilder,private customerService: CustomersService,private platform: Platform,private mixedService: MixedService, public alertController: AlertController) { }
 
   async ngOnInit() {
@@ -104,7 +110,8 @@ export class CustomerEditPage implements OnInit {
         phone: [null, [Validators.required,Validators.minLength(12)]],
         image: new FormControl(null),
         shortID:[],
-        imageUrl:[]
+        imageUrl:[],
+        code:[]
         //confirmPassword: [null, [Validators.required]],
       });
   }
@@ -175,7 +182,59 @@ export class CustomerEditPage implements OnInit {
      
     
   }
-search(){
-  console.log("button clicker");
-}
+  sendEmail(){
+    this.Form.invalid;
+    this.verifyLoading = true;
+    this.mixedService.sendEmail({email:this.Form.value['email'],message:'whats up'}).subscribe(
+      async data => {
+        this.verifyLoading = false;
+        console.log('got response from server', data);
+    
+        const toast = await this.toastController.create({
+          message: data.message,
+        // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+  
+        this.code = data.code;
+        toast.present();
+        if(data.message === 'Email sent successfuly'){
+          this.vissible = true;
+          this.disableEmailColumn = false;
+        }
+    
+        this.loading = false;
+      // this.router.navigateByUrl('/home');
+      },
+      async error => {
+        this.loading = false;
+        const toast = await this.toastController.create({
+          message: error.error.message,
+        // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+       
+      }
+    );
+      }
+      async verifyCode(){
+        if(this.code ===this.Form.value['code'] ){
+          this.emailVerified = true;
+          const toast = await this.toastController.create({
+            message: 'Email verified',
+          // message: `${name} has been saved successfully.`,
+            duration: 3500
+          });
+          toast.present();
+        }
+        else{
+          const toast = await this.toastController.create({
+            message: 'Invalid code',
+          // message: `${name} has been saved successfully.`,
+            duration: 3500
+          });
+          toast.present();
+        }
+  
+      }
 }

@@ -2,6 +2,9 @@ ion-content{
     --background: linear-gradient(#00449e, #e66465);
 
 }
+ion-card:hover {
+    cursor: pointer;
+}
 ion-card{
     background-color: transparent;
 }
