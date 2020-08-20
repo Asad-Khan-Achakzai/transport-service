@@ -66,9 +66,9 @@ completed = false;
     return observable;
   }
   async ngOnInit() {
-    if(this.customerService.getCustomerId()){
-      this.authService.logout();
-    }
+    // if(this.customerService.getCustomerId()){
+    //   this.authService.logout();
+    // }
   this.mixedService.user = 'customer';
     this.chatService.customerLogedIn();
     
