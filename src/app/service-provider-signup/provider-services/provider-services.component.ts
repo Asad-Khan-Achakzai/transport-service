@@ -40,8 +40,8 @@ export class ProviderServicesComponent implements OnInit {
     this.Form = this.formBuilder.group({
       routes: [[
       ]],
-      to: [null, [Validators.required]],
-      from: [null, [Validators.required]]
+      departureValue: [null],
+      destinationValue: [null]
     });
     //this.routes = new Routes();
     this.routesArray = [new Routes];
@@ -61,7 +61,11 @@ export class ProviderServicesComponent implements OnInit {
   //entering to the list
 
   enterToTheList() {
-
+    let departs = this.Form.value['departureValue'];
+    let dests = this.Form.value['destinationValue'];
+    
+     console.log('searched value = ', departs);
+     console.log('searched value = ', dests);
     console.log('seat = ', this.seatValue);
     //converting time to a readeable formate
     this.timingValue = new Date(this.timingValue);
@@ -73,15 +77,15 @@ export class ProviderServicesComponent implements OnInit {
       this.firstIndexOfArrayDeleted = true;
     }
     //  pushing routes to the array
-    this.routesArray.push({ timing: this.timingValue, totalSeats: this.numberOfSeats, availableSeats: this.numberOfSeats,priceperSeat:this.pricePerSeat, departure: this.departureValue, destination: this.destinationValue });
+    this.routesArray.push({ timing: this.timingValue, totalSeats: this.numberOfSeats, availableSeats: this.numberOfSeats,priceperSeat:this.pricePerSeat, departure: departs, destination:dests});
 
 
     console.log(this.routesArray);
-    this.Form.value['routes'].push({ Departure: this.departureValue, Destination: this.destinationValue });
+    this.Form.value['routes'].push({ Departure: departs, Destination: dests });
     this.routesCopy = this.Form.controls['routes'].value;
 
-    this.departureValue = '';
-    this.destinationValue = '';
+    this.Form.controls['departureValue'].setValue('');
+    this.Form.controls['destinationValue'].setValue('');
     this.timingValue = '';
     this.seatValue = ' ';
     this.pricePerSeat = 0;

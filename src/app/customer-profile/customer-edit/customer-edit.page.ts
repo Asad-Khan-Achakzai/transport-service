@@ -40,7 +40,7 @@ export class CustomerEditPage implements OnInit {
   email;
   vissible =false;
   verifyLoading = false;
-  emailVerified = false;
+  emailVerified = true;
   disableEmailColumn = true;
   code;
   constructor(private menu: MenuController,public toastController: ToastController, private router :Router,private formBuilder: FormBuilder,private customerService: CustomersService,private platform: Platform,private mixedService: MixedService, public alertController: AlertController) { }
@@ -117,6 +117,9 @@ export class CustomerEditPage implements OnInit {
   }
   back(){
     this.router.navigateByUrl('/home');
+  }
+  emailInput(){
+this.emailVerified = false;
   }
  
   fileChange(event){

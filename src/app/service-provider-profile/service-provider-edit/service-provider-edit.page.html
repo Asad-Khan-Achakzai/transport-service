@@ -3,8 +3,13 @@
 <ion-content>
   <ion-header>
     <ion-toolbar >
-      <ion-buttons slot="start">
+      <!-- <ion-buttons slot="start">
         <ion-back-button  defaultHref="/service-provider-profile"></ion-back-button>
+      </ion-buttons> -->
+      <ion-buttons slot="start">
+        <ion-menu-toggle>
+          <ion-menu-button color="dark" autoHide="false"></ion-menu-button>
+        </ion-menu-toggle>
       </ion-buttons>
       <div class ="title">
       <ion-title>Edit</ion-title>
@@ -102,7 +107,7 @@
                   <ion-label position = "floating">
                     Valid Gmail Address
                   </ion-label>
-                  <ion-input type ="text"  formControlName="email" id = "emailaddress">
+                  <ion-input type ="text" (ionInput)="emailInput($event)"  formControlName="email" id = "emailaddress">
                   </ion-input>
                 
                 </ion-item>

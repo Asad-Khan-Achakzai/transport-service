@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DeprecatedCurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { ModalController, IonContent, AlertController } from '@ionic/angular';
+import { ModalController, IonContent, AlertController, ToastController } from '@ionic/angular';
 //import {CustomerService} from '../../sdk/custom/customer.service';
 import {ServiceProvidersService} from '../../../sdk/custom/service-providers.service';
 import {Routes} from '../../../sdk/custom/service-providers.service';
@@ -37,13 +37,13 @@ loading = false;
 cities = ['quetta','peshawer'];
 @ViewChild(IonContent, { static: false }) content: IonContent;
 
-  constructor( public alertController: AlertController,public datepipe: DatePipe,private popoverCtrl: PopoverController, private formBuilder: FormBuilder,private router :Router,private modalCtrl: ModalController,private serviceProviderServices: ServiceProvidersService) {
+  constructor( public toastController: ToastController,public alertController: AlertController,public datepipe: DatePipe,private popoverCtrl: PopoverController, private formBuilder: FormBuilder,private router :Router,private modalCtrl: ModalController,private serviceProviderServices: ServiceProvidersService) {
    
     this.Form = this.formBuilder.group({
       routes : [[
       ]],
-      to:[null,[Validators.required]],
-      from:[null,[Validators.required]]
+      departureValue: [null],
+      destinationValue: [null]
     });
     //this.routes = new Routes();
     this.routesArray = [new Routes] ;
@@ -103,13 +103,18 @@ cities = ['quetta','peshawer'];
 
   //entering to the list
 
-  enterToTheList(){
+  async enterToTheList(){
     let test = false;
     for(let i = 0;i<this.routesArray.length;i++){
       if(this.routesArray[i].availableSeats===0 || this.routesArray[i].departure ===''|| this.routesArray[i].destination=== ''|| this.routesArray[i].timing===''|| this.routesArray[i].totalSeats===0|| this.routesArray[i].totalSeats=== null|| this.routesArray[i].availableSeats===null)
       {
         test = true;
-        console.log('fill all');
+        const toast = await this.toastController.create({
+          message: 'please fill all fields',
+         // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+        toast.present();
       }
     }
     if(test !== true){
@@ -154,13 +159,17 @@ cities = ['quetta','peshawer'];
     }
   }
   updateDeparture(value,index){
+    console.log('deapartute changed =',value);
     this.routesArray[index].departure = value;
     }
     updateDestination(value,index){
       this.routesArray[index].destination = value;
       }
       updateTiming(value,index){
-        this.routesArray[index].timing = value;
+        this.timingValue = new Date(value);
+        this.timingValue = this.datepipe.transform(this.timingValue, 'shortTime');
+        console.log('timing changed =',this.timingValue);
+        this.routesArray[index].timing = this.timingValue;
         }
   test(value,index){
     this.routesArray[index].totalSeats = value;
@@ -170,6 +179,25 @@ cities = ['quetta','peshawer'];
     }
     updateRoutePrice(value,index){
       this.routesArray[index].priceperSeat = value;
+    }
+    updateButType(value,index){
+      let seats;
+      if (value === '2/2') {
+        seats = 44;
+        this.routesArray[index].availableSeats = seats;
+      this.routesArray[index].totalSeats = seats;
+      } else if (value=== '2/1') {
+        seats= 24;
+        this.routesArray[index].availableSeats = seats;
+      this.routesArray[index].totalSeats = seats;
+      } else if (value === '1/1') {
+        seats = 18;
+        this.routesArray[index].availableSeats = seats;
+      this.routesArray[index].totalSeats = seats;
+      } else {
+        this.buttonDisabled = false;
+      }
+      
     }
     // test(event){
     //   if(this.departureValue != '' && this.destinationValue != ''&& this.timingValue != '' && this.seatValue != 0)

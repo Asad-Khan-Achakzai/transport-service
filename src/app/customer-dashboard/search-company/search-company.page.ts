@@ -62,14 +62,15 @@ export class SearchCompanyPage implements OnInit {
     let obj;
      console.log('searched value = ', departs);
      console.log('searched value = ', dests);
-    this.serviceProviderInfo = this.oldServiceProviderInfo;
+     this.serviceProviderInfo = [];
     for(let i =0 ;i< this.oldServiceProviderInfo.length;i++){
       for(let j = 0; j<this.oldServiceProviderInfo[i].servicesArray.length;j++  ){
         if(departs === this.oldServiceProviderInfo[i].servicesArray[j].departure && this.oldServiceProviderInfo[i].servicesArray[j].destination === dests)
-        {          console.log('came = ',this.oldServiceProviderInfo[i]);
+        {         
+           console.log('came = ',this.oldServiceProviderInfo[i]);
     //    this.serviceProviderInfo.splice(0, this.serviceProviderInfo.length);
 
-          this.serviceProviderInfo = [];
+         
           console.log('came = ',this.serviceProviderInfo);
           this.serviceProviderInfo.push(this.oldServiceProviderInfo[i]);
         }

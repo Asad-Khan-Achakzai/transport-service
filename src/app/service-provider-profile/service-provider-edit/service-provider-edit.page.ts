@@ -41,7 +41,7 @@ export class ServiceProviderEditPage implements OnInit {
   vissible =false;
   code;
   verifyLoading = false;
-  emailVerified = false;
+  emailVerified = true;
   disableEmailColumn = true;
   constructor(private menu: MenuController,public alertController: AlertController,public toastController: ToastController,private formBuilder: FormBuilder, private router: Router, private modalController: ModalController, private serviceProviderServices: ServiceProvidersService,private platform: Platform,private mixedService: MixedService) { }
   // cities = ['quetta','peshawer'];
@@ -151,7 +151,9 @@ export class ServiceProviderEditPage implements OnInit {
     });
     return await modal.present();
   }
-
+  emailInput(){
+    this.emailVerified = false;
+      }
   nextButton() {
     this.Form.controls['citiesArray'].setValue(this.cities);
     this.openAddModal();
