@@ -1,4 +1,4 @@
-### this is my final year project application which deals with transports.
+### this is my final year project, application is developed using ionic 5 with Node.js in backend and MongoDB Atlas for storage, It deals with transports.
 
 
 ### main page

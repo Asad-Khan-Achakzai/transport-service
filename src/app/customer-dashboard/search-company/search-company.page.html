@@ -169,7 +169,7 @@
   <div *ngIf="!loading">
     <ion-list >
       
-      <ion-card *ngFor="let tag of serviceProviderInfo" (click)="displayToast()" [routerLink]= "['./',tag._id]">
+      <ion-card *ngFor="let tag of serviceProviderInfo" (click)="saveIdToStroage(tag._id)" [routerLink]= "['./',tag._id]">
         <div *ngFor ="let item of tag.servicesArray">
         <ion-item  text-wrap>
           <ion-label class="label">From :</ion-label>

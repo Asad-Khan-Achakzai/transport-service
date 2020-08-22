@@ -35,6 +35,11 @@ export class SearchCompanyPage implements OnInit {
   displayToast(){
     this.customerService.showToast('Navigating....');
   }
+  async saveIdToStroage(id){
+    console.log('id=',id)
+    this.customerService.saveProviderIdForProviderProfile(id);
+    this.customerService.showToast('Navigating....');
+  }
   ionViewDidEnter() {
    
     this.menu.enable(true, 'first');
