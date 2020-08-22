@@ -151,7 +151,7 @@ export class ServiceProviderEditPage implements OnInit {
     });
     return await modal.present();
   }
-  emailInput(){
+  emailInput(data){
     this.emailVerified = false;
       }
   nextButton() {

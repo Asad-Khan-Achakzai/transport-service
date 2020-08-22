@@ -118,7 +118,7 @@ export class CustomerEditPage implements OnInit {
   back(){
     this.router.navigateByUrl('/home');
   }
-  emailInput(){
+  emailInput(data){
 this.emailVerified = false;
   }
  
