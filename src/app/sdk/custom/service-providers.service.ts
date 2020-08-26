@@ -15,6 +15,7 @@ export class Routes {
   priceperSeat:number;
   departure: string;
   destination: string;
+  paused:boolean;
 }
 @Injectable({
   providedIn: 'root'

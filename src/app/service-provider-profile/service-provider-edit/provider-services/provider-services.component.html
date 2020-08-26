@@ -22,6 +22,9 @@
      <ion-card>
        <ion-header>
          <ion-toolbar  >
+          <ion-buttons slot="start">
+            <ion-toggle slot="start" name="blackberry"  (ionChange)="pauseButton($event.detail.checked,i)" color="dark" checked="{{arr.paused}}"></ion-toggle>
+          </ion-buttons>
           <ion-buttons slot="primary">
             <ion-button (click)="deletRoute(i)" >
               <ion-icon name="trash-outline" slot="icon-only"></ion-icon>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BookingsService, Booking } from 'src/app/sdk/custom/bookings.service';
-import { ServiceProvidersService } from 'src/app/sdk/custom/service-providers.service';
+import { ServiceProvidersService, Routes } from 'src/app/sdk/custom/service-providers.service';
 import { Router } from '@angular/router';
 import { MenuController, ToastController, AlertController } from '@ionic/angular';
 var ObjectId = require("mongoose").Types.ObjectId;
@@ -18,6 +18,7 @@ export class RouteBookingsPage implements OnInit {
   loading = true;
   skeletonlist = [1, 2, 3, 4, 5];
   expireBookingLoading = false;
+  route:Routes;
   constructor(private menu: MenuController, public toastController: ToastController, public alertController: AlertController, private router: Router, private bookingsService: BookingsService, private serviceProviderServices: ServiceProvidersService) { }
   async refreshPage(event) { 
     this.loading = true;
@@ -27,7 +28,9 @@ export class RouteBookingsPage implements OnInit {
       event.target.complete();
     }, 1000);
   }
-  ngOnInit() {
+  async ngOnInit() {
+     this.route = await this.bookingsService.getBookingroute();
+     console.log('route= ',this.route);
     this.getBookings();
   }
   edit() { }

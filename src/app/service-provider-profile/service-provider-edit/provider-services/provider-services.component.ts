@@ -70,7 +70,8 @@ cities = ['quetta','peshawer'];
         availableSeats:null,
         priceperSeat:null,
         departure : '',
-        destination : ''
+        destination : '',
+        paused: false
       };
         this.routesArray.unshift(route);
         this.content.scrollToTop(1500);
@@ -149,6 +150,27 @@ cities = ['quetta','peshawer'];
 //     console.log('RoutesCopy  = ',this.routesCopy);
 
   }
+  async pauseButton(value,i){ 
+    if(value){
+      this.routesArray[i].paused = true;
+      const toast = await this.toastController.create({
+        message: 'route from '+this.routesArray[i].departure+ ' to '+ this.routesArray[i].destination +' is paused',
+       // message: `${name} has been saved successfully.`,
+        duration: 3500
+      });
+      toast.present();
+    }
+    else{
+      this.routesArray[i].paused = false;
+      const toast = await this.toastController.create({
+        message: 'route from '+this.routesArray[i].departure+ ' to '+ this.routesArray[i].destination +' is live now',
+       // message: `${name} has been saved successfully.`,
+        duration: 3500
+      });
+      toast.present();
+    }
+    
+  }
   delete(id: number): void{
     this.routesCopy.splice(id, 1);
     this.routesArray.splice(id, 1);
@@ -177,8 +199,18 @@ cities = ['quetta','peshawer'];
     updateAvailableSeats(value,index){
       this.routesArray[index].availableSeats = value;
     }
-    updateRoutePrice(value,index){
-      this.routesArray[index].priceperSeat = value;
+    async updateRoutePrice(value,index){
+      if(value > 100 && value < 10000){
+        this.routesArray[index].priceperSeat = value;
+      }else{
+        const toast = await this.toastController.create({
+          message: 'not valid input so it will not be updated',
+         // message: `${name} has been saved successfully.`,
+          duration: 3500
+        });
+        toast.present();
+      }
+      
     }
     updateButType(value,index){
       let seats;

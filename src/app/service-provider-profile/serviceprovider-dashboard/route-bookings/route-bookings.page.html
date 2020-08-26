@@ -6,11 +6,14 @@
     <div id="title">
     <ion-title>Bookings</ion-title>
   </div>
-    <ion-buttons slot="end">
-    <ion-button color ="light" (click) = "goToManualBooking()">
+    <ion-buttons slot="end" *ngIf="!route?.paused">
+    <ion-button  color ="light" (click) = "goToManualBooking()">
      Manual Booking
      </ion-button>
     </ion-buttons>
+    <ion-buttons *ngIf="route?.paused" slot="end">
+      <ion-label color ="light">Paused</ion-label>
+      </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

@@ -50,7 +50,7 @@
         </ion-input>
       </ion-item> -->
       <ion-item>
-      <ion-select text-center color="dark" formControlName="departureValue" (ionChange)="optionsFn()" interface="popover" placeholder="Departure">
+      <ion-select text-center color="dark" formControlName="departureValue" interface="popover" placeholder="Departure">
         <ion-select-option value="Karachi">Karachi</ion-select-option>
         <ion-select-option value="lahore">lahore</ion-select-option>
         <ion-select-option value="Faisalabad">Faisalabad</ion-select-option>
@@ -217,6 +217,7 @@
         </ion-label>
         <ion-input
           type="number"
+          (ionInput)="inputPrice($event)"
           [(ngModel)]="pricePerSeat"
           [ngModelOptions]="{ standalone: true }"
         >
@@ -227,7 +228,7 @@
         <ion-select   
         [(ngModel)]="seatValue"
         [ngModelOptions]="{ standalone: true }"
-        (ionChange)="optionsFn()"
+        (ionChange)="options()"
          >
         <ion-select-option value="2/2">Two by Two</ion-select-option>
         <ion-select-option value="2/1">Two by One</ion-select-option>

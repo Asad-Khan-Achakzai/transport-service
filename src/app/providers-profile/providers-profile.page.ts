@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceProvidersService, Routes } from '../sdk/custom/service-providers.service';
 import {serviceProvider} from '../customer-dashboard/service-provider.model';
-import { IonSlides, MenuController } from '@ionic/angular';
+import { IonSlides, MenuController, ToastController } from '@ionic/angular';
 import { CustomersService } from '../sdk/custom/customers.service';
 import { SocketIo } from 'ng-io';
 import { ChatServiceService } from '../chat-room/chat-service.service';
@@ -31,7 +31,7 @@ export class ProvidersProfilePage implements OnInit {
   loading =true;
   skeletonlist = [1,2,3,4,5];
 @ViewChild('slides', { static: true }) slider: IonSlides;  
-  constructor(private menu: MenuController,private chatService: ChatServiceService,private socket: SocketIo,private customerService:CustomersService,private activatedRoute: ActivatedRoute, private router: Router,private serviceProvidersService: ServiceProvidersService) {
+  constructor(public toastController: ToastController,private menu: MenuController,private chatService: ChatServiceService,private socket: SocketIo,private customerService:CustomersService,private activatedRoute: ActivatedRoute, private router: Router,private serviceProvidersService: ServiceProvidersService) {
     this.routesArr = [new Routes];
    }
    async refreshPage(event) { 
@@ -53,31 +53,6 @@ export class ProvidersProfilePage implements OnInit {
   
     let id = await this.customerService.getproviderIdForProviderProfile();
     this.getServiceProvider(id);
-
-    // this.activatedRoute.paramMap.subscribe(paramMap =>{
-    //   if(!paramMap.has('providerID')){
-    //     return;
-    //   }
-      
-    //   this.providerID =  paramMap.get('providerID');
-    //   this.serviceProviderInfo = this.serviceProvidersService.getSingleProvider(this.providerID);
-    //   //console.log("from profile",this.provider);
-    //   console.log('object = ',this.serviceProviderInfo)
-    //   this.email = this.serviceProviderInfo.email;
-    //   this.userName = this.serviceProviderInfo.username;
-    //   this.phone = this.serviceProviderInfo.phone;
-    //   this.cnic = this.serviceProviderInfo.cnic;
-    //   this.cities = this.serviceProviderInfo.citiesArray;
-    //   this.routes = this.serviceProviderInfo.servicesArray;
-    //   this.companyName = this.serviceProviderInfo.companyName;
-    //   this.officeLocation = this.serviceProviderInfo.officeLocation;
-    //   this.routesArr = this.serviceProviderInfo.servicesArray;
-    //   this.email = this.serviceProviderInfo.email;
-    //   this.userName = this.serviceProviderInfo.username;
-    //   this.phone = this.serviceProviderInfo.phone;
-    //   this.cnic = this.serviceProviderInfo.cnic
-    //   this.image = this.serviceProviderInfo.imageUrl;
-    // });
   }
 
   async ionViewDidEnter() {
@@ -144,11 +119,22 @@ export class ProvidersProfilePage implements OnInit {
     // this.socket.emit('set-type','customer');
     this.router.navigateByUrl('/chat-room');
   }
-  goToBooking(route){
-    this.customerService.saveProviderBookingData(route.id,this.providerID,route.timing,route.bookedSeats,route.totalSeats,route.priceperSeat)
-    //this.customerService.saveProviderRoute(route);
-    console.log('route id = ',route.id);
-
-    this.router.navigateByUrl('/providers-profile/seat-booking');
+  async goToBooking(route){
+    if(route.paused){
+      const toast = await this.toastController.create({
+        message: 'This route is not operational contact owner',
+       // message: `${name} has been saved successfully.`,
+        duration: 3500
+      });
+      toast.present();
+    }
+    else{
+      this.customerService.saveProviderBookingData(route.id,this.providerID,route.timing,route.bookedSeats,route.totalSeats,route.priceperSeat)
+      //this.customerService.saveProviderRoute(route);
+      console.log('route id = ',route.id);
+  
+      this.router.navigateByUrl('/providers-profile/seat-booking');
+    }
+    
   }
 }
