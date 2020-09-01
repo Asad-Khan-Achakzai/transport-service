@@ -114,8 +114,19 @@ getObservable(): Subject<any> {
     //    const url = Path.getPath() + `/providers/${credentials.id}`;
     //credentials = credentials + this.serviceProvider;
     //  this.serviceProvider['routes'] = credentials;
-    const token = 'blabla';
+   
     return this.http.post(url, credentials);
+  }
+  public async updateRanking(credentials): Promise<Observable<any>>  {
+    console.log('credentials = ',credentials);
+    console.log('function called from service');
+    const url = Path.getPath() + '/providers/updateRanking';
+
+    //    const url = Path.getPath() + `/providers/${credentials.id}`;
+    //credentials = credentials + this.serviceProvider;
+    //  this.serviceProvider['routes'] = credentials;
+   
+    return this.http.put(url, credentials);
   }
   public async editServiceProvider(credentials: object): Promise<Observable<any>> {
     const id = await this.getServiceProviderId();

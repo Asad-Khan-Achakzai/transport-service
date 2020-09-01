@@ -14,4 +14,5 @@ export interface serviceProvider {
     companyName: string;
     officeLocation: string;
     imageUrl:string;
+    rank:number;
   }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceProvidersService, Routes } from '../sdk/custom/service-providers.service';
 import {serviceProvider} from '../customer-dashboard/service-provider.model';
-import { IonSlides, MenuController, ToastController } from '@ionic/angular';
+import { IonSlides, MenuController, ToastController, AlertController } from '@ionic/angular';
 import { CustomersService } from '../sdk/custom/customers.service';
 import { SocketIo } from 'ng-io';
 import { ChatServiceService } from '../chat-room/chat-service.service';
@@ -30,8 +30,11 @@ export class ProvidersProfilePage implements OnInit {
   image:string;
   loading =true;
   skeletonlist = [1,2,3,4,5];
+  serviceProviderID;
+  ranking:number;
+   rank;
 @ViewChild('slides', { static: true }) slider: IonSlides;  
-  constructor(public toastController: ToastController,private menu: MenuController,private chatService: ChatServiceService,private socket: SocketIo,private customerService:CustomersService,private activatedRoute: ActivatedRoute, private router: Router,private serviceProvidersService: ServiceProvidersService) {
+  constructor(public alertCtrl: AlertController,public toastController: ToastController,private menu: MenuController,private chatService: ChatServiceService,private socket: SocketIo,private customerService:CustomersService,private activatedRoute: ActivatedRoute, private router: Router,private serviceProvidersService: ServiceProvidersService) {
     this.routesArr = [new Routes];
    }
    async refreshPage(event) { 
@@ -50,8 +53,11 @@ export class ProvidersProfilePage implements OnInit {
    }, 1000);
   }
   async ngOnInit() {
-  
+    setTimeout(() => {
+     this.showRanking();
+    }, 10000);
     let id = await this.customerService.getproviderIdForProviderProfile();
+    this.serviceProviderID = id;
     this.getServiceProvider(id);
   }
 
@@ -89,6 +95,8 @@ export class ProvidersProfilePage implements OnInit {
         this.officeLocation = this.serviceProviderInfo.officeLocation;
         this.routesArr = this.serviceProviderInfo.servicesArray;
         this.image = this.serviceProviderInfo.imageUrl;
+        this.ranking = this.serviceProviderInfo.rank;
+      this.rank = this.ranking.toFixed(1);
       },
       err => {
         console.log('err', err);
@@ -136,5 +144,47 @@ export class ProvidersProfilePage implements OnInit {
       this.router.navigateByUrl('/providers-profile/seat-booking');
     }
     
+  }
+  async showRanking(){
+    const alert = this.alertCtrl.create({
+      header: 'Feedback',
+      
+      cssClass: 'alertstar',
+      
+      buttons: [
+           { text: '1', handler: data => { this.resolveRec(1.0);}},
+           { text: '2', handler: data => { this.resolveRec(2.0);}},
+           { text: '3', handler: data => { this.resolveRec(3.0);}},
+           { text: '4', handler: data => { this.resolveRec(4.0);}},
+           { text: '5', handler: data => { this.resolveRec(5.0);}}
+      ]
+ });
+ (await alert).present();
+  }
+  async resolveRec(i){
+console.log('ranking = ',i );
+
+
+(await this.serviceProvidersService.updateRanking({id:this.serviceProviderID,ranking:i})).subscribe(
+  async data => {
+    if(data.message === 'Task completed successfully'){
+      const toast = await this.toastController.create({
+        message: 'Response saved',
+      // message: `${name} has been saved successfully.`,
+        duration: 3500
+      });
+      toast.present();
+    }
+    else{
+      const toast = await this.toastController.create({
+        message: 'Response not saved',
+      // message: `${name} has been saved successfully.`,
+        duration: 3500
+      });
+      toast.present();
+    }
+   
+    console.log('response',data);
+  });
   }
 }

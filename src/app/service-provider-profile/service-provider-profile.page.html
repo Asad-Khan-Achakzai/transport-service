@@ -5,8 +5,14 @@
       <ion-menu-toggle slot="start">
       <ion-menu-button   color="light" autoHide="false"></ion-menu-button>
     </ion-menu-toggle>
-    
     <ion-buttons slot="end">
+      <!-- <ion-button color="light" (click)="showRanking()">
+        Feedback
+      </ion-button> -->
+      <ion-title color="light">Rank: {{rank}}</ion-title>
+      
+    </ion-buttons> 
+    <!-- <ion-buttons slot="end">
       <ion-button color="light" (click)="goToDashboard()">
         <ion-icon name="ios-arrow-back"></ion-icon>
         Dashboard
@@ -14,7 +20,7 @@
       <ion-button color="light" (click)="logout()">
         Logout
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
     <!-- <ion-buttons slot="end">
       <ion-button>
         <ion-icon slot="icon-only" src="../../assets/checkmark-filled.svg"></ion-icon>

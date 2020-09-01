@@ -39,6 +39,8 @@ msgs:number;
 completed = false;
 loading = true;
 skeletonlist = [1,2,3,4,5];
+ranking:number;
+   rank;
   @ViewChild('slides', { static: true }) slider: IonSlides;  
   segment = 0;  
   constructor(private menu: MenuController,private chatService:ChatServiceService,private socket: SocketIo,public navCtrl: NavController,private router :Router,private serviceProvidersService: ServiceProvidersService,private authService: AuthService) {
@@ -161,6 +163,8 @@ filterArray(chats){
         this.officeLocation = this.serviceProviderInfo.officeLocation;
         this.routesArr = this.serviceProviderInfo.servicesArray;
         this.image = this.serviceProviderInfo.imageUrl;
+        this.ranking = this.serviceProviderInfo.rank;
+        this.rank = this.ranking.toFixed(1);
         this.serviceProvidersService.publishSomeData({
           serviceProviderImage: this.image
         })

@@ -15,7 +15,10 @@
   </ion-refresher>
   <ion-list class="ion-no-padding">
     <div *ngIf="!loading">
-    <ion-item *ngFor="let chat of chatData; let i=index" (click)="goforChat(chat)">
+      <div *ngFor="let chat of chatData; let i=index">
+   
+        <ion-item-sliding (ionSwipe)="delete(i)">
+    <ion-item  (click)="goforChat(chat)">
       <ion-avatar slot="start">
         <ion-img class="user-img" [src]="chat.senderImage_url"></ion-img>
         <!-- <div class="online" *ngIf="chat.status == 'online'">
@@ -54,6 +57,16 @@
        
       </ion-label>
     </ion-item>
+    <ion-item-options>
+      <button  ion-button expandable  >
+        <ion-icon name="trash"></ion-icon>
+        Delete
+      </button>
+    </ion-item-options>
+    
+  </ion-item-sliding>
+
+</div>
   </div>
   <div *ngIf="loading">
     <ion-item *ngFor="let item of skeletonlist">

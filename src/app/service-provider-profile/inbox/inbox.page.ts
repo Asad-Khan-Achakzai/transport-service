@@ -5,7 +5,7 @@ import { ServiceProvidersService } from 'src/app/sdk/custom/service-providers.se
 import { Router } from '@angular/router';
 import { Time } from '@angular/common';
 import { ChatServiceService } from 'src/app/chat-room/chat-service.service';
-import { MenuController } from '@ionic/angular';
+import { MenuController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inbox',
@@ -21,7 +21,7 @@ unreadMessages:chat[];
 countArr:chatCount[];
 loading = true;
 skeletonlist = [1,2,3,4,5];
-  constructor(private menu: MenuController,private chatService: ChatServiceService,private router :Router,private socket: SocketIo,private serviceProvidersService: ServiceProvidersService) { 
+  constructor(public alertController: AlertController,private menu: MenuController,private chatService: ChatServiceService,private router :Router,private socket: SocketIo,private serviceProvidersService: ServiceProvidersService) { 
     this.getNewMessage().subscribe(message => {
       if (this.serviceProvidersService.serviceProviderIdInbox === message['recieverId'] || this.serviceProvidersService.serviceProviderIdInbox === message['senderId']) {
         this.chats.push(message);
@@ -59,6 +59,40 @@ this.getMessages().subscribe(message => {
   this.filterArray(this.chats);
  });
 }
+async delete(id: number): Promise<void> {
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    header: 'Confirm!',
+    message: 'Are you sure to  <strong>Delete</strong>!!!',
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (blah) => {
+          console.log('Confirm Cancel: blah');
+        }
+      }, {
+        text: 'Okay',
+        handler: async () => {
+
+          let chatData = [this.chatData[id].senderId, this.chatData[id].recieverId];
+          console.log('chatdata = ', chatData);
+          this.socket.emit('set-deletChat', chatData);
+          (await this.getMessages()).subscribe(message => {
+            this.chats = message;
+            console.log('inbox data = ', message)
+            this.filterArray(this.chats);
+          });
+          //after reload the image in side menu is lost so here i send again the picture
+          
+        }
+      }
+    ]
+  });
+  await alert.present();
+
+} 
 countArray(chat){
   let array:[]
   for(let i=0;i<chat.length;i++){

@@ -25,6 +25,12 @@ if(this.user !== ''){
 
     return this.http.post(url, credentials);
   }
+  public deletChat(credentials: object): Observable<any> {
+    console.log('credentials = ',credentials);
+    const url = Path.getPath() + '/users/deletChat';
+
+    return this.http.delete(url, credentials);
+  }
   public udpateUser(logedInCustomerId,credentials: object): Observable<any> {
     const url = Path.getPath() + `/users/${logedInCustomerId}`;
 

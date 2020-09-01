@@ -11,7 +11,13 @@
         <ion-menu-button color="light" autoHide="false"></ion-menu-button>
       </ion-menu-toggle>
     </ion-buttons>
-    <ion-title>&nbsp;</ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-button color="light" (click)="showRanking()">
+        Feedback
+      </ion-button> -->
+      <ion-title color="light">Rank: {{rank}}</ion-title>
+      
+    </ion-buttons>
     <!-- <ion-buttons slot="end">
       <ion-button>
         <ion-icon
@@ -60,6 +66,7 @@
           <ion-chip *ngIf="loading">
             loading..
           </ion-chip>
+          
         </h6>
       </div>
 
